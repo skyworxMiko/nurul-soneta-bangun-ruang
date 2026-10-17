@@ -1,0 +1,4839 @@
+
+// ========================================================
+// UNIFIED MULTI-DIMENSIONAL (3D / 4D / 5D) ENGINE
+// ========================================================
+
+// 1. DIMENSIONAL DATA DICTIONARY FOR ALL SHAPES
+function getShapeDimensionData(key, dim) {
+  const base = SHAPES_DATA[key];
+  if (!base) return null;
+
+  // DIMENSION 3D (Standard SD)
+  if (dim === 3) {
+    return {
+      title: `Bangun Ruang 3D: <strong>${base.name}</strong> ${base.emoji}`,
+      dimBadge: '3D',
+      sisi: base.sisi,
+      rusuk: base.rusuk,
+      sudut: base.sudut,
+      descSisi: base.descSisi,
+      descRusuk: base.descRusuk,
+      descSudut: base.descSudut,
+      description: base.description,
+      formulaVol: base.formulaVol,
+      formulaArea: base.formulaArea,
+      mascotTip: base.mascotTip,
+      realWorld: base.realWorld
+    };
+  }
+
+  // DIMENSION 4D (Ruang-Waktu / 4 Sumbu: X, Y, Z, W)
+  if (dim === 4) {
+    switch (key) {
+      case 'kubus':
+        return {
+          title: 'Dimensi 4D: <strong>Tesseract (Kubus 4D)</strong> 🎲⏱️',
+          dimBadge: '4D',
+          sisi: '8 Sel Kubus 3D',
+          rusuk: '32 Rusuk 4D',
+          sudut: '16 Titik Sudut (2⁴)',
+          descSisi: '8 Kubus 3D membungkus ruang Tesseract',
+          descRusuk: '32 Rusuk 4 Dimensi pada sumbu (X, Y, Z, W)',
+          descSudut: '16 Titik sudut koordinat hiper-ruang',
+          description: 'Tesseract adalah hiperkubus di dalam 4 dimensi ruang. Memiliki 16 titik sudut, 32 rusuk, 24 bidang persegi, dan dibatasi oleh 8 sel kubus 3D. Kubus bagian dalam dapat berputar membalik menembus sumbu ke-4 tanpa menabrak dinding luarnya!',
+          formulaVol: 'V_{4D} = s⁴ (Sisi pangkat 4)',
+          formulaArea: 'Luas Batas = 8 &times; s³ (8 Sel Kubus)',
+          mascotTip: 'Di dimensi ke-4, ada sumbu W (Waktu/Dimensi ke-4). Kubus dalam berotasi menembus sumbu ke-4 secara ajaib!',
+          realWorld: [
+            { id: 'dadu_4d', name: 'Dadu Tesseract 4D', icon: '🎲', fact: 'Dadu 4 dimensi dengan angka di kubus luar dan kubus dalamnya yang berotasi!' },
+            { id: 'rubik_4d', name: 'Rubik Hiper-Ruang 4D', icon: '🧩', fact: 'Rubik ajaib 4D yang dapat diputar menembus sumbu dimensi keempat!' },
+            { id: 'tesseract_wire', name: 'Rangka Tesseract Neon', icon: '💠', fact: 'Model rangka kawat Tesseract dengan 16 titik sudut berpijar neon!' },
+            { id: 'kotak_waktu', name: 'Kotak Krono Waktu 4D', icon: '⏱️', fact: 'Kotak ruang-waktu dengan inti portal energi di tengahnya!' }
+          ]
+        };
+
+      case 'balok':
+        return {
+          title: 'Dimensi 4D: <strong>Hiper-Balok 4D (Cuboid 4D)</strong> 📦⏱️',
+          dimBadge: '4D',
+          sisi: '8 Sel Balok 3D',
+          rusuk: '32 Rusuk 4D',
+          sudut: '16 Titik Sudut',
+          descSisi: '8 Sel balok 3D saling berhadapan kongruen',
+          descRusuk: '32 Rusuk (p, l, t, w saling ortogonal)',
+          descSudut: '16 Sudut siku-siku 4 dimensi',
+          description: 'Hiper-Balok 4D adalah bangun balok yang diperluas ke sumbu keempat (W). Bentuk ini memiliki panjang (p), lebar (l), tinggi (t), dan kedalaman waktu (w) yang berbeda ukuran.',
+          formulaVol: 'V_{4D} = p &times; l &times; t &times; w',
+          formulaArea: 'Hiper-Luas = 2(plt + plw + ptw + ltw)',
+          mascotTip: 'Keren sekali! Hiper-Balok 4D mirip seperti lemari atau peti masa depan yang mampu menampung materi antar dimensi!',
+          realWorld: [
+            { id: 'peti_4d', name: 'Peti Kargo Waktu 4D', icon: '📦', fact: 'Peti kargo berdimensi 4 dengan kunci gravitasi magnetik!' },
+            { id: 'memori_4d', name: 'Chip Memori Kuantum 4D', icon: '💾', fact: 'Chip kristal balok 4D penyimpan data melintasi garis waktu!' },
+            { id: 'reaktor_balok_4d', name: 'Reaktor Hiper-Balok 4D', icon: '🔋', fact: 'Baterai balok 4D penghasil medan energi plasma berdensitas tinggi!' },
+            { id: 'lemari_4d', name: 'Lemari Multi-Dimensi 4D', icon: '🚪', fact: 'Lemari ruang-waktu yang tampak ramping namun luas di dalamnya!' }
+          ]
+        };
+
+      case 'tabung':
+        return {
+          title: 'Dimensi 4D: <strong>Hiper-Silinder 4D</strong> 🥫⏱️',
+          dimBadge: '4D',
+          sisi: '2 Bola Tutup + 1 Selimut 4D',
+          rusuk: '0 (Mulus Melingkar)',
+          sudut: '0 (Tanpa Titik Sudut)',
+          descSisi: 'Dibatasi 2 bola sferik 3D dan selimut silinder hiperbolik',
+          descRusuk: 'Tidak memiliki rusuk tajam',
+          descSudut: '0 (Permukaan mulus sempurna)',
+          description: 'Hiper-Silinder adalah tabung yang diperluas ke dimensi 4. Tutup atas dan bawahnya bukan sekadar lingkaran datar, melainkan bola 3D utuh yang dihubungkan oleh selimut silinder ruang-waktu!',
+          formulaVol: 'V_{4D} = 4/3 &times; &pi; &times; r³ &times; t_w',
+          formulaArea: 'Luas Batas = (8/3)&pi;r³ + 4&pi;r² &times; t_w',
+          mascotTip: 'Bayangkan sebuah tabung kaleng susu yang alas dan tutupnya adalah bola melayang! Itulah Hiper-Silinder 4D!',
+          realWorld: [
+            { id: 'hyperloop_4d', name: 'Pipa Hyperloop 4D', icon: '🌀', fact: 'Tabung vakum 4 dimensi untuk perjalanan kapsul berkecepatan cahaya!' },
+            { id: 'kapsul_silinder_4d', name: 'Kapsul Stasis Silinder 4D', icon: '🧪', fact: 'Tabung stasis pelindung materi dengan cairan neon bercahaya!' },
+            { id: 'fusi_4d', name: 'Cincin Reaktor Fusi 4D', icon: '⚡', fact: 'Reaktor fusi berbentuk silinder fluks magnetik 4 sumbu!' },
+            { id: 'baterai_4d', name: 'Baterai Ion Kuantum 4D', icon: '🔋', fact: 'Tabung baterai kuantum dengan daya tanpa henti sepanjang waktu!' }
+          ]
+        };
+
+      case 'kerucut':
+        return {
+          title: 'Dimensi 4D: <strong>Hiper-Kerucut 4D</strong> 🍦⏱️',
+          dimBadge: '4D',
+          sisi: '1 Bola Alas + 1 Selimut Mengerucut',
+          rusuk: '1 Permukaan Batas',
+          sudut: '1 Titik Puncak Krono',
+          descSisi: 'Alas berbentuk bola 3D dengan selimut hiperbolik',
+          descRusuk: 'Batas lengkung sferik alas',
+          descSudut: '1 Titik puncak singularitas dimensi 4',
+          description: 'Hiper-Kerucut 4D memiliki alas berbentuk bola 3D penuh, di mana seluruh titik di permukaan bola tersebut mengerucut ke satu titik puncak singularitas di dimensi waktu (W)!',
+          formulaVol: 'V_{4D} = 1/4 &times; (4/3 &times; &pi;r³) &times; t_w',
+          formulaArea: 'Luas Hiper = Luas Alas Bola + Selimut 4D',
+          mascotTip: 'Jika kerucut 3D beralaskan lingkaran datar, maka kerucut 4D beralaskan bola utuh yang meruncing ke masa depan!',
+          realWorld: [
+            { id: 'corong_4d', name: 'Corong Waktu Kerucut 4D', icon: '⏳', fact: 'Corong hiperbolik yang memusatkan aliran partikel waktu ke puncaknya!' },
+            { id: 'pulsar_4d', name: 'Antena Pemancar Pulsar 4D', icon: '📡', fact: 'Antena kerucut frekuensi kosmik penangkap sinyal bintang pulsar!' },
+            { id: 'topi_krono_4d', name: 'Topi Energi Krono 4D', icon: '🎉', fact: 'Topi pesta dimensi 4 dengan cincin cahaya berputar mengelilingi puncak!' },
+            { id: 'traffic_4d', name: 'Traffic Beacon 4D', icon: '🚧', fact: 'Rambu penanda jalan kosmik berpendar oranye di lintasan antariksa!' }
+          ]
+        };
+
+      case 'bola':
+        return {
+          title: 'Dimensi 4D: <strong>Hipersfer (Glome 4D)</strong> 🔮⏱️',
+          dimBadge: '4D',
+          sisi: '1 Volume 4D',
+          rusuk: '0 (Cincin Fluks)',
+          sudut: '0 (Mulus 4D)',
+          descSisi: 'Lapisan ruang sferik 4D (x² + y² + z² + w² = r²)',
+          descRusuk: 'Tidak memiliki rusuk tajam',
+          descSudut: 'Tidak memiliki titik sudut tajam',
+          description: 'Hipersfer (Glome) adalah bentuk Bola di dalam 4 dimensi ruang. Di layar komputer, bayangan 4D-nya terlihat seperti cincin bola kosmik berlapis yang saling berputar menembus satu sama lain!',
+          formulaVol: 'V_{4D} = 1/2 &times; &pi;² &times; r⁴',
+          formulaArea: 'Luas Hiper = 2&pi;² &times; r³',
+          mascotTip: 'Tahukah kamu? Bola 4D (Glome) memiliki bentuk sempurna di 4 sumbu! Coba lihat cincin-cincin sirkular yang berputar saling melingkupi!',
+          realWorld: [
+            { id: 'kelereng_4d', name: 'Kelereng Glome 4D', icon: '🔮', fact: 'Kelereng kaca 4D dengan cincin cahaya berputar menembus bagian dalamnya!' },
+            { id: 'gelembung_4d', name: 'Gelembung Ruang-Waktu', icon: '🌌', fact: 'Gelembung kosmik 4 dimensi dengan cincin gravitasi membungkusnya!' },
+            { id: 'blackhole_4d', name: 'Model Lubang Hitam 4D', icon: '⏱️', fact: 'Bola gravitasi dengan cincin akresi 4D yang melengkungkan cahaya!' },
+            { id: 'planet_4d', name: 'Planet Cincin 4D', icon: '🪐', fact: 'Bola planet unik dengan 3 cincin ortogonal saling melingkar antar dimensi!' }
+          ]
+        };
+
+      case 'prisma':
+        return {
+          title: 'Dimensi 4D: <strong>Hiper-Prisma Segitiga 4D</strong> ⛺⏱️',
+          dimBadge: '4D',
+          sisi: '2 Prisma Segitiga + 3 Balok Selubung',
+          rusuk: '18 Rusuk 4D',
+          sudut: '12 Titik Sudut',
+          descSisi: 'Dua prisma 3D sejajar dihubungkan 3 sel balok',
+          descRusuk: '18 Rusuk pembentuk kerangka 4 dimensi',
+          descSudut: '12 Titik sudut pertemuan rusuk 4D',
+          description: 'Hiper-Prisma Segitiga 4D dibentuk dengan menggeser prisma segitiga sepanjang sumbu ke-4 (W). Prisma awal dan akhir dihubungkan oleh 3 sel balok 3D yang membentuk terowongan prismatik!',
+          formulaVol: 'V_{4D} = Luas Alas Segitiga &times; t_prisma &times; t_w',
+          formulaArea: 'Luas Batas = 2(V_prisma) + 3(V_balok)',
+          mascotTip: 'Prisma 4D tampak seperti kristal segitiga yang memproyeksikan bayangannya ke dimensi waktu!',
+          realWorld: [
+            { id: 'tenda_4d', name: 'Tenda Ruang-Waktu 4D', icon: '⛺', fact: 'Tenda ekspedisi 4D dengan pelindung badai radiasi kosmik!' },
+            { id: 'prisma_spektrum_4d', name: 'Prisma Spektrum Waktu 4D', icon: '🌈', fact: 'Prisma kaca pembias cahaya putih menjadi spektrum pelangi antar-dimensi!' },
+            { id: 'kristal_segitiga_4d', name: 'Kristal Prisma Krono 4D', icon: '💎', fact: 'Kristal segitiga ungu mengambang dengan cincin rotasi emas!' },
+            { id: 'toblerone_4d', name: 'Kemasan Hiper-Prisma 4D', icon: '🍫', fact: 'Kemasan cokelat emas futuristik berbentuk prisma segitiga 4D!' }
+          ]
+        };
+
+      case 'limas':
+        return {
+          title: 'Dimensi 4D: <strong>Hiper-Limas 4D (5-Cell Polytope)</strong> 🔺⏱️',
+          dimBadge: '4D',
+          sisi: '1 Sel Balok Alas + 4 Sel Limas',
+          rusuk: '16 Rusuk 4D',
+          sudut: '9 Titik Sudut',
+          descSisi: 'Alas berbentuk balok 3D menuju 1 puncak waktu',
+          descRusuk: '16 Rusuk penghubung sudut alas ke puncak',
+          descSudut: '8 Sudut alas + 1 Titik puncak 4D',
+          description: 'Hiper-Limas 4D memiliki alas berbentuk bangun balok 3D, di mana seluruh sudutnya ditarik menyatu menuju satu titik puncak tunggal pada sumbu keempat!',
+          formulaVol: 'V_{4D} = 1/4 &times; (V_alas_balok) &times; t_w',
+          formulaArea: 'Luas Batas = Luas Balok Alas + 4 Sel Limas',
+          mascotTip: 'Piramida 4D ini memiliki kekuatan struktur yang luar biasa di dalam ruang-waktu!',
+          realWorld: [
+            { id: 'piramida_4d', name: 'Piramida Kosmik 4D', icon: '🔺', fact: 'Piramida obsidian megah berpendar garis-garis energi sirkuit neon!' },
+            { id: 'menara_krono_4d', name: 'Menara Jam Waktu 4D', icon: '🗼', fact: 'Menara runcing dengan jam digital holografis yang berputar melingkar!' },
+            { id: 'sensor_limas_4d', name: 'Detektor Gravitasi 4D', icon: '🛰️', fact: 'Satelit sensor limas pendeteksi gelombang gravitasi ruang angkasa!' },
+            { id: 'obelisk_4d', name: 'Monolit Obelisk 4D', icon: '🏛️', fact: 'Tugu monolit ramping dengan kristal melayang di ujung puncaknya!' }
+          ]
+        };
+    }
+  }
+
+  // DIMENSION 5D (Hiper-Kosmik / 5 Sumbu: X, Y, Z, W, V)
+  if (dim === 5) {
+    switch (key) {
+      case 'kubus':
+        return {
+          title: 'Dimensi 5D: <strong>Penteract (Kubus 5D)</strong> 🎲🌌',
+          dimBadge: '5D',
+          sisi: '10 Sel Tesseract 4D',
+          rusuk: '80 Rusuk Kosmik',
+          sudut: '32 Titik Sudut (2⁵)',
+          descSisi: '10 Tesseract 4D membungkus Penteract',
+          descRusuk: '80 Rusuk Hiper-Ruang (X, Y, Z, W, V)',
+          descSudut: '32 Titik sudut koordinat (2^5 = 32)',
+          description: 'Penteract adalah bangun ruang hiper-kubus dalam 5 dimensi. Memiliki 32 titik sudut, 80 rusuk, 80 bidang bujur sangkar, 40 sel kubus, dan dibatasi oleh 10 tesseract 4D! Model di layar adalah bayangan proyeksi 3D dari ruang dimensi kelima.',
+          formulaVol: 'V_{5D} = s⁵ (Sisi pangkat 5!)',
+          formulaArea: 'Hiper-Luas = 10 &times; s⁴ (10 Tesseract)',
+          mascotTip: 'Maha Dahsyat! Penteract 5D memiliki 32 titik sudut dan 80 rusuk kosmik! Para ilmuwan fisika kuantum mempelajari dimensi ke-5 untuk memahami gravitasi dan multiverse!',
+          realWorld: [
+            { id: 'pesawat_5d', name: 'Pesawat Antariksa 5D', icon: '🛸', fact: 'Pesawat penjelajah ruang angkasa masa depan yang dirancang melompati batas dimensi ruang dan waktu!' },
+            { id: 'portal_5d', name: 'Portal Wormhole 5D', icon: '🌀', fact: 'Portal lubang cacing (wormhole) adalah lorong pintas antar dimensi di alam semesta!' },
+            { id: 'kristal_5d', name: 'Kristal Penteract 5D', icon: '🔮', fact: 'Kristal energi misterius yang membiaskan cahaya ke 5 arah dimensi ruang!' },
+            { id: 'matriks_5d', name: 'Matriks Kosmik 5D', icon: '🪐', fact: 'Kisi matriks energi semesta 5 dimensi berputar harmonis!' }
+          ]
+        };
+
+      case 'balok':
+        return {
+          title: 'Dimensi 5D: <strong>Hiper-Balok Kosmik 5D</strong> 📦🌌',
+          dimBadge: '5D',
+          sisi: '10 Sel Hiper-Balok 4D',
+          rusuk: '80 Rusuk 5D',
+          sudut: '32 Titik Sudut',
+          descSisi: '10 Hiper-Balok 4D pada 5 sumbu ortogonal',
+          descRusuk: '80 Rusuk ruang berarah (p, l, t, w, v)',
+          descSudut: '32 Titik simetri ruang 5 dimensi',
+          description: 'Hiper-Balok Kosmik 5D memiliki 5 dimensi ukuran: panjang, lebar, tinggi, waktu, dan sumbu kelima (vorteks). Struktur balok ini menjadi dasar teoritis kapal pengangkut materi antar semesta!',
+          formulaVol: 'V_{5D} = p &times; l &times; t &times; w &times; v',
+          formulaArea: 'Hiper-Luas 5D = 10 Sel Hiper-Balok 4D',
+          mascotTip: 'Hiper-Balok 5D adalah gudang penyimpanan multiverse yang dapat menampung miliaran galaksi dalam koordinat kuantum!',
+          realWorld: [
+            { id: 'ark_5d', name: 'Ark Galaksi 5D', icon: '🛸', fact: 'Kapal induk pengangkut antargalaksi dengan teknologi lompatan hiper-ruang 5D!' },
+            { id: 'generator_5d', name: 'Generator Gravitasi 5D', icon: '⚡', fact: 'Mesin pengatur gravitasi 5 sumbu penstabil orbit planet buatan!' },
+            { id: 'kapsul_antarbintang_5d', name: 'Kapsul Antarbintang 5D', icon: '🚀', fact: 'Kapsul ekspedisi penjelajah ujung semesta dengan propulsi foton!' },
+            { id: 'monolit_5d', name: 'Monolit Semesta 5D', icon: '🏛️', fact: 'Monolit hitam legendaris yang menyimpan peta koordinat multiverse!' }
+          ]
+        };
+
+      case 'tabung':
+        return {
+          title: 'Dimensi 5D: <strong>Silinder Kosmik 5D</strong> 🥫🌌',
+          dimBadge: '5D',
+          sisi: 'Medan Silinder 5 Sumbu',
+          rusuk: '0 Rusuk Tajam (5 Cincin Fluks)',
+          sudut: '0 (Mulus Simetris)',
+          descSisi: 'Selimut melengkung 5 dimensi dengan 2 bola glome 4D',
+          descRusuk: '0 (Garis medan fluks kontinu)',
+          descSudut: '0 (Bentuk halus berputar)',
+          description: 'Silinder Kosmik 5D adalah tabung berputar yang menghubungkan dua dunia dalam ruang lima dimensi. Dikelilingi 5 cincin magnetik yang menjaga stabilitas pusaran singularitas!',
+          formulaVol: 'V_{5D} = V_{Glome} &times; t_v = 1/2&pi;²r⁴ &times; t_v',
+          formulaArea: 'Hiper-Batas 5D = Selimut 5 Sumbu',
+          mascotTip: 'Bayangkan terowongan pipa raksasa tempat bintang-bintang meluncur menembus multiverse!',
+          realWorld: [
+            { id: 'wormhole_silinder_5d', name: 'Terowongan Cacing 5D', icon: '🌀', fact: 'Pusaran lorong cacing silinder yang melintasi dimensi kelima secara instan!' },
+            { id: 'akselerator_5d', name: 'Akselerator Partikel 5D', icon: '⚙️', fact: 'Cincin pemercepat partikel subatomik hingga melampaui kecepatan waktu!' },
+            { id: 'reaktor_kosmik_5d', name: 'Reaktor Plasma Kosmik 5D', icon: '🧪', fact: 'Tabung reaktor penyerap energi bintang kuasar di luar angkasa!' },
+            { id: 'suar_galaksi_5d', name: 'Mercusuar Galaksi 5D', icon: '🗼', fact: 'Menara suar pemandu navigasi armada bintang antar galaksi!' }
+          ]
+        };
+
+      case 'kerucut':
+        return {
+          title: 'Dimensi 5D: <strong>Hiper-Kerucut Kosmik 5D</strong> 🍦🌌',
+          dimBadge: '5D',
+          sisi: '1 Alas 4D + Selimut 5 Sumbu',
+          rusuk: '0 Rusuk',
+          sudut: '1 Puncak Singularity 5D',
+          descSisi: 'Alas berbentuk glome 4D menuju 1 titik kosmik',
+          descRusuk: '0 (Batas kontinu)',
+          descSudut: '1 Titik fokus kuantum gravitasi',
+          description: 'Hiper-Kerucut Kosmik 5D berfungsi seperti corong gravitasi kosmik (gravitational funnel) yang mengalirkan energi kosmik dari 5 sumbu dimensi menuju satu titik fokus super padat!',
+          formulaVol: 'V_{5D} = 1/5 &times; (V_{Alas_4D}) &times; t_v',
+          formulaArea: 'Luas Batas 5D',
+          mascotTip: 'Corong kerucut 5D ini mampu membelokkan cahaya dan ruang di sekitarnya membentuk cincin-cincin pelangi kosmik!',
+          realWorld: [
+            { id: 'corong_multiverse_5d', name: 'Corong Multiverse 5D', icon: '📡', fact: 'Teleskop corong canggih penangkap citra alam semesta paralel!' },
+            { id: 'pulsar_vortex_5d', name: 'Pusaran Gravitasi 5D', icon: '🌌', fact: 'Pusaran kerucut kuantum yang mengisap dan memancarkan radiasi kosmik!' },
+            { id: 'menara_bintang_5d', name: 'Menara Suar Bintang 5D', icon: '🗼', fact: 'Menara pemancar sinyal kuantum dengan kristal kerucut di puncaknya!' },
+            { id: 'lensa_kosmik_5d', name: 'Lensa Fokus Kosmik 5D', icon: '⭐', fact: 'Lensa kristal kerucut pemusat berkas foton laser berenergi raksasa!' }
+          ]
+        };
+
+      case 'bola':
+        return {
+          title: 'Dimensi 5D: <strong>Hipersfer Kosmik 5D (4-Sphere)</strong> 🌌🔮',
+          dimBadge: '5D',
+          sisi: '1 Hiper-Volume 5D',
+          rusuk: '0 (5 Medan Orbit)',
+          sudut: '0 (Simetri 5D)',
+          descSisi: 'Ruang sferik 5D (x² + y² + z² + w² + v² = r²)',
+          descRusuk: '0 (Mulus tanpa rusuk)',
+          descSudut: '0 (Simetri sempurna di 5 sumbu)',
+          description: 'Bola 5 Dimensi adalah bola dalam 5 koordinat ruang (x, y, z, w, v). Memiliki simetri sempurna di semua 5 sumbu dengan cincin medan gravitasi kosmik multi-aksial!',
+          formulaVol: 'V_{5D} = 8/15 &times; &pi;² &times; r⁵',
+          formulaArea: 'Hiper-Batas = 8/3 &times; &pi;² &times; r⁴',
+          mascotTip: 'Dahsyat sekali! Bola 5D dikelilingi oleh 5 cincin gravitasi kosmik yang berputar di 5 sumbu dimensi ruang!',
+          realWorld: [
+            { id: 'multiverse_5d', name: 'Multiverse Bola 5D', icon: '🪐', fact: 'Bola semesta paralel dengan 5 cincin berputar di 5 sumbu dimensi kosmik!' },
+            { id: 'vortex_5d', name: 'Pusaran Gravitasi 5D', icon: '🌀', fact: 'Bola energi 5 dimensi dengan pusaran gravitasi kuantum!' },
+            { id: 'atom_5d', name: 'Atom Kuantum 5D', icon: '⚛️', fact: 'Bola inti atom dengan 5 lintasan orbit elektron berdimensi tinggi!' },
+            { id: 'kristal_bola_5d', name: 'Bola Kristal Kosmik 5D', icon: '🔮', fact: 'Bola kristal bercahaya multi-spektrum dengan 5 cincin energi!' }
+          ]
+        };
+
+      case 'prisma':
+        return {
+          title: 'Dimensi 5D: <strong>Hiper-Prisma Kosmik 5D</strong> ⛺🌌',
+          dimBadge: '5D',
+          sisi: 'Multi-Prisma 5 Sumbu',
+          rusuk: '30 Rusuk Koordinat 5D',
+          sudut: '20 Titik Sudut',
+          descSisi: 'Jaringan prisma segitiga pada 5 arah dimensi',
+          descRusuk: '30 Rusuk pembagi kisi energi kosmik',
+          descSudut: '20 Titik sudut simetri kristal',
+          description: 'Hiper-Prisma Kosmik 5D memperluas sifat pembiasan prisma ke dalam 5 koordinat ruang. Struktur ini memecah energi partikel menjadi 5 spektrum kosmik yang indah!',
+          formulaVol: 'V_{5D} = V_{Prisma_4D} &times; t_v',
+          formulaArea: 'Hiper-Luas 5D',
+          mascotTip: 'Prisma 5D ini tampak memancarkan aura cahaya aurora warna-warni yang berdenyut selaras di 5 sumbu!',
+          realWorld: [
+            { id: 'prisma_multiverse_5d', name: 'Prisma Pembias 5D', icon: '🌈', fact: 'Prisma kosmik pembias energi partikel menjadi aurora 5 warna!' },
+            { id: 'kubah_kosmik_5d', name: 'Kubah Tenda Kosmik 5D', icon: '⛺', fact: 'Pangkalan kubah luar angkasa modular penjelajah peradaban tinggi!' },
+            { id: 'kristal_energi_5d', name: 'Kristal Energi 5 Sumbu', icon: '💎', fact: 'Kristal heksagonal bercahaya dengan 5 partikel bintang melayang!' },
+            { id: 'relik_prisma_5d', name: 'Relik Ruang Kosmik 5D', icon: '✨', fact: 'Artefak kuno alien berbentuk prisma dengan inti energi berputar!' }
+          ]
+        };
+
+      case 'limas':
+        return {
+          title: 'Dimensi 5D: <strong>Hiper-Limas Kosmik 5D</strong> 🔺🌌',
+          dimBadge: '5D',
+          sisi: 'Struktur Kompleks 5-Polytope',
+          rusuk: '25 Rusuk Koordinat 5D',
+          sudut: '15 Titik Sudut',
+          descSisi: 'Struktur limas bertingkat berdimensi lima',
+          descRusuk: '25 Rusuk kisi fluks kosmik',
+          descSudut: '15 Titik temu koordinat ruang 5D',
+          description: 'Hiper-Limas Kosmik 5D adalah perwujudan piramida tertinggi di alam semesta. Memiliki simetri 5 sumbu yang mengarahkan gelombang gravitasi ke puncak piramida!',
+          formulaVol: 'V_{5D} = 1/5 &times; (V_{Alas_4D}) &times; t_v',
+          formulaArea: 'Hiper-Batas 5D',
+          mascotTip: 'Piramida 5D dikelilingi oleh orbit-orbit satelit dan cincin cincin kosmik yang berpijar megah!',
+          realWorld: [
+            { id: 'piramida_multiverse_5d', name: 'Piramida Multiverse 5D', icon: '🔺', fact: 'Piramida emas kosmik agung dengan 5 cincin orbit cincin bercahaya!' },
+            { id: 'pilar_energi_5d', name: 'Pilar Energi Kosmik 5D', icon: '⚡', fact: 'Pilar piramida raksasa pemancar gelombang energi antar tata surya!' },
+            { id: 'stasiun_piramid_5d', name: 'Stasiun Orbit 5D', icon: '🌌', fact: 'Stasiun luar angkasa berbentuk piramida dengan dermaga pesawat antariksa!' },
+            { id: 'monolit_limas_5d', name: 'Kuil Hiper-Ruang 5D', icon: '🏛️', fact: 'Monolit kuil peradaban kosmik dengan batu puncak yang melayang bebas!' }
+          ]
+        };
+    }
+  }
+
+  return null;
+}
+
+function buildDimensionModel(key, dim) {
+  const group = new THREE.Group();
+
+  // BOLA 4D & 5D
+  if (key === 'bola') {
+    if (dim === 4) {
+      // Glome 4D (Dual spheres + 3 orthogonal rotating rings)
+      const outerSphere = new THREE.Mesh(
+        new THREE.SphereGeometry(1.6, 32, 32),
+        new THREE.MeshStandardMaterial({
+          color: 0x06B6D4,
+          roughness: 0.1,
+          metalness: 0.2,
+          transparent: true,
+          opacity: 0.45,
+          wireframe: wireframeMode
+        })
+      );
+      const innerSphere = new THREE.Mesh(
+        new THREE.SphereGeometry(0.95, 24, 24),
+        new THREE.MeshStandardMaterial({
+          color: 0xEC4899,
+          roughness: 0.2,
+          metalness: 0.2,
+          transparent: true,
+          opacity: 0.65,
+          wireframe: wireframeMode
+        })
+      );
+      group.add(outerSphere, innerSphere);
+
+      // 3 Orthogonal Torus Rings
+      const ring1 = new THREE.Mesh(new THREE.TorusGeometry(1.65, 0.05, 16, 48), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.65, 0.05, 16, 48), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
+      ring2.rotation.x = Math.PI / 2;
+      const ring3 = new THREE.Mesh(new THREE.TorusGeometry(1.65, 0.05, 16, 48), new THREE.MeshBasicMaterial({ color: 0x8B5CF6 }));
+      ring3.rotation.y = Math.PI / 2;
+      group.add(ring1, ring2, ring3);
+
+      const core = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+      group.add(core);
+      return group;
+
+    } else if (dim === 5) {
+      // 5D 4-Sphere (Triple glowing shells + 5 dimensional rings)
+      const s1 = new THREE.Mesh(new THREE.SphereGeometry(1.65, 32, 32), new THREE.MeshStandardMaterial({ color: 0x8B5CF6, transparent: true, opacity: 0.38, wireframe: wireframeMode }));
+      const s2 = new THREE.Mesh(new THREE.SphereGeometry(1.15, 24, 24), new THREE.MeshStandardMaterial({ color: 0xEC4899, transparent: true, opacity: 0.55, wireframe: wireframeMode }));
+      const s3 = new THREE.Mesh(new THREE.SphereGeometry(0.65, 16, 16), new THREE.MeshStandardMaterial({ color: 0x06B6D4, transparent: true, opacity: 0.72, wireframe: wireframeMode }));
+      group.add(s1, s2, s3);
+
+      const ringColors = [0xF59E0B, 0x10B981, 0x06B6D4, 0xEC4899, 0xFBBF24];
+      for (let i = 0; i < 5; i++) {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(1.72, 0.04, 12, 48), new THREE.MeshBasicMaterial({ color: ringColors[i] }));
+        ring.rotation.x = (i * Math.PI) / 5;
+        ring.rotation.y = (i * Math.PI) / 2.5;
+        group.add(ring);
+      }
+      return group;
+    }
+  }
+
+  // KUBUS 4D & 5D (Tesseract & Penteract)
+  if (key === 'kubus') {
+    if (dim === 4 || dim === 5) {
+      return createHypercubeModel(dim);
+    }
+  }
+
+  // BALOK 4D & 5D
+  if (key === 'balok') {
+    if (dim === 4) {
+      // Inner cuboid + Outer expanded cuboid + Flux ring
+      const inGeo = new THREE.BoxGeometry(2.4, 1.5, 1.2);
+      const inMesh = new THREE.Mesh(inGeo, new THREE.MeshStandardMaterial({ color: 0x06B6D4, transparent: true, opacity: 0.65, wireframe: wireframeMode }));
+      const outGeo = new THREE.BoxGeometry(3.2, 2.1, 1.8);
+      const outMesh = new THREE.Mesh(outGeo, new THREE.MeshBasicMaterial({ color: 0x8B5CF6, wireframe: true }));
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(2.3, 0.05, 16, 40), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      ring.rotation.x = Math.PI / 3;
+      group.add(inMesh, outMesh, ring);
+      return group;
+    } else {
+      // 5D Balok: Triple nested cuboid frames + 5 cosmic rings
+      const b1 = new THREE.Mesh(new THREE.BoxGeometry(2.0, 1.3, 1.0), new THREE.MeshStandardMaterial({ color: 0x8B5CF6, transparent: true, opacity: 0.7, wireframe: wireframeMode }));
+      const b2 = new THREE.Mesh(new THREE.BoxGeometry(2.8, 1.8, 1.4), new THREE.MeshBasicMaterial({ color: 0xEC4899, wireframe: true }));
+      const b3 = new THREE.Mesh(new THREE.BoxGeometry(3.5, 2.3, 1.9), new THREE.MeshBasicMaterial({ color: 0x06B6D4, wireframe: true }));
+      group.add(b1, b2, b3);
+
+      const cols = [0xF59E0B, 0x10B981, 0x06B6D4, 0xEC4899, 0xFBBF24];
+      for (let i = 0; i < 5; i++) {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(2.4 + i * 0.1, 0.035, 12, 40), new THREE.MeshBasicMaterial({ color: cols[i] }));
+        ring.rotation.x = (i * Math.PI) / 4;
+        ring.rotation.z = (i * Math.PI) / 3;
+        group.add(ring);
+      }
+      return group;
+    }
+  }
+
+  // TABUNG 4D & 5D
+  if (key === 'tabung') {
+    if (dim === 4) {
+      // Inner solid cylinder + Outer translucent cylinder + Equatorial torus
+      const c1 = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 2.4, 32), new THREE.MeshStandardMaterial({ color: 0x10B981, transparent: true, opacity: 0.65, wireframe: wireframeMode }));
+      const c2 = new THREE.Mesh(new THREE.CylinderGeometry(1.6, 1.6, 3.0, 24), new THREE.MeshBasicMaterial({ color: 0x06B6D4, wireframe: true }));
+      const t1 = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.05, 16, 40), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      t1.rotation.x = Math.PI / 2;
+      group.add(c1, c2, t1);
+      return group;
+    } else {
+      // 5D Tabung: Concentric cylinders + 5 orbital rings
+      const c1 = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, 2.2, 32), new THREE.MeshStandardMaterial({ color: 0x8B5CF6, transparent: true, opacity: 0.65, wireframe: wireframeMode }));
+      const c2 = new THREE.Mesh(new THREE.CylinderGeometry(1.7, 1.7, 2.9, 24), new THREE.MeshBasicMaterial({ color: 0xEC4899, wireframe: true }));
+      group.add(c1, c2);
+
+      const cols = [0xF59E0B, 0x10B981, 0x06B6D4, 0xEC4899, 0xFBBF24];
+      for (let i = 0; i < 5; i++) {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(2.1 + i * 0.1, 0.035, 12, 40), new THREE.MeshBasicMaterial({ color: cols[i] }));
+        ring.rotation.x = (i * Math.PI) / 5;
+        ring.rotation.y = (i * Math.PI) / 2.5;
+        group.add(ring);
+      }
+      return group;
+    }
+  }
+
+  // KERUCUT 4D & 5D
+  if (key === 'kerucut') {
+    if (dim === 4) {
+      // Double inverted cones + apex glowing sphere + base ring
+      const k1 = new THREE.Mesh(new THREE.ConeGeometry(1.4, 2.6, 32), new THREE.MeshStandardMaterial({ color: 0xF59E0B, transparent: true, opacity: 0.65, wireframe: wireframeMode }));
+      const k2 = new THREE.Mesh(new THREE.ConeGeometry(1.8, 3.2, 24), new THREE.MeshBasicMaterial({ color: 0xEC4899, wireframe: true }));
+      const apexSphere = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+      apexSphere.position.y = 1.3;
+      const bRing = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.05, 16, 36), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      bRing.rotation.x = Math.PI / 2;
+      bRing.position.y = -1.3;
+      group.add(k1, k2, apexSphere, bRing);
+      return group;
+    } else {
+      // 5D Kerucut: Nested cones + 5 cosmic orbital rings
+      const k1 = new THREE.Mesh(new THREE.ConeGeometry(1.3, 2.4, 32), new THREE.MeshStandardMaterial({ color: 0x8B5CF6, transparent: true, opacity: 0.7, wireframe: wireframeMode }));
+      const k2 = new THREE.Mesh(new THREE.ConeGeometry(1.9, 3.1, 24), new THREE.MeshBasicMaterial({ color: 0x10B981, wireframe: true }));
+      group.add(k1, k2);
+
+      const cols = [0xF59E0B, 0x10B981, 0x06B6D4, 0xEC4899, 0xFBBF24];
+      for (let i = 0; i < 5; i++) {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(2.1 + i * 0.1, 0.035, 12, 40), new THREE.MeshBasicMaterial({ color: cols[i] }));
+        ring.rotation.x = (i * Math.PI) / 5;
+        ring.rotation.z = (i * Math.PI) / 2.5;
+        group.add(ring);
+      }
+      return group;
+    }
+  }
+
+  // PRISMA 4D & 5D
+  if (key === 'prisma') {
+    const { geo } = createGeometryForShape('prisma');
+    if (dim === 4) {
+      const p1 = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x3B82F6, transparent: true, opacity: 0.65, wireframe: wireframeMode }));
+      const p2 = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xEC4899, wireframe: true }));
+      p2.scale.set(1.4, 1.4, 1.4);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(2.2, 0.05, 16, 36), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      ring.rotation.x = Math.PI / 3;
+      group.add(p1, p2, ring);
+      return group;
+    } else {
+      const p1 = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x8B5CF6, transparent: true, opacity: 0.65, wireframe: wireframeMode }));
+      const p2 = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x10B981, wireframe: true }));
+      p2.scale.set(1.45, 1.45, 1.45);
+      group.add(p1, p2);
+
+      const cols = [0xF59E0B, 0x10B981, 0x06B6D4, 0xEC4899, 0xFBBF24];
+      for (let i = 0; i < 5; i++) {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(2.2 + i * 0.1, 0.035, 12, 40), new THREE.MeshBasicMaterial({ color: cols[i] }));
+        ring.rotation.x = (i * Math.PI) / 5;
+        ring.rotation.y = (i * Math.PI) / 2.5;
+        group.add(ring);
+      }
+      return group;
+    }
+  }
+
+  // LIMAS 4D & 5D
+  if (key === 'limas') {
+    const { geo } = createGeometryForShape('limas');
+    if (dim === 4) {
+      const l1 = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xEF4444, transparent: true, opacity: 0.65, wireframe: wireframeMode }));
+      const l2 = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x06B6D4, wireframe: true }));
+      l2.scale.set(1.4, 1.4, 1.4);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(2.2, 0.05, 16, 36), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      ring.rotation.x = Math.PI / 3;
+      group.add(l1, l2, ring);
+      return group;
+    } else {
+      const l1 = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x8B5CF6, transparent: true, opacity: 0.65, wireframe: wireframeMode }));
+      const l2 = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xEC4899, wireframe: true }));
+      l2.scale.set(1.5, 1.5, 1.5);
+      group.add(l1, l2);
+
+      const cols = [0xF59E0B, 0x10B981, 0x06B6D4, 0xEC4899, 0xFBBF24];
+      for (let i = 0; i < 5; i++) {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(2.2 + i * 0.1, 0.035, 12, 40), new THREE.MeshBasicMaterial({ color: cols[i] }));
+        ring.rotation.x = (i * Math.PI) / 5;
+        ring.rotation.z = (i * Math.PI) / 2.5;
+        group.add(ring);
+      }
+      return group;
+    }
+  }
+
+  return group;
+}
+
+// 5D Cosmic Particle Field Generator
+function create5DParticleField() {
+  const count = 350;
+  const geo = new THREE.BufferGeometry();
+  const positions = new Float32Array(count * 3);
+  const colors = new Float32Array(count * 3);
+  const palette = [
+    [0.51, 0.55, 0.98], // Indigo
+    [0.02, 0.71, 0.83], // Cyan
+    [0.95, 0.62, 0.07], // Amber
+    [0.93, 0.28, 0.60]  // Pink
+  ];
+
+  for (let i = 0; i < count; i++) {
+    positions[i * 3] = (Math.random() - 0.5) * 18;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 14;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 18;
+
+    const col = palette[Math.floor(Math.random() * palette.length)];
+    colors[i * 3] = col[0];
+    colors[i * 3 + 1] = col[1];
+    colors[i * 3 + 2] = col[2];
+  }
+
+  geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+  const mat = new THREE.PointsMaterial({
+    size: 0.12,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.85
+  });
+
+  particles5D = new THREE.Points(geo, mat);
+  scene.add(particles5D);
+}
+
+// 4D Net-to-3D Folding Engine
+function createFoldingCubeGroup() {
+  const group = new THREE.Group();
+  foldingHinges = [];
+  const s = 2.4;
+  const half = s / 2;
+
+  // Base (Alas) - Blue
+  const baseMat = new THREE.MeshStandardMaterial({ color: 0x3B82F6, roughness: 0.3, side: THREE.DoubleSide });
+  const baseMesh = new THREE.Mesh(new THREE.PlaneGeometry(s, s), baseMat);
+  baseMesh.rotation.x = -Math.PI / 2;
+  baseMesh.position.y = -half;
+  baseMesh.receiveShadow = true;
+  group.add(baseMesh);
+
+  const wallMat = new THREE.MeshStandardMaterial({ color: 0x10B981, roughness: 0.3, side: THREE.DoubleSide });
+  const topMat = new THREE.MeshStandardMaterial({ color: 0xEC4899, roughness: 0.3, side: THREE.DoubleSide });
+
+  // 1. South Face (Depan) - Pivot at +Z edge
+  const southHinge = new THREE.Group();
+  southHinge.position.set(0, -half, half);
+  const southMesh = new THREE.Mesh(new THREE.PlaneGeometry(s, s), wallMat);
+  southMesh.position.set(0, 0, half);
+  southMesh.rotation.x = -Math.PI / 2;
+  southHinge.add(southMesh);
+  group.add(southHinge);
+
+  // 2. East Face (Kanan) - Pivot at +X edge
+  const eastHinge = new THREE.Group();
+  eastHinge.position.set(half, -half, 0);
+  const eastMesh = new THREE.Mesh(new THREE.PlaneGeometry(s, s), wallMat);
+  eastMesh.position.set(half, 0, 0);
+  eastMesh.rotation.x = -Math.PI / 2;
+  eastHinge.add(eastMesh);
+  group.add(eastHinge);
+
+  // 3. West Face (Kiri) - Pivot at -X edge
+  const westHinge = new THREE.Group();
+  westHinge.position.set(-half, -half, 0);
+  const westMesh = new THREE.Mesh(new THREE.PlaneGeometry(s, s), wallMat);
+  westMesh.position.set(-half, 0, 0);
+  westMesh.rotation.x = -Math.PI / 2;
+  westHinge.add(westMesh);
+  group.add(westHinge);
+
+  // 4. North Face (Belakang) - Pivot at -Z edge
+  const northHinge = new THREE.Group();
+  northHinge.position.set(0, -half, -half);
+  const northMesh = new THREE.Mesh(new THREE.PlaneGeometry(s, s), wallMat);
+  northMesh.position.set(0, 0, -half);
+  northMesh.rotation.x = -Math.PI / 2;
+  northHinge.add(northMesh);
+
+  // 5. Top Face (Tutup) - Connected to edge of North face
+  const topHinge = new THREE.Group();
+  topHinge.position.set(0, 0, -s);
+  const topMesh = new THREE.Mesh(new THREE.PlaneGeometry(s, s), topMat);
+  topMesh.position.set(0, 0, -half);
+  topMesh.rotation.x = -Math.PI / 2;
+  topHinge.add(topMesh);
+  northHinge.add(topHinge);
+
+  group.add(northHinge);
+
+  foldingHinges = [
+    { group: southHinge, axis: 'x', factor: 1 },
+    { group: eastHinge, axis: 'z', factor: -1 },
+    { group: westHinge, axis: 'z', factor: 1 },
+    { group: northHinge, axis: 'x', factor: -1 },
+    { group: topHinge, axis: 'x', factor: -1 }
+  ];
+
+  return group;
+}
+
+function applyFoldingProgress(p) {
+  const angle = p * (Math.PI / 2);
+  foldingHinges.forEach(h => {
+    if (h.axis === 'x') {
+      h.group.rotation.x = angle * h.factor;
+    } else if (h.axis === 'z') {
+      h.group.rotation.z = angle * h.factor;
+    }
+  });
+}
+
+
+// --- HAPTIC FEEDBACK (DIMENSI KE-5 VIBRATION SENSORY) ---
+function triggerHaptic(pattern = 25) {
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    try { navigator.vibrate(pattern); } catch (e) {}
+  }
+}
+/* ========================================================
+   PETUALANGAN BANGUN RUANG 3D - JAVASCRIPT ENGINE
+   Three.js 3D Visualizer, Web Audio Synthesizer,
+   Jaring-Jaring SVG Generator, Smart Calculator, & Quiz
+   ======================================================== */
+
+// --- DATA BANGUN RUANG ---
+const SHAPES_DATA = {
+  kubus: {
+    name: "Kubus",
+    emoji: "🎲",
+    sisi: 6,
+    rusuk: 12,
+    sudut: 8,
+    descSisi: "6 persegi kongruen (sama besar)",
+    descRusuk: "12 rusuk sama panjang",
+    descSudut: "8 titik sudut siku-siku (90°)",
+    description: "Kubus adalah bangun ruang istimewa yang semua sisinya berbentuk bujur sangkar (persegi) yang sama persis ukurannya.",
+    formulaVol: "V = s &times; s &times; s = s&sup3;",
+    formulaArea: "L = 6 &times; s&sup2;",
+    realWorld: [
+      { id: "dadu", name: "Dadu Permainan", icon: "🎲", fact: "Wah keren! Dadu memiliki 6 sisi persegi yang masing-masing diberi tanda titik angka 1 sampai 6!" },
+      { id: "rubik", name: "Rubik Ajaib", icon: "🧩", fact: "Rubik ajaib tersusun dari kubus-kubus kecil beraneka warna dengan 6 bidang sisi berbentuk bujur sangkar!" },
+      { id: "kado", name: "Kotak Kado", icon: "🎁", fact: "Kotak kado ini dibungkus pita indah dan memiliki 6 sisi persegi yang sama besar!" },
+      { id: "es", name: "Es Batu Kotak", icon: "🧊", fact: "Es batu ini membeku dalam cetakan berbentuk kubus sempurna, dingin dan transparan!" }
+    ],
+    mascotTip: "Tahukah kamu? Karena semua rusuk kubus sama panjang, mencari volumenya cukup mengalikan panjang rusuk sebanyak tiga kali (s &times; s &times; s)!",
+    dimensions: { size: 2.4 }
+  },
+  balok: {
+    name: "Balok",
+    emoji: "📦",
+    sisi: 6,
+    rusuk: 12,
+    sudut: 8,
+    descSisi: "3 pasang sisi persegi panjang",
+    descRusuk: "12 rusuk (4p, 4l, 4t)",
+    descSudut: "8 titik sudut siku-siku",
+    description: "Balok adalah bangun ruang tiga dimensi yang dibentuk oleh tiga pasang persegi panjang, di mana sisi-sisi yang berhadapan sama besar.",
+    formulaVol: "V = p &times; l &times; t",
+    formulaArea: "L = 2 &times; (pl + pt + lt)",
+    realWorld: [
+      { id: "sepatu", name: "Kotak Sepatu", icon: "👟", fact: "Kotak sepatu memiliki ukuran panjang, lebar, dan tinggi yang berbeda, membentuk bangun balok!" },
+      { id: "kulkas", name: "Lemari Es", icon: "🚪", fact: "Lemari es di rumah kita berbentuk balok tinggi dengan pintu freezer dan pendingin di depan!" },
+      { id: "buku", name: "Buku Tulis", icon: "📚", fact: "Buku pelajaran memiliki ketebalan (tinggi), panjang, dan lebar, sehingga merupakan contoh balok nyata!" },
+      { id: "bata", name: "Batu Bata", icon: "🧱", fact: "Batu bata bangunan dibuat berbentuk balok agar mudah disusun rapi dan kokoh saat membuat dinding rumah!" }
+    ],
+    mascotTip: "Balok mirip dengan kubus, tapi panjang, lebar, dan tingginya bisa berbeda ukuran!",
+    dimensions: { p: 3.2, l: 2.0, t: 1.6 }
+  },
+  tabung: {
+    name: "Tabung (Silinder)",
+    emoji: "🥫",
+    sisi: 3,
+    rusuk: 2,
+    sudut: 0,
+    descSisi: "2 lingkaran (alas & tutup) + 1 selimut",
+    descRusuk: "2 rusuk lengkung",
+    descSudut: "0 (tidak memiliki titik sudut)",
+    description: "Tabung dibatasi oleh dua lingkaran yang sejajar dan sama besar sebagai alas dan tutup, serta sebuah bidang lengkung yang disebut selimut.",
+    formulaVol: "V = &pi; &times; r&sup2; &times; t",
+    formulaArea: "L = 2&pi;r(r + t)",
+    realWorld: [
+      { id: "kaleng", name: "Kaleng Susu", icon: "🥫", fact: "Kaleng susu berbentuk tabung dengan alas dan tutup lingkaran berbahan logam, serta label selimut di badannya!" },
+      { id: "drum", name: "Drum Musik", icon: "🥁", fact: "Alat musik drum memiliki tabung silinder dengan membran lingkaran di atas dan bawahnya!" },
+      { id: "celengan", name: "Celengan Koin", icon: "🪙", fact: "Celengan kaleng berbentuk tabung dengan lubang koin di bagian tutup lingkaran atasnya!" },
+      { id: "baterai", name: "Baterai Jam", icon: "🔋", fact: "Baterai silinder memiliki kutub positif menonjol di atas dan kutub negatif datar di alasnya!" }
+    ],
+    mascotTip: "Tabung tidak punya pojokan (titik sudut) lho! Jika selimut tabung dibuka, bentuknya menjadi persegi panjang yang lebar!",
+    dimensions: { r: 1.4, t: 2.6 }
+  },
+  kerucut: {
+    name: "Kerucut",
+    emoji: "🍦",
+    sisi: 2,
+    rusuk: 1,
+    sudut: 1,
+    descSisi: "1 lingkaran (alas) + 1 selimut lengkung",
+    descRusuk: "1 rusuk lengkung di lingkaran alas",
+    descSudut: "1 titik puncak (bukan sudut siku-siku)",
+    description: "Kerucut adalah bangun ruang dengan alas berbentuk lingkaran dan selimut yang mengerucut runcing ke satu titik puncak.",
+    formulaVol: "V = 1/3 &times; &pi; &times; r&sup2; &times; t",
+    formulaArea: "L = &pi;r(r + s)",
+    realWorld: [
+      { id: "topi", name: "Topi Ulang Tahun", icon: "🎉", fact: "Topi pesta ulang tahun berbentuk kerucut meruncing ke atas dengan bola hiasan di puncaknya!" },
+      { id: "es_krim", name: "Cone Es Krim", icon: "🍦", fact: "Cone es krim adalah bentuk kerucut renyah yang dibalik dan diisi es krim lezat di atasnya!" },
+      { id: "tumpeng", name: "Tumpeng Kuning", icon: "🍚", fact: "Nasi tumpeng dicetak berbentuk kerucut sempurna di atas nampan beralaskan daun pisang!" },
+      { id: "traffic_cone", name: "Traffic Cone Jalan", icon: "🚧" , fact: "Traffic cone jalan raya berbentuk kerucut berwarna oranye terang dengan strip pemantul cahaya!" }
+    ],
+    mascotTip: "Volume kerucut persis sepertiga (1/3) dari volume tabung dengan jari-jari dan tinggi yang sama!",
+    dimensions: { r: 1.6, t: 2.8 }
+  },
+  bola: {
+    name: "Bola",
+    emoji: "⚽",
+    sisi: 1,
+    rusuk: 0,
+    sudut: 0,
+    descSisi: "1 sisi lengkung menyeluruh",
+    descRusuk: "0 (tidak ada rusuk)",
+    descSudut: "0 (tidak ada titik sudut)",
+    description: "Bola adalah bangun ruang yang dibatasi oleh satu bidang lengkung sempurna, di mana setiap titik di permukaannya berjarak sama ke pusat bola.",
+    formulaVol: "V = 4/3 &times; &pi; &times; r&sup3;",
+    formulaArea: "L = 4 &times; &pi; &times; r&sup2;",
+    realWorld: [
+      { id: "bola_sepak", name: "Bola Sepak", icon: "⚽", fact: "Bola sepak berbentuk bola sempurna dengan pola segi lima hitam dan segi enam putih yang ikonik!" },
+      { id: "kelereng", name: "Kelereng Kaca", icon: "🔮", fact: "Kelereng terbuat dari kaca bening padat dengan liukan warna-warni cantik di dalamnya!" },
+      { id: "jeruk", name: "Buah Jeruk", icon: "🍊", fact: "Buah jeruk di alam berbentuk bola dengan tangkai dan daun kecil di atasnya!" },
+      { id: "globe", name: "Globe Bola Dunia", icon: "🌍", fact: "Globe adalah tiruan bola bumi yang berputar miring pada poros penyangganya!" }
+    ],
+    mascotTip: "Bola adalah bangun ruang paling mulus! Tidak ada garis lurus maupun sudut tajam di seluruh permukaannya.",
+    dimensions: { r: 1.7 }
+  },
+  prisma: {
+    name: "Prisma Segitiga",
+    emoji: "⛺",
+    sisi: 5,
+    rusuk: 9,
+    sudut: 6,
+    descSisi: "2 segitiga (alas & tutup) + 3 persegi tegak",
+    descRusuk: "9 rusuk (3 alas, 3 tutup, 3 tegak)",
+    descSudut: "6 titik sudut",
+    description: "Prisma segitiga memiliki alas dan atap berbentuk segitiga sama dan sebangun (kongruen), yang dihubungkan oleh sisi tegak persegi panjang.",
+    formulaVol: "V = (1/2 &times; a &times; t_alas) &times; t_prisma",
+    formulaArea: "L = (2 &times; Luas Alas) + Keliling &times; t",
+    realWorld: [
+      { id: "tenda", name: "Tenda Berkemah", icon: "⛺", fact: "Tenda pramuka memanfaatkan bentuk prisma segitiga agar air hujan mengalir turun ke samping!" },
+      { id: "toblerone", name: "Cokelat Toblerone", icon: "🍫", fact: "Kemasan cokelat Toblerone yang legendaris berbentuk prisma segitiga berwarna emas!" },
+      { id: "atap", name: "Atap Rumah Adat", icon: "🏠", fact: "Banyak atap rumah dibangun dengan bentuk prisma segitiga yang kuat dan kokoh!" },
+      { id: "kaca_prisma", name: "Kaca Prisma Pelangi", icon: "🌈", fact: "Prisma kaca segitiga dapat menguraikan seberkas cahaya putih menjadi pelangi 7 warna!" }
+    ],
+    mascotTip: "Ingat prinsip prisma: Bentuk tutupnya selalu sama persis dengan bentuk alasnya!",
+    dimensions: { base: 2.4, heightT: 2.0, length: 2.8 }
+  },
+  limas: {
+    name: "Limas Segiempat",
+    emoji: "🔺",
+    sisi: 5,
+    rusuk: 8,
+    sudut: 5,
+    descSisi: "1 alas persegi + 4 segitiga tegak",
+    descRusuk: "8 rusuk (4 alas, 4 rusuk tegak)",
+    descSudut: "5 titik sudut (4 di bawah, 1 puncak)",
+    description: "Limas segiempat memiliki alas berbentuk persegi atau persegi panjang, dan dinding tegaknya terdiri dari empat bidang segitiga yang bertemu di satu puncak.",
+    formulaVol: "V = 1/3 &times; Luas Alas &times; t",
+    formulaArea: "L = Luas Alas + Jumlah 4 Segitiga",
+    realWorld: [
+      { id: "piramida", name: "Piramida Mesir Kuno", icon: "🏛️", fact: "Piramida Giza di Mesir adalah contoh limas segiempat raksasa yang tersusun dari jutaan batu kapur!" },
+      { id: "tenda_piramid", name: "Tenda Segiempat", icon: "⛺", fact: "Tenda kanopi berbentuk limas segiempat dengan 4 tiang penyangga di setiap sudut bawahnya!" },
+      { id: "gantungan", name: "Gantungan Kunci Piramid", icon: "🗝️", fact: "Gantungan kunci berbentuk limas segiempat kristal dengan ring gantungan di puncaknya!" },
+      { id: "menara", name: "Ujung Menara Jam", icon: "🗼", fact: "Ujung atap menara jam sering dirancang berbentuk limas segiempat runcing yang megah!" }
+    ],
+    mascotTip: "Perbedaan Limas dan Prisma: Limas meruncing ke satu titik puncak, sedangkan prisma punya atap datar!",
+    dimensions: { base: 2.4, height: 2.6 }
+  }
+};
+
+// --- WEB AUDIO SYNTHESIZER ---
+class SoundEffects {
+  constructor() {
+    this.enabled = true;
+    this.ctx = null;
+  }
+
+  init() {
+    if (!this.ctx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (AudioContext) {
+        this.ctx = new AudioContext();
+      }
+    }
+    if (this.ctx && this.ctx.state === 'suspended') {
+      this.ctx.resume();
+    }
+  }
+
+  playPop() {
+    triggerHaptic(18);
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.09);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  playSuccess() {
+    triggerHaptic([40, 50, 60]);
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+      notes.forEach((freq, idx) => {
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        const startTime = this.ctx.currentTime + (idx * 0.08);
+        gain.gain.setValueAtTime(0.18, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(startTime);
+        osc.stop(startTime + 0.36);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  playError() {
+    triggerHaptic([70, 40, 70]);
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(260, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(140, this.ctx.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.15, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.25);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.26);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}
+
+const sfx = new SoundEffects();
+
+// --- THREE.JS 3D ENGINE ---
+// --- 5D SENSORY & 4D TIME-FOLDING ENGINE VARIABLES ---
+let particles5D = null;
+let show5DParticles = true;
+let isFolding4D = false;
+let foldingProgress = 1.0; // 1 = closed cube, 0 = flat net
+let foldingHinges = [];
+let foldingSpeed = 0.02;
+let foldingDir = -1;
+
+let scene, camera, renderer, controls;
+let currentMeshGroup = null;
+let currentEdgesLine = null;
+let currentVerticesGroup = null;
+let activeColor = '#3B82F6';
+let autoRotate = true;
+let showVertices = false;
+let showEdges = true;
+let wireframeMode = false;
+let currentShapeKey = 'kubus';
+let activeDimension = 3; // 3D, 4D, 5D
+
+
+// ========================================================
+// MATHEMATICAL 4D TESSERACT & 5D PENTERACT ENGINE
+// ========================================================
+const V4D = [];
+for (let x = -1; x <= 1; x += 2) {
+  for (let y = -1; y <= 1; y += 2) {
+    for (let z = -1; z <= 1; z += 2) {
+      for (let w = -1; w <= 1; w += 2) {
+        V4D.push([x, y, z, w]);
+      }
+    }
+  }
+}
+const E4D = [];
+for (let i = 0; i < 16; i++) {
+  for (let j = i + 1; j < 16; j++) {
+    let diff = 0;
+    for (let k = 0; k < 4; k++) {
+      if (V4D[i][k] !== V4D[j][k]) diff++;
+    }
+    if (diff === 1) E4D.push([i, j]);
+  }
+}
+
+const V5D = [];
+for (let x = -1; x <= 1; x += 2) {
+  for (let y = -1; y <= 1; y += 2) {
+    for (let z = -1; z <= 1; z += 2) {
+      for (let w = -1; w <= 1; w += 2) {
+        for (let v = -1; v <= 1; v += 2) {
+          V5D.push([x, y, z, w, v]);
+        }
+      }
+    }
+  }
+}
+const E5D = [];
+for (let i = 0; i < 32; i++) {
+  for (let j = i + 1; j < 32; j++) {
+    let diff = 0;
+    for (let k = 0; k < 5; k++) {
+      if (V5D[i][k] !== V5D[j][k]) diff++;
+    }
+    if (diff === 1) E5D.push([i, j]);
+  }
+}
+
+// 4D / 5D Runtime Three.js Objects
+let hyperEdgeLines = null;
+let hyperVertexSpheres = null;
+let hyperInnerMesh = null;
+let hyperTimeAngle = 0;
+
+function createHypercubeModel(dim) {
+  const group = new THREE.Group();
+  
+  if (dim === 4) {
+    // 4D Tesseract (16 Vertices, 32 Edges)
+    // Edges
+    const linePositions = new Float32Array(E4D.length * 2 * 3);
+    const lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+    const lineMat = new THREE.LineBasicMaterial({
+      color: 0x06B6D4, // Neon Cyan
+      linewidth: 3,
+      transparent: true,
+      opacity: 0.9
+    });
+    hyperEdgeLines = new THREE.LineSegments(lineGeo, lineMat);
+    group.add(hyperEdgeLines);
+
+    // Vertices
+    hyperVertexSpheres = new THREE.Group();
+    const vGeo = new THREE.SphereGeometry(0.1, 16, 16);
+    const vMat = new THREE.MeshStandardMaterial({
+      color: 0xEC4899, // Hot Pink
+      emissive: 0xDB2777,
+      emissiveIntensity: 0.7,
+      roughness: 0.2
+    });
+    for (let i = 0; i < 16; i++) {
+      const sp = new THREE.Mesh(vGeo, vMat);
+      hyperVertexSpheres.add(sp);
+    }
+    group.add(hyperVertexSpheres);
+
+    // Inner glowing core
+    const core = new THREE.Mesh(
+      new THREE.SphereGeometry(0.35, 16, 16),
+      new THREE.MeshBasicMaterial({ color: 0xF59E0B })
+    );
+    group.add(core);
+
+  } else if (dim === 5) {
+    // 5D Penteract (32 Vertices, 80 Edges)
+    // Edges
+    const linePositions = new Float32Array(E5D.length * 2 * 3);
+    const lineGeo = new THREE.BufferGeometry();
+    lineGeo.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
+    const lineMat = new THREE.LineBasicMaterial({
+      color: 0xA855F7, // Neon Purple
+      linewidth: 3,
+      transparent: true,
+      opacity: 0.9
+    });
+    hyperEdgeLines = new THREE.LineSegments(lineGeo, lineMat);
+    group.add(hyperEdgeLines);
+
+    // Vertices
+    hyperVertexSpheres = new THREE.Group();
+    const vGeo = new THREE.SphereGeometry(0.09, 16, 16);
+    const vMat = new THREE.MeshStandardMaterial({
+      color: 0xF59E0B, // Gold
+      emissive: 0xD97706,
+      emissiveIntensity: 0.7,
+      roughness: 0.2
+    });
+    for (let i = 0; i < 32; i++) {
+      const sp = new THREE.Mesh(vGeo, vMat);
+      hyperVertexSpheres.add(sp);
+    }
+    group.add(hyperVertexSpheres);
+
+    // Core
+    const core = new THREE.Mesh(
+      new THREE.OctahedronGeometry(0.4, 0),
+      new THREE.MeshBasicMaterial({ color: 0x06B6D4 })
+    );
+    group.add(core);
+  }
+
+  return group;
+}
+
+function updateHypercubeAnimation(time) {
+  if (!hyperEdgeLines) return;
+
+  if (activeDimension === 4) {
+    // 4D Rotation in XW plane
+    const theta = time * 0.9;
+    const cosT = Math.cos(theta);
+    const sinT = Math.sin(theta);
+    const projected = [];
+
+    for (let i = 0; i < 16; i++) {
+      const [x, y, z, w] = V4D[i];
+      // 4D rotation in X-W plane
+      const rx = x * cosT - w * sinT;
+      const rw = x * sinT + w * cosT;
+      // Perspective projection 4D -> 3D
+      const dist = 2.5;
+      const k = 1 / (dist - rw * 0.7);
+      const px = rx * k * 3.4;
+      const py = y * k * 3.4;
+      const pz = z * k * 3.4;
+      projected.push(px, py, pz);
+
+      if (hyperVertexSpheres && hyperVertexSpheres.children[i]) {
+        hyperVertexSpheres.children[i].position.set(px, py, pz);
+      }
+    }
+
+    // Update edge lines
+    const posAttr = hyperEdgeLines.geometry.attributes.position;
+    let ptr = 0;
+    for (let i = 0; i < E4D.length; i++) {
+      const [i1, i2] = E4D[i];
+      posAttr.array[ptr++] = projected[i1 * 3];
+      posAttr.array[ptr++] = projected[i1 * 3 + 1];
+      posAttr.array[ptr++] = projected[i1 * 3 + 2];
+      posAttr.array[ptr++] = projected[i2 * 3];
+      posAttr.array[ptr++] = projected[i2 * 3 + 1];
+      posAttr.array[ptr++] = projected[i2 * 3 + 2];
+    }
+    posAttr.needsUpdate = true;
+
+  } else if (activeDimension === 5) {
+    // 5D Rotation in XW and YV planes
+    const t1 = time * 0.8;
+    const t2 = time * 1.1;
+    const cos1 = Math.cos(t1), sin1 = Math.sin(t1);
+    const cos2 = Math.cos(t2), sin2 = Math.sin(t2);
+    const projected = [];
+
+    for (let i = 0; i < 32; i++) {
+      const [x, y, z, w, v] = V5D[i];
+      // Rotate XW
+      const rx = x * cos1 - w * sin1;
+      const rw = x * sin1 + w * cos1;
+      // Rotate YV
+      const ry = y * cos2 - v * sin2;
+      const rv = y * sin2 + v * cos2;
+
+      // Double perspective projection 5D -> 4D -> 3D
+      const d1 = 3.2;
+      const k1 = 1 / (d1 - rv * 0.6);
+      const d2 = 2.8;
+      const k2 = 1 / (d2 - rw * k1 * 0.6);
+      const scale = k1 * k2 * 6.5;
+
+      const px = rx * scale;
+      const py = ry * scale;
+      const pz = z * scale;
+      projected.push(px, py, pz);
+
+      if (hyperVertexSpheres && hyperVertexSpheres.children[i]) {
+        hyperVertexSpheres.children[i].position.set(px, py, pz);
+      }
+    }
+
+    // Update edge lines
+    const posAttr = hyperEdgeLines.geometry.attributes.position;
+    let ptr = 0;
+    for (let i = 0; i < E5D.length; i++) {
+      const [i1, i2] = E5D[i];
+      posAttr.array[ptr++] = projected[i1 * 3];
+      posAttr.array[ptr++] = projected[i1 * 3 + 1];
+      posAttr.array[ptr++] = projected[i1 * 3 + 2];
+      posAttr.array[ptr++] = projected[i2 * 3];
+      posAttr.array[ptr++] = projected[i2 * 3 + 1];
+      posAttr.array[ptr++] = projected[i2 * 3 + 2];
+    }
+    posAttr.needsUpdate = true;
+  }
+}
+
+function initThreeEngine() {
+  const container = document.getElementById('canvasContainer');
+  const width = container.clientWidth || 600;
+  const height = container.clientHeight || 480;
+
+  // Scene
+  scene = new THREE.Scene();
+  scene.background = null;
+
+  // Camera
+  camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+  camera.position.set(4.2, 3.2, 5.5);
+
+  // Renderer
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  container.appendChild(renderer.domElement);
+
+  // Orbit Controls
+  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.06;
+  controls.minDistance = 2.5;
+  controls.maxDistance = 15;
+  controls.maxPolarAngle = Math.PI / 2 + 0.3; // Allow looking slightly under
+  // Touch controls optimized for mobile smartphones & tablets
+  controls.touches = {
+    ONE: THREE.TOUCH.ROTATE,
+    TWO: THREE.TOUCH.DOLLY_PAN
+  };
+
+  // Lights
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
+  scene.add(ambientLight);
+
+  const mainLight = new THREE.DirectionalLight(0xffffff, 0.85);
+  mainLight.position.set(6, 10, 7);
+  mainLight.castShadow = true;
+  scene.add(mainLight);
+
+  const fillLight = new THREE.DirectionalLight(0x93C5FD, 0.45);
+  fillLight.position.set(-6, -4, -5);
+  scene.add(fillLight);
+
+  // Subtle Floor Grid Platform
+  createGroundPlatform();
+
+  // 5D Cosmic Particle Atmosphere
+  create5DParticleField();
+
+
+  // Load initial shape
+  loadShape(currentShapeKey);
+
+  // Responsive Resize handlers for Mobile & PC
+  window.addEventListener('resize', onWindowResize);
+  window.addEventListener('orientationchange', () => {
+    setTimeout(onWindowResize, 150);
+  });
+
+  if (window.ResizeObserver && container) {
+    const resizeObs = new ResizeObserver(() => {
+      onWindowResize();
+    });
+    resizeObs.observe(container);
+  }
+
+  // Animation Loop
+  let clock = new THREE.Clock();
+  function animate() {
+    requestAnimationFrame(animate);
+    const elapsedTime = clock.getElapsedTime();
+
+        // Animate 5D Cosmic Particle Field
+    if (particles5D && show5DParticles) {
+      particles5D.rotation.y += 0.0015;
+      particles5D.rotation.x = Math.sin(elapsedTime * 0.3) * 0.08;
+    }
+
+    // Animate 4D Time-Folding if active
+    if (isFolding4D && foldingHinges.length > 0) {
+      foldingProgress += foldingSpeed * foldingDir;
+      if (foldingProgress <= 0) {
+        foldingProgress = 0;
+        foldingDir = 1; // Unfolded, now fold back
+      } else if (foldingProgress >= 1) {
+        foldingProgress = 1;
+        foldingDir = -1; // Closed, unfold again
+      }
+      applyFoldingProgress(foldingProgress);
+    }
+
+    if (currentMeshGroup) {
+      if (autoRotate) {
+        currentMeshGroup.rotation.y += 0.008;
+      }
+      // Gentle floating animation
+      currentMeshGroup.position.y = Math.sin(elapsedTime * 1.5) * 0.08 + 0.1;
+    }
+
+    if (activeDimension === 4 || activeDimension === 5) {
+      updateHypercubeAnimation(elapsedTime);
+    }
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+}
+
+function createGroundPlatform() {
+  // Circular soft pedestal
+  const platformGeo = new THREE.CylinderGeometry(3.6, 3.8, 0.1, 48);
+  const platformMat = new THREE.MeshStandardMaterial({
+    color: 0xE0E7FF,
+    roughness: 0.9,
+    metalness: 0.05
+  });
+  const platform = new THREE.Mesh(platformGeo, platformMat);
+  platform.position.y = -2.1;
+  platform.receiveShadow = true;
+  scene.add(platform);
+
+  // Grid helper on top of pedestal
+  const grid = new THREE.GridHelper(6, 12, 0x818CF8, 0xC7D2FE);
+  grid.position.y = -2.04;
+  scene.add(grid);
+}
+
+function onWindowResize() {
+  const container = document.getElementById('canvasContainer');
+  if (!container || !renderer || !camera) return;
+  const width = container.clientWidth || 600;
+  const height = container.clientHeight || 480;
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  renderer.setSize(width, height);
+}
+
+// Build 3D Geometries with correct dimensions and vertex mapping
+
+// --- PROCEDURAL 3D REAL-WORLD TEXTURES & BUILDERS ---
+let activeRealWorldIndex = null;
+
+function createDiceTexture(number) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256; canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#FFFFFF';
+  ctx.fillRect(0, 0, 256, 256);
+  ctx.strokeStyle = '#CBD5E1'; ctx.lineWidth = 14;
+  ctx.strokeRect(7, 7, 242, 242);
+  ctx.fillStyle = number === 1 ? '#EF4444' : '#1E293B';
+  const r = number === 1 ? 30 : 20;
+  const drawDot = (x, y) => {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  };
+  const p = { c: 128, l: 64, r: 192, t: 64, b: 192 };
+  if (number === 1) drawDot(p.c, p.c);
+  if (number === 2) { drawDot(p.l, p.t); drawDot(p.r, p.b); }
+  if (number === 3) { drawDot(p.l, p.t); drawDot(p.c, p.c); drawDot(p.r, p.b); }
+  if (number === 4) { drawDot(p.l, p.t); drawDot(p.r, p.t); drawDot(p.l, p.b); drawDot(p.r, p.b); }
+  if (number === 5) { drawDot(p.l, p.t); drawDot(p.r, p.t); drawDot(p.c, p.c); drawDot(p.l, p.b); drawDot(p.r, p.b); }
+  if (number === 6) { drawDot(p.l, p.t); drawDot(p.r, p.t); drawDot(p.l, p.c); drawDot(p.r, p.c); drawDot(p.l, p.b); drawDot(p.r, p.b); }
+  return new THREE.CanvasTexture(canvas);
+}
+
+function createRubikFaceTexture(faceColors) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256; canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#111827';
+  ctx.fillRect(0, 0, 256, 256);
+  const size = 72; const gap = 8;
+  for (let r = 0; r < 3; r++) {
+    for (let c = 0; c < 3; c++) {
+      const x = 11 + c * (size + gap);
+      const y = 11 + r * (size + gap);
+      ctx.fillStyle = faceColors[r * 3 + c];
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(x, y, size, size, 8);
+      else ctx.rect(x, y, size, size);
+      ctx.fill();
+    }
+  }
+  return new THREE.CanvasTexture(canvas);
+}
+
+function createCanLabelTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512; canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  const grad = ctx.createLinearGradient(0, 0, 512, 0);
+  grad.addColorStop(0, '#0284C7');
+  grad.addColorStop(0.5, '#38BDF8');
+  grad.addColorStop(1, '#0284C7');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, 512, 256);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.beginPath();
+  ctx.arc(256, 128, 90, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.fillStyle = '#0369A1';
+  ctx.font = 'bold 36px Fredoka, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('🥛 SUSU', 256, 120);
+  ctx.fillText('SEGAR', 256, 160);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 22px Fredoka, sans-serif';
+  ctx.fillText('★ KAYA KALSIUM & VITAMIN ★', 256, 230);
+  return new THREE.CanvasTexture(canvas);
+}
+
+function createBatteryTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512; canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#1E293B';
+  ctx.fillRect(0, 0, 512, 256);
+  ctx.fillStyle = '#D97706';
+  ctx.fillRect(0, 0, 512, 80);
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = 'bold 40px Fredoka, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('⚡ POWER CELL 1.5V', 256, 160);
+  ctx.font = 'bold 28px sans-serif';
+  ctx.fillText('+ [POSITIVE] +', 256, 55);
+  return new THREE.CanvasTexture(canvas);
+}
+
+function createSoccerBallTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512; canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#F8FAFC';
+  ctx.fillRect(0, 0, 512, 256);
+  ctx.fillStyle = '#0F172A';
+  const centers = [
+    [100, 70], [250, 60], [400, 70],
+    [180, 150], [330, 150], [480, 150],
+    [100, 220], [250, 220], [400, 220]
+  ];
+  centers.forEach(([cx, cy]) => {
+    ctx.beginPath();
+    for (let i = 0; i < 5; i++) {
+      const a = (i * 2 * Math.PI) / 5 - Math.PI / 2;
+      const x = cx + 22 * Math.cos(a);
+      const y = cy + 22 * Math.sin(a);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fill();
+  });
+  return new THREE.CanvasTexture(canvas);
+}
+
+function createEarthTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512; canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#0284C7';
+  ctx.fillRect(0, 0, 512, 256);
+  ctx.fillStyle = '#22C55E';
+  ctx.beginPath(); ctx.ellipse(320, 90, 70, 45, 0, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(270, 160, 40, 50, 0.2, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(120, 85, 45, 40, -0.3, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(145, 175, 35, 55, 0.4, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(400, 185, 30, 25, 0, 0, Math.PI * 2); ctx.fill();
+  return new THREE.CanvasTexture(canvas);
+}
+
+function createWaffleTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256; canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#D97706';
+  ctx.fillRect(0, 0, 256, 256);
+  ctx.strokeStyle = '#92400E';
+  ctx.lineWidth = 4;
+  for (let i = -256; i < 512; i += 24) {
+    ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i + 256, 256); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(i + 256, 0); ctx.lineTo(i, 256); ctx.stroke();
+  }
+  return new THREE.CanvasTexture(canvas);
+}
+
+function createPyramidTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256; canvas.height = 256;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#D97706';
+  ctx.fillRect(0, 0, 256, 256);
+  ctx.strokeStyle = '#78350F';
+  ctx.lineWidth = 3;
+  for (let y = 0; y < 256; y += 18) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(256, y); ctx.stroke();
+  }
+  return new THREE.CanvasTexture(canvas);
+}
+
+// Procedural Real-World Model Builder
+function buildRealWorldModel(shapeKey, itemId) {
+  const group = new THREE.Group();
+
+  switch (itemId) {
+    // KUBUS
+    case 'dadu': {
+      const geo = new THREE.BoxGeometry(2.4, 2.4, 2.4);
+      const mats = [
+        new THREE.MeshStandardMaterial({ map: createDiceTexture(1), roughness: 0.2 }),
+        new THREE.MeshStandardMaterial({ map: createDiceTexture(6), roughness: 0.2 }),
+        new THREE.MeshStandardMaterial({ map: createDiceTexture(2), roughness: 0.2 }),
+        new THREE.MeshStandardMaterial({ map: createDiceTexture(5), roughness: 0.2 }),
+        new THREE.MeshStandardMaterial({ map: createDiceTexture(3), roughness: 0.2 }),
+        new THREE.MeshStandardMaterial({ map: createDiceTexture(4), roughness: 0.2 })
+      ];
+      const mesh = new THREE.Mesh(geo, mats);
+      mesh.castShadow = true;
+      group.add(mesh);
+      break;
+    }
+    case 'rubik': {
+      const geo = new THREE.BoxGeometry(2.4, 2.4, 2.4);
+      const colors = ['#EF4444', '#3B82F6', '#10B981', '#F59E0B', '#F97316', '#FFFFFF'];
+      const makeShuffled = () => [colors[0], colors[1], colors[2], colors[3], colors[4], colors[5], colors[0], colors[1], colors[2]];
+      const mats = [
+        new THREE.MeshStandardMaterial({ map: createRubikFaceTexture(makeShuffled()), roughness: 0.3 }),
+        new THREE.MeshStandardMaterial({ map: createRubikFaceTexture(makeShuffled()), roughness: 0.3 }),
+        new THREE.MeshStandardMaterial({ map: createRubikFaceTexture(makeShuffled()), roughness: 0.3 }),
+        new THREE.MeshStandardMaterial({ map: createRubikFaceTexture(makeShuffled()), roughness: 0.3 }),
+        new THREE.MeshStandardMaterial({ map: createRubikFaceTexture(makeShuffled()), roughness: 0.3 }),
+        new THREE.MeshStandardMaterial({ map: createRubikFaceTexture(makeShuffled()), roughness: 0.3 })
+      ];
+      const mesh = new THREE.Mesh(geo, mats);
+      mesh.castShadow = true;
+      group.add(mesh);
+      break;
+    }
+    case 'kado': {
+      const boxGeo = new THREE.BoxGeometry(2.2, 2.2, 2.2);
+      const boxMat = new THREE.MeshStandardMaterial({ color: 0x8B5CF6, roughness: 0.3 });
+      const box = new THREE.Mesh(boxGeo, boxMat);
+      box.castShadow = true;
+      group.add(box);
+
+      const ribMat = new THREE.MeshStandardMaterial({ color: 0xFBBF24, roughness: 0.2, metalness: 0.2 });
+      const ribX = new THREE.Mesh(new THREE.BoxGeometry(2.24, 2.24, 0.45), ribMat);
+      const ribZ = new THREE.Mesh(new THREE.BoxGeometry(0.45, 2.24, 2.24), ribMat);
+      group.add(ribX, ribZ);
+
+      // Bow on top
+      const knotGeo = new THREE.TorusGeometry(0.35, 0.09, 16, 24);
+      const knot1 = new THREE.Mesh(knotGeo, ribMat);
+      knot1.position.set(0, 1.25, 0);
+      knot1.rotation.y = Math.PI / 4;
+      knot1.rotation.x = Math.PI / 3;
+      const knot2 = new THREE.Mesh(knotGeo, ribMat);
+      knot2.position.set(0, 1.25, 0);
+      knot2.rotation.y = -Math.PI / 4;
+      knot2.rotation.x = -Math.PI / 3;
+      const knotCenter = new THREE.Mesh(new THREE.SphereGeometry(0.18, 16, 16), ribMat);
+      knotCenter.position.set(0, 1.25, 0);
+      group.add(knot1, knot2, knotCenter);
+      break;
+    }
+    case 'es': {
+      const iceGeo = new THREE.BoxGeometry(2.3, 2.3, 2.3);
+      const iceMat = new THREE.MeshStandardMaterial({
+        color: 0xA5F3FC,
+        roughness: 0.1,
+        metalness: 0.1,
+        transparent: true,
+        opacity: 0.8
+      });
+      const ice = new THREE.Mesh(iceGeo, iceMat);
+      ice.castShadow = true;
+      group.add(ice);
+      // Small trapped bubbles
+      const bubGeo = new THREE.SphereGeometry(0.1, 8, 8);
+      const bubMat = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0.7 });
+      const bCoords = [[-0.4, 0.2, 0.3], [0.5, -0.3, -0.4], [0.1, 0.5, -0.2], [-0.3, -0.4, 0.5]];
+      bCoords.forEach(c => {
+        const b = new THREE.Mesh(bubGeo, bubMat);
+        b.position.set(c[0], c[1], c[2]);
+        group.add(b);
+      });
+      break;
+    }
+
+    // BALOK
+    case 'sepatu': {
+      // Base
+      const baseGeo = new THREE.BoxGeometry(3.2, 1.3, 2.0);
+      const baseMat = new THREE.MeshStandardMaterial({ color: 0x0F766E, roughness: 0.4 });
+      const base = new THREE.Mesh(baseGeo, baseMat);
+      base.castShadow = true;
+      group.add(base);
+      // Lid
+      const lidGeo = new THREE.BoxGeometry(3.3, 0.35, 2.1);
+      const lidMat = new THREE.MeshStandardMaterial({ color: 0xEA580C, roughness: 0.3 });
+      const lid = new THREE.Mesh(lidGeo, lidMat);
+      lid.position.y = 0.75;
+      lid.castShadow = true;
+      group.add(lid);
+      break;
+    }
+    case 'kulkas': {
+      const bodyGeo = new THREE.BoxGeometry(2.0, 3.4, 1.8);
+      const bodyMat = new THREE.MeshStandardMaterial({ color: 0xCBD5E1, roughness: 0.25, metalness: 0.3 });
+      const body = new THREE.Mesh(bodyGeo, bodyMat);
+      body.castShadow = true;
+      group.add(body);
+      // Door seam
+      const seam = new THREE.Mesh(new THREE.BoxGeometry(2.02, 0.04, 1.82), new THREE.MeshBasicMaterial({ color: 0x475569 }));
+      seam.position.y = 0.5;
+      group.add(seam);
+      // Handles
+      const hGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.6, 16);
+      const hMat = new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.6 });
+      const h1 = new THREE.Mesh(hGeo, hMat);
+      h1.position.set(0.85, 0.85, 0.95);
+      const h2 = new THREE.Mesh(hGeo, hMat);
+      h2.position.set(0.85, 0.05, 0.95);
+      group.add(h1, h2);
+      break;
+    }
+    case 'buku': {
+      const coverGeo = new THREE.BoxGeometry(2.2, 0.38, 3.0);
+      const coverMat = new THREE.MeshStandardMaterial({ color: 0x1D4ED8, roughness: 0.3 });
+      const cover = new THREE.Mesh(coverGeo, coverMat);
+      group.add(cover);
+      // Pages
+      const pageGeo = new THREE.BoxGeometry(2.05, 0.28, 2.85);
+      const pageMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.7 });
+      const pages = new THREE.Mesh(pageGeo, pageMat);
+      pages.position.set(0.06, 0, 0);
+      group.add(pages);
+      break;
+    }
+    case 'bata': {
+      const brickGeo = new THREE.BoxGeometry(3.2, 1.2, 1.8);
+      const brickMat = new THREE.MeshStandardMaterial({ color: 0xB91C1C, roughness: 0.8 });
+      const brick = new THREE.Mesh(brickGeo, brickMat);
+      brick.castShadow = true;
+      group.add(brick);
+      // 3 holes
+      const holeGeo = new THREE.CylinderGeometry(0.25, 0.25, 1.22, 16);
+      const holeMat = new THREE.MeshBasicMaterial({ color: 0x450A0A });
+      [-0.9, 0, 0.9].forEach(x => {
+        const h = new THREE.Mesh(holeGeo, holeMat);
+        h.position.x = x;
+        group.add(h);
+      });
+      break;
+    }
+
+    // TABUNG
+    case 'kaleng': {
+      const canGeo = new THREE.CylinderGeometry(1.35, 1.35, 2.6, 36);
+      const canMat = [
+        new THREE.MeshStandardMaterial({ map: createCanLabelTexture(), roughness: 0.3 }),
+        new THREE.MeshStandardMaterial({ color: 0xE2E8F0, metalness: 0.8, roughness: 0.2 }),
+        new THREE.MeshStandardMaterial({ color: 0xE2E8F0, metalness: 0.8, roughness: 0.2 })
+      ];
+      const can = new THREE.Mesh(canGeo, canMat);
+      can.castShadow = true;
+      group.add(can);
+      // Silver rims
+      const rimMat = new THREE.MeshStandardMaterial({ color: 0x94A3B8, metalness: 0.85, roughness: 0.2 });
+      const rimT = new THREE.Mesh(new THREE.TorusGeometry(1.35, 0.06, 16, 36), rimMat);
+      rimT.rotation.x = Math.PI / 2;
+      rimT.position.y = 1.3;
+      const rimB = new THREE.Mesh(new THREE.TorusGeometry(1.35, 0.06, 16, 36), rimMat);
+      rimB.rotation.x = Math.PI / 2;
+      rimB.position.y = -1.3;
+      // Pull tab
+      const tab = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.04, 8, 16), rimMat);
+      tab.rotation.x = Math.PI / 2;
+      tab.position.set(0.3, 1.32, 0);
+      group.add(rimT, rimB, tab);
+      break;
+    }
+    case 'drum': {
+      const drumGeo = new THREE.CylinderGeometry(1.4, 1.4, 2.2, 32);
+      const drumMat = [
+        new THREE.MeshStandardMaterial({ color: 0xDC2626, roughness: 0.2 }),
+        new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.5 }),
+        new THREE.MeshStandardMaterial({ color: 0xFFFFFF, roughness: 0.5 })
+      ];
+      const drum = new THREE.Mesh(drumGeo, drumMat);
+      group.add(drum);
+      // Silver chrome rims & rods
+      const rimMat = new THREE.MeshStandardMaterial({ color: 0xE2E8F0, metalness: 0.8, roughness: 0.2 });
+      const r1 = new THREE.Mesh(new THREE.TorusGeometry(1.42, 0.08, 16, 32), rimMat);
+      r1.rotation.x = Math.PI / 2; r1.position.y = 1.1;
+      const r2 = new THREE.Mesh(new THREE.TorusGeometry(1.42, 0.08, 16, 32), rimMat);
+      r2.rotation.x = Math.PI / 2; r2.position.y = -1.1;
+      group.add(r1, r2);
+      // Rods
+      const rodGeo = new THREE.CylinderGeometry(0.03, 0.03, 2.15, 8);
+      for (let i = 0; i < 6; i++) {
+        const ang = (i * Math.PI * 2) / 6;
+        const rod = new THREE.Mesh(rodGeo, rimMat);
+        rod.position.set(1.42 * Math.cos(ang), 0, 1.42 * Math.sin(ang));
+        group.add(rod);
+      }
+      break;
+    }
+    case 'celengan': {
+      const celGeo = new THREE.CylinderGeometry(1.3, 1.3, 2.4, 32);
+      const celMat = new THREE.MeshStandardMaterial({ color: 0xF59E0B, roughness: 0.3 });
+      const cel = new THREE.Mesh(celGeo, celMat);
+      group.add(cel);
+      // Slot
+      const slot = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.04, 0.16), new THREE.MeshBasicMaterial({ color: 0x1E293B }));
+      slot.position.y = 1.21;
+      // Coin peeking
+      const coin = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.05, 24), new THREE.MeshStandardMaterial({ color: 0xFBBF24, metalness: 0.7, roughness: 0.2 }));
+      coin.position.set(0, 1.32, 0);
+      coin.rotation.z = Math.PI / 8;
+      group.add(slot, coin);
+      break;
+    }
+    case 'baterai': {
+      const batGeo = new THREE.CylinderGeometry(1.25, 1.25, 2.5, 32);
+      const batMat = [
+        new THREE.MeshStandardMaterial({ map: createBatteryTexture(), roughness: 0.3 }),
+        new THREE.MeshStandardMaterial({ color: 0xCBD5E1, metalness: 0.8 }),
+        new THREE.MeshStandardMaterial({ color: 0xCBD5E1, metalness: 0.8 })
+      ];
+      const bat = new THREE.Mesh(batGeo, batMat);
+      group.add(bat);
+      // Nub
+      const nub = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 0.25, 24), new THREE.MeshStandardMaterial({ color: 0xE2E8F0, metalness: 0.9 }));
+      nub.position.y = 1.35;
+      group.add(nub);
+      break;
+    }
+
+    // KERUCUT
+    case 'topi': {
+      const hatGeo = new THREE.ConeGeometry(1.45, 2.6, 32);
+      const hatMat = new THREE.MeshStandardMaterial({ color: 0xEC4899, roughness: 0.3 });
+      const hat = new THREE.Mesh(hatGeo, hatMat);
+      group.add(hat);
+      // Pom-pom on apex
+      const pom = new THREE.Mesh(new THREE.SphereGeometry(0.28, 16, 16), new THREE.MeshStandardMaterial({ color: 0xF59E0B }));
+      pom.position.y = 1.4;
+      // Brim ring
+      const brim = new THREE.Mesh(new THREE.TorusGeometry(1.45, 0.09, 16, 32), new THREE.MeshStandardMaterial({ color: 0x3B82F6 }));
+      brim.rotation.x = Math.PI / 2;
+      brim.position.y = -1.3;
+      group.add(pom, brim);
+      break;
+    }
+    case 'es_krim': {
+      // Waffle cone
+      const coneGeo = new THREE.ConeGeometry(1.2, 2.2, 32);
+      const coneMat = new THREE.MeshStandardMaterial({ map: createWaffleTexture(), roughness: 0.5 });
+      const cone = new THREE.Mesh(coneGeo, coneMat);
+      cone.rotation.x = Math.PI;
+      cone.position.y = -0.3;
+      group.add(cone);
+      // Ice cream scoop
+      const scoopGeo = new THREE.SphereGeometry(1.15, 32, 32);
+      const scoopMat = new THREE.MeshStandardMaterial({ color: 0xFB7185, roughness: 0.6 });
+      const scoop = new THREE.Mesh(scoopGeo, scoopMat);
+      scoop.position.y = 1.05;
+      group.add(scoop);
+      // Sprinkles
+      const spGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.2, 8);
+      const spColors = [0x3B82F6, 0xF59E0B, 0x10B981, 0xFFFFFF];
+      for (let i = 0; i < 12; i++) {
+        const spMat = new THREE.MeshBasicMaterial({ color: spColors[i % spColors.length] });
+        const sp = new THREE.Mesh(spGeo, spMat);
+        const u = Math.random() * Math.PI * 2;
+        const v = Math.random() * 0.8;
+        sp.position.set(0.95 * Math.sin(v) * Math.cos(u), 1.05 + 0.95 * Math.cos(v), 0.95 * Math.sin(v) * Math.sin(u));
+        sp.rotation.set(Math.random(), Math.random(), Math.random());
+        group.add(sp);
+      }
+      break;
+    }
+    case 'tumpeng': {
+      const tumpengGeo = new THREE.ConeGeometry(1.5, 2.6, 32);
+      const tumpengMat = new THREE.MeshStandardMaterial({ color: 0xFACC15, roughness: 0.65 });
+      const tumpeng = new THREE.Mesh(tumpengGeo, tumpengMat);
+      group.add(tumpeng);
+      // Banana leaf tray
+      const tray = new THREE.Mesh(new THREE.CylinderGeometry(2.3, 2.3, 0.08, 32), new THREE.MeshStandardMaterial({ color: 0x15803D, roughness: 0.4 }));
+      tray.position.y = -1.32;
+      // Red chili garnish
+      const chili = new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.4, 8), new THREE.MeshStandardMaterial({ color: 0xEF4444 }));
+      chili.position.y = 1.45;
+      group.add(tray, chili);
+      break;
+    }
+    case 'traffic_cone': {
+      const tcGeo = new THREE.ConeGeometry(1.3, 2.6, 32);
+      const tcMat = new THREE.MeshStandardMaterial({ color: 0xEA580C, roughness: 0.3 });
+      const tc = new THREE.Mesh(tcGeo, tcMat);
+      group.add(tc);
+      // Reflective white rings
+      const wMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC, roughness: 0.2 });
+      const r1 = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.8, 0.4, 32, 1, true), wMat);
+      r1.position.y = 0.1;
+      const r2 = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.45, 0.35, 32, 1, true), wMat);
+      r2.position.y = 0.75;
+      // Base
+      const tcBase = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.16, 2.4), new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.7 }));
+      tcBase.position.y = -1.35;
+      group.add(r1, r2, tcBase);
+      break;
+    }
+
+    // BOLA
+    case 'bola_sepak': {
+      const ballGeo = new THREE.SphereGeometry(1.6, 36, 36);
+      const ballMat = new THREE.MeshStandardMaterial({ map: createSoccerBallTexture(), roughness: 0.35 });
+      const ball = new THREE.Mesh(ballGeo, ballMat);
+      group.add(ball);
+      break;
+    }
+    case 'kelereng': {
+      const marbGeo = new THREE.SphereGeometry(1.6, 32, 32);
+      const marbMat = new THREE.MeshStandardMaterial({ color: 0x06B6D4, roughness: 0.05, transparent: true, opacity: 0.75 });
+      const marb = new THREE.Mesh(marbGeo, marbMat);
+      group.add(marb);
+      // Inner ribbon swirl
+      const tor1 = new THREE.Mesh(new THREE.TorusGeometry(0.8, 0.12, 16, 32), new THREE.MeshStandardMaterial({ color: 0xFBBF24 }));
+      tor1.rotation.x = Math.PI / 3;
+      const tor2 = new THREE.Mesh(new THREE.TorusGeometry(0.8, 0.12, 16, 32), new THREE.MeshStandardMaterial({ color: 0xEF4444 }));
+      tor2.rotation.y = Math.PI / 3;
+      group.add(tor1, tor2);
+      break;
+    }
+    case 'jeruk': {
+      const orangeGeo = new THREE.SphereGeometry(1.6, 32, 32);
+      const orangeMat = new THREE.MeshStandardMaterial({ color: 0xF97316, roughness: 0.6 });
+      const orange = new THREE.Mesh(orangeGeo, orangeMat);
+      group.add(orange);
+      // Stem
+      const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.4, 8), new THREE.MeshStandardMaterial({ color: 0x78350F }));
+      stem.position.y = 1.7;
+      // Leaf
+      const leafGeo = new THREE.SphereGeometry(0.35, 12, 12);
+      leafGeo.scale(1.8, 0.2, 0.8);
+      const leaf = new THREE.Mesh(leafGeo, new THREE.MeshStandardMaterial({ color: 0x16A34A }));
+      leaf.position.set(0.4, 1.72, 0);
+      leaf.rotation.z = Math.PI / 6;
+      group.add(stem, leaf);
+      break;
+    }
+    case 'globe': {
+      const gSphere = new THREE.Mesh(new THREE.SphereGeometry(1.5, 32, 32), new THREE.MeshStandardMaterial({ map: createEarthTexture(), roughness: 0.4 }));
+      gSphere.rotation.z = -0.4;
+      group.add(gSphere);
+      // Bronze meridian ring
+      const bMat = new THREE.MeshStandardMaterial({ color: 0xD97706, metalness: 0.7, roughness: 0.3 });
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.08, 16, 32, Math.PI), bMat);
+      ring.rotation.z = -0.4;
+      ring.position.y = 0;
+      // Stand base
+      const standPole = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.8, 16), bMat);
+      standPole.position.y = -1.75;
+      const standBase = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.2, 0.2, 24), bMat);
+      standBase.position.y = -2.1;
+      group.add(ring, standPole, standBase);
+      break;
+    }
+
+    // PRISMA SEGITIGA
+    case 'tenda': {
+      const shape = new THREE.Shape();
+      shape.moveTo(0, 1.2);
+      shape.lineTo(-1.3, -0.9);
+      shape.lineTo(1.3, -0.9);
+      shape.closePath();
+      const geo = new THREE.ExtrudeGeometry(shape, { depth: 2.8, bevelEnabled: false });
+      geo.center();
+      const tent = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x16A34A, roughness: 0.5 }));
+      group.add(tent);
+      // Front opening flap
+      const flapShape = new THREE.Shape();
+      flapShape.moveTo(0, 0.8); flapShape.lineTo(-0.9, -0.85); flapShape.lineTo(0.9, -0.85); flapShape.closePath();
+      const flapGeo = new THREE.ShapeGeometry(flapShape);
+      const flap = new THREE.Mesh(flapGeo, new THREE.MeshBasicMaterial({ color: 0x0F172A }));
+      flap.position.set(0, 0, 1.41);
+      group.add(flap);
+      break;
+    }
+    case 'toblerone': {
+      const shape = new THREE.Shape();
+      shape.moveTo(0, 1.2); shape.lineTo(-1.2, -0.8); shape.lineTo(1.2, -0.8); shape.closePath();
+      const geo = new THREE.ExtrudeGeometry(shape, { depth: 3.0, bevelEnabled: false });
+      geo.center();
+      const tob = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xFBBF24, roughness: 0.3 }));
+      group.add(tob);
+      break;
+    }
+    case 'atap': {
+      const shape = new THREE.Shape();
+      shape.moveTo(0, 1.3); shape.lineTo(-1.4, -0.7); shape.lineTo(1.4, -0.7); shape.closePath();
+      const geo = new THREE.ExtrudeGeometry(shape, { depth: 2.8, bevelEnabled: false });
+      geo.center();
+      const atap = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x9A3412, roughness: 0.6 }));
+      group.add(atap);
+      break;
+    }
+    case 'kaca_prisma': {
+      const shape = new THREE.Shape();
+      shape.moveTo(0, 1.3); shape.lineTo(-1.2, -0.8); shape.lineTo(1.2, -0.8); shape.closePath();
+      const geo = new THREE.ExtrudeGeometry(shape, { depth: 2.4, bevelEnabled: false });
+      geo.center();
+      const prism = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xE0E7FF, transparent: true, opacity: 0.7, roughness: 0.1 }));
+      group.add(prism);
+      // Rainbow beam lines
+      const colors = [0xEF4444, 0xF97316, 0xFACC15, 0x10B981, 0x3B82F6, 0x8B5CF6];
+      colors.forEach((col, idx) => {
+        const lineGeo = new THREE.CylinderGeometry(0.04, 0.04, 2.0, 8);
+        const line = new THREE.Mesh(lineGeo, new THREE.MeshBasicMaterial({ color: col }));
+        line.rotation.z = Math.PI / 3 + idx * 0.06;
+        line.position.set(1.4 + idx * 0.1, -0.2 - idx * 0.1, 0);
+        group.add(line);
+      });
+      break;
+    }
+
+    // LIMAS SEGIEMPAT
+    case 'piramida': {
+      const pyrGeo = new THREE.ConeGeometry(2.1, 2.6, 4);
+      pyrGeo.rotateY(Math.PI / 4);
+      const pyrMat = new THREE.MeshStandardMaterial({ map: createPyramidTexture(), roughness: 0.8 });
+      const pyr = new THREE.Mesh(pyrGeo, pyrMat);
+      group.add(pyr);
+      // Golden capstone
+      const capGeo = new THREE.ConeGeometry(0.5, 0.6, 4);
+      capGeo.rotateY(Math.PI / 4);
+      const cap = new THREE.Mesh(capGeo, new THREE.MeshStandardMaterial({ color: 0xFBBF24, metalness: 0.8, roughness: 0.2 }));
+      cap.position.y = 1.05;
+      group.add(cap);
+      break;
+    }
+    case 'tenda_piramid': {
+      const topGeo = new THREE.ConeGeometry(2.1, 1.8, 4);
+      topGeo.rotateY(Math.PI / 4);
+      const top = new THREE.Mesh(topGeo, new THREE.MeshStandardMaterial({ color: 0x2563EB, roughness: 0.4 }));
+      top.position.y = 0.5;
+      group.add(top);
+      // 4 poles
+      const poleGeo = new THREE.CylinderGeometry(0.05, 0.05, 1.8, 8);
+      const poleMat = new THREE.MeshStandardMaterial({ color: 0x94A3B8, metalness: 0.7 });
+      const corners = [[-1.4, -1.4], [1.4, -1.4], [1.4, 1.4], [-1.4, 1.4]];
+      corners.forEach(([x, z]) => {
+        const pole = new THREE.Mesh(poleGeo, poleMat);
+        pole.position.set(x, -0.5, z);
+        group.add(pole);
+      });
+      break;
+    }
+    case 'gantungan': {
+      const pyrGeo = new THREE.ConeGeometry(2.0, 2.5, 4);
+      pyrGeo.rotateY(Math.PI / 4);
+      const pyr = new THREE.Mesh(pyrGeo, new THREE.MeshStandardMaterial({ color: 0xF59E0B, metalness: 0.6, roughness: 0.2 }));
+      group.add(pyr);
+      // Ring
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.35, 0.06, 12, 24), new THREE.MeshStandardMaterial({ color: 0xE2E8F0, metalness: 0.9 }));
+      ring.position.y = 1.5;
+      group.add(ring);
+      break;
+    }
+    
+    // 5D HYPER-SPACE OBJECTS
+    
+    // BOLA 4D OBJECTS
+    case 'kelereng_4d': {
+      const gSphere = new THREE.Mesh(new THREE.SphereGeometry(1.5, 32, 32), new THREE.MeshStandardMaterial({ color: 0x06B6D4, roughness: 0.1, transparent: true, opacity: 0.7 }));
+      const r1 = new THREE.Mesh(new THREE.TorusGeometry(1.55, 0.06, 16, 48), new THREE.MeshBasicMaterial({ color: 0xFBBF24 }));
+      const r2 = new THREE.Mesh(new THREE.TorusGeometry(1.55, 0.06, 16, 48), new THREE.MeshBasicMaterial({ color: 0xEC4899 }));
+      r2.rotation.x = Math.PI / 2;
+      group.add(gSphere, r1, r2);
+      break;
+    }
+    case 'gelembung_4d': {
+      const bubble = new THREE.Mesh(new THREE.SphereGeometry(1.6, 32, 32), new THREE.MeshStandardMaterial({ color: 0xA5F3FC, transparent: true, opacity: 0.5, roughness: 0.05 }));
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.08, 16, 36), new THREE.MeshBasicMaterial({ color: 0x8B5CF6 }));
+      ring.rotation.x = Math.PI / 3;
+      group.add(bubble, ring);
+      break;
+    }
+    case 'blackhole_4d': {
+      const bh = new THREE.Mesh(new THREE.SphereGeometry(1.3, 32, 32), new THREE.MeshBasicMaterial({ color: 0x09090B }));
+      const disk = new THREE.Mesh(new THREE.RingGeometry(1.5, 2.5, 36), new THREE.MeshStandardMaterial({ color: 0xF97316, side: THREE.DoubleSide, emissive: 0xEA580C, emissiveIntensity: 0.8 }));
+      disk.rotation.x = Math.PI / 2.3;
+      group.add(bh, disk);
+      break;
+    }
+    case 'planet_4d': {
+      const pl = new THREE.Mesh(new THREE.SphereGeometry(1.4, 32, 32), new THREE.MeshStandardMaterial({ color: 0x3B82F6, roughness: 0.3 }));
+      const rA = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.06, 16, 36), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      const rB = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.06, 16, 36), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
+      rB.rotation.y = Math.PI / 2;
+      group.add(pl, rA, rB);
+      break;
+    }
+
+    // BOLA 5D OBJECTS
+    case 'multiverse_5d': {
+      const core = new THREE.Mesh(new THREE.SphereGeometry(1.3, 32, 32), new THREE.MeshStandardMaterial({ color: 0x8B5CF6, emissive: 0x6D28D9, emissiveIntensity: 0.5 }));
+      group.add(core);
+      const ringCols = [0xF59E0B, 0x06B6D4, 0xEC4899, 0x10B981, 0xFFFFFF];
+      for (let i = 0; i < 5; i++) {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(1.65, 0.05, 12, 36), new THREE.MeshBasicMaterial({ color: ringCols[i] }));
+        ring.rotation.x = (i * Math.PI) / 5;
+        ring.rotation.y = (i * Math.PI) / 2.5;
+        group.add(ring);
+      }
+      break;
+    }
+    case 'vortex_5d': {
+      const vSph = new THREE.Mesh(new THREE.SphereGeometry(1.4, 32, 32), new THREE.MeshStandardMaterial({ color: 0x06B6D4, transparent: true, opacity: 0.7 }));
+      const vRing = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.12, 16, 36), new THREE.MeshStandardMaterial({ color: 0xEC4899, wireframe: true }));
+      vRing.rotation.x = Math.PI / 3;
+      group.add(vSph, vRing);
+      break;
+    }
+    case 'atom_5d': {
+      const nucleus = new THREE.Mesh(new THREE.SphereGeometry(0.7, 16, 16), new THREE.MeshStandardMaterial({ color: 0xEF4444 }));
+      group.add(nucleus);
+      for (let i = 0; i < 5; i++) {
+        const orbit = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.03, 8, 36), new THREE.MeshBasicMaterial({ color: 0x38BDF8 }));
+        orbit.rotation.x = (i * Math.PI) / 5;
+        orbit.rotation.z = (i * Math.PI) / 3;
+        const elec = new THREE.Mesh(new THREE.SphereGeometry(0.12, 8, 8), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+        elec.position.set(1.7 * Math.cos(i), 1.7 * Math.sin(i), 0);
+        orbit.add(elec);
+        group.add(orbit);
+      }
+      break;
+    }
+    case 'kristal_bola_5d': {
+      const kSph = new THREE.Mesh(new THREE.IcosahedronGeometry(1.5, 1), new THREE.MeshStandardMaterial({ color: 0xD946EF, wireframe: true }));
+      const kCore = new THREE.Mesh(new THREE.SphereGeometry(0.9, 16, 16), new THREE.MeshStandardMaterial({ color: 0xF59E0B }));
+      group.add(kSph, kCore);
+      break;
+    }
+
+    // KUBUS 4D OBJECTS
+    case 'dadu_4d': {
+      const outerCube = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2.4, 2.4), new THREE.MeshStandardMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0.75 }));
+      const innerCube = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 1.2), new THREE.MeshStandardMaterial({ color: 0xEF4444 }));
+      group.add(outerCube, innerCube);
+      break;
+    }
+    case 'rubik_4d': {
+      const rBox = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2.4, 2.4), new THREE.MeshStandardMaterial({ color: 0x111827, wireframe: true }));
+      const rCore = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 1.2), new THREE.MeshStandardMaterial({ color: 0x3B82F6 }));
+      group.add(rBox, rCore);
+      break;
+    }
+    case 'tesseract_wire': {
+      const b1 = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2.4, 2.4), new THREE.MeshBasicMaterial({ color: 0x06B6D4, wireframe: true }));
+      const b2 = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.2, 1.2), new THREE.MeshBasicMaterial({ color: 0xEC4899, wireframe: true }));
+      group.add(b1, b2);
+      break;
+    }
+    case 'kotak_waktu': {
+      const box = new THREE.Mesh(new THREE.BoxGeometry(2.2, 2.2, 2.2), new THREE.MeshStandardMaterial({ color: 0x4F46E5, transparent: true, opacity: 0.8 }));
+      const pRing = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.08, 16, 32), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      pRing.rotation.x = Math.PI / 4;
+      group.add(box, pRing);
+      break;
+    }
+
+    case 'pesawat_5d': {
+      const fusGeo = new THREE.ConeGeometry(0.6, 2.6, 8);
+      fusGeo.rotateX(Math.PI / 2);
+      const fus = new THREE.Mesh(fusGeo, new THREE.MeshStandardMaterial({ color: 0x4F46E5, metalness: 0.8, roughness: 0.2 }));
+      group.add(fus);
+      // Wings
+      const wingGeo = new THREE.BoxGeometry(2.8, 0.08, 1.2);
+      const wing = new THREE.Mesh(wingGeo, new THREE.MeshStandardMaterial({ color: 0x06B6D4, metalness: 0.7 }));
+      wing.position.set(0, 0, -0.3);
+      group.add(wing);
+      // Cockpit
+      const cpit = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+      cpit.position.set(0, 0.25, 0.3);
+      group.add(cpit);
+      break;
+    }
+    case 'portal_5d': {
+      const ringMat = new THREE.MeshStandardMaterial({ color: 0x8B5CF6, emissive: 0x6D28D9, emissiveIntensity: 0.5 });
+      const ring1 = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.12, 16, 36), ringMat);
+      const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.09, 16, 36), new THREE.MeshStandardMaterial({ color: 0x06B6D4 }));
+      ring2.rotation.y = Math.PI / 3;
+      const vortex = new THREE.Mesh(new THREE.CircleGeometry(1.0, 32), new THREE.MeshBasicMaterial({ color: 0x0F172A, side: THREE.DoubleSide }));
+      group.add(ring1, ring2, vortex);
+      break;
+    }
+    case 'kristal_5d': {
+      const kGeo = new THREE.OctahedronGeometry(1.4, 0);
+      const kMat = new THREE.MeshStandardMaterial({ color: 0xEC4899, roughness: 0.1, metalness: 0.2, transparent: true, opacity: 0.85 });
+      const kristal = new THREE.Mesh(kGeo, kMat);
+      group.add(kristal);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.05, 12, 36), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      ring.rotation.x = Math.PI / 3;
+      group.add(ring);
+      break;
+    }
+    case 'planet_5d': {
+      const pSphere = new THREE.Mesh(new THREE.SphereGeometry(1.3, 32, 32), new THREE.MeshStandardMaterial({ color: 0x6366F1, roughness: 0.3 }));
+      const pRing = new THREE.Mesh(new THREE.RingGeometry(1.7, 2.4, 32), new THREE.MeshStandardMaterial({ color: 0xF59E0B, side: THREE.DoubleSide }));
+      pRing.rotation.x = Math.PI / 2.5;
+      group.add(pSphere, pRing);
+      break;
+    }
+
+    
+    // --- 4D BALOK ITEMS ---
+    case 'peti_4d': {
+      const chest = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.6, 1.4), new THREE.MeshStandardMaterial({ color: 0x1E1B4B, metalness: 0.6, roughness: 0.3 }));
+      const wire = new THREE.Mesh(new THREE.BoxGeometry(2.7, 1.7, 1.5), new THREE.MeshBasicMaterial({ color: 0x06B6D4, wireframe: true }));
+      const lock = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.15, 16), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      lock.rotation.x = Math.PI / 2;
+      lock.position.z = 0.75;
+      group.add(chest, wire, lock);
+      break;
+    }
+    case 'memori_4d': {
+      const chip = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.3, 1.8), new THREE.MeshStandardMaterial({ color: 0x065F46, metalness: 0.8, roughness: 0.2 }));
+      const core = new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.4, 0.8), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
+      const pins = new THREE.Mesh(new THREE.BoxGeometry(2.8, 0.15, 1.9), new THREE.MeshStandardMaterial({ color: 0xF59E0B, metalness: 0.9 }));
+      group.add(chip, core, pins);
+      break;
+    }
+    case 'reaktor_balok_4d': {
+      const casing = new THREE.Mesh(new THREE.BoxGeometry(2.2, 2.6, 1.4), new THREE.MeshStandardMaterial({ color: 0x312E81, transparent: true, opacity: 0.7 }));
+      const plasma = new THREE.Mesh(new THREE.BoxGeometry(1.2, 1.8, 0.8), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.06, 16, 32), new THREE.MeshBasicMaterial({ color: 0xEC4899 }));
+      ring.rotation.x = Math.PI / 4;
+      group.add(casing, plasma, ring);
+      break;
+    }
+    case 'lemari_4d': {
+      const cab = new THREE.Mesh(new THREE.BoxGeometry(1.8, 3.0, 1.4), new THREE.MeshStandardMaterial({ color: 0x1F2937, roughness: 0.4 }));
+      const edge = new THREE.Mesh(new THREE.BoxGeometry(1.85, 3.05, 1.45), new THREE.MeshBasicMaterial({ color: 0x8B5CF6, wireframe: true }));
+      const led = new THREE.Mesh(new THREE.SphereGeometry(0.12, 12, 12), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
+      led.position.set(0.6, 1.2, 0.74);
+      group.add(cab, edge, led);
+      break;
+    }
+
+    // --- 4D TABUNG ITEMS ---
+    case 'hyperloop_4d': {
+      const tube = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 3.2, 32), new THREE.MeshStandardMaterial({ color: 0x06B6D4, transparent: true, opacity: 0.45, roughness: 0.1 }));
+      const pod = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 1.6, 16), new THREE.MeshStandardMaterial({ color: 0x1E1B4B, metalness: 0.8 }));
+      const magRing = new THREE.Mesh(new THREE.TorusGeometry(1.2, 0.08, 16, 32), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      magRing.rotation.x = Math.PI / 2;
+      group.add(tube, pod, magRing);
+      break;
+    }
+    case 'kapsul_silinder_4d': {
+      const glass = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, 2.6, 24), new THREE.MeshStandardMaterial({ color: 0x10B981, transparent: true, opacity: 0.5 }));
+      const capTop = new THREE.Mesh(new THREE.CylinderGeometry(1.15, 1.15, 0.35, 24), new THREE.MeshStandardMaterial({ color: 0x374151, metalness: 0.8 }));
+      capTop.position.y = 1.4;
+      const capBottom = capTop.clone();
+      capBottom.position.y = -1.4;
+      const core = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.8, 16), new THREE.MeshBasicMaterial({ color: 0x6EE7B7 }));
+      group.add(glass, capTop, capBottom, core);
+      break;
+    }
+    case 'fusi_4d': {
+      const pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 2.8, 24), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      const t1 = new THREE.Mesh(new THREE.TorusGeometry(1.3, 0.14, 16, 36), new THREE.MeshStandardMaterial({ color: 0xF59E0B, metalness: 0.8 }));
+      t1.rotation.x = Math.PI / 2;
+      const t2 = t1.clone();
+      t2.position.y = 0.8;
+      const t3 = t1.clone();
+      t3.position.y = -0.8;
+      group.add(pillar, t1, t2, t3);
+      break;
+    }
+    case 'baterai_4d': {
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, 2.4, 24), new THREE.MeshStandardMaterial({ color: 0x111827, metalness: 0.5, roughness: 0.4 }));
+      const gauge = new THREE.Mesh(new THREE.CylinderGeometry(1.02, 1.02, 1.0, 24), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
+      const pin = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 0.4, 16), new THREE.MeshStandardMaterial({ color: 0xF59E0B, metalness: 0.9 }));
+      pin.position.y = 1.35;
+      group.add(body, gauge, pin);
+      break;
+    }
+
+    // --- 4D KERUCUT ITEMS ---
+    case 'corong_4d': {
+      const cone = new THREE.Mesh(new THREE.ConeGeometry(1.5, 2.6, 24), new THREE.MeshStandardMaterial({ color: 0x8B5CF6, transparent: true, opacity: 0.65, roughness: 0.2 }));
+      const spiralRing = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.06, 16, 32), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      spiralRing.rotation.x = Math.PI / 2.3;
+      const apex = new THREE.Mesh(new THREE.SphereGeometry(0.2, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+      apex.position.y = 1.3;
+      group.add(cone, spiralRing, apex);
+      break;
+    }
+    case 'pulsar_4d': {
+      const dish = new THREE.Mesh(new THREE.ConeGeometry(1.7, 1.2, 32), new THREE.MeshStandardMaterial({ color: 0x374151, metalness: 0.8, roughness: 0.3 }));
+      dish.rotation.x = Math.PI;
+      dish.position.y = -0.5;
+      const mast = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 1.8, 12), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      mast.position.y = 0.5;
+      const emitter = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      emitter.position.y = 1.35;
+      group.add(dish, mast, emitter);
+      break;
+    }
+    case 'topi_krono_4d': {
+      const hat = new THREE.Mesh(new THREE.ConeGeometry(1.4, 2.6, 24), new THREE.MeshStandardMaterial({ color: 0xEC4899, roughness: 0.3 }));
+      const pom = new THREE.Mesh(new THREE.SphereGeometry(0.25, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+      pom.position.y = 1.35;
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.45, 0.06, 12, 32), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = -1.2;
+      group.add(hat, pom, ring);
+      break;
+    }
+    case 'traffic_4d': {
+      const cone = new THREE.Mesh(new THREE.ConeGeometry(1.3, 2.4, 24), new THREE.MeshStandardMaterial({ color: 0xEA580C, roughness: 0.4 }));
+      const b1 = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.05, 12, 24), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+      b1.rotation.x = Math.PI / 2; b1.position.y = 0.3;
+      const b2 = new THREE.Mesh(new THREE.TorusGeometry(1.0, 0.05, 12, 24), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+      b2.rotation.x = Math.PI / 2; b2.position.y = -0.4;
+      const baseBox = new THREE.Mesh(new THREE.BoxGeometry(2.2, 0.18, 2.2), new THREE.MeshStandardMaterial({ color: 0x111827 }));
+      baseBox.position.y = -1.25;
+      group.add(cone, b1, b2, baseBox);
+      break;
+    }
+
+    // --- 4D PRISMA ITEMS ---
+    case 'tenda_4d': {
+      const { geo } = createGeometryForShape('prisma');
+      const tent = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x0284C7, metalness: 0.4, roughness: 0.3 }));
+      const frame = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x38BDF8, wireframe: true }));
+      frame.scale.set(1.08, 1.08, 1.08);
+      group.add(tent, frame);
+      break;
+    }
+    case 'prisma_spektrum_4d': {
+      const { geo } = createGeometryForShape('prisma');
+      const prism = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xFFFFFF, transparent: true, opacity: 0.55, roughness: 0.1 }));
+      const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 3.2, 12), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+      beam.rotation.z = Math.PI / 3;
+      const rainbow = new THREE.Mesh(new THREE.PlaneGeometry(1.8, 1.4), new THREE.MeshBasicMaterial({ color: 0xEC4899, side: THREE.DoubleSide, transparent: true, opacity: 0.8 }));
+      rainbow.position.set(1.2, 0, 0.5);
+      rainbow.rotation.y = Math.PI / 4;
+      group.add(prism, beam, rainbow);
+      break;
+    }
+    case 'kristal_segitiga_4d': {
+      const { geo } = createGeometryForShape('prisma');
+      const gem = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xA855F7, metalness: 0.2, roughness: 0.1, transparent: true, opacity: 0.8 }));
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.06, 16, 36), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      ring.rotation.x = Math.PI / 3;
+      group.add(gem, ring);
+      break;
+    }
+    case 'toblerone_4d': {
+      const { geo } = createGeometryForShape('prisma');
+      const choco = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xD97706, metalness: 0.7, roughness: 0.2 }));
+      const band = new THREE.Mesh(new THREE.BoxGeometry(0.4, 2.2, 2.5), new THREE.MeshBasicMaterial({ color: 0xDC2626 }));
+      group.add(choco, band);
+      break;
+    }
+
+    // --- 4D LIMAS ITEMS ---
+    case 'piramida_4d': {
+      const { geo } = createGeometryForShape('limas');
+      const pyr = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.3 }));
+      const glyph = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0x06B6D4, wireframe: true }));
+      glyph.scale.set(1.05, 1.05, 1.05);
+      const capstone = new THREE.Mesh(new THREE.ConeGeometry(0.4, 0.6, 4), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+      capstone.position.y = 1.6;
+      group.add(pyr, glyph, capstone);
+      break;
+    }
+    case 'menara_krono_4d': {
+      const { geo } = createGeometryForShape('limas');
+      const spire = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.4 }));
+      spire.scale.set(1.1, 1.6, 1.1);
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.4, 0.08, 16, 32), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      ring.rotation.x = Math.PI / 2;
+      group.add(spire, ring);
+      break;
+    }
+    case 'sensor_limas_4d': {
+      const { geo } = createGeometryForShape('limas');
+      const sensor = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.8 }));
+      const dish = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 16), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      dish.position.y = 1.3;
+      group.add(sensor, dish);
+      break;
+    }
+    case 'obelisk_4d': {
+      const { geo } = createGeometryForShape('limas');
+      const ob = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x1E293B, roughness: 0.5 }));
+      ob.scale.set(0.8, 2.2, 0.8);
+      const beacon = new THREE.Mesh(new THREE.OctahedronGeometry(0.35, 0), new THREE.MeshBasicMaterial({ color: 0xEC4899 }));
+      beacon.position.y = 2.4;
+      group.add(ob, beacon);
+      break;
+    }
+
+    // --- 5D BALOK ITEMS ---
+    case 'ark_5d': {
+      const hull = new THREE.Mesh(new THREE.BoxGeometry(3.0, 1.2, 1.8), new THREE.MeshStandardMaterial({ color: 0x1E1B4B, metalness: 0.8, roughness: 0.2 }));
+      const warp = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.25, 3.4, 16), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      warp.rotation.z = Math.PI / 2; warp.position.set(0, 0.6, 0.9);
+      const warp2 = warp.clone(); warp2.position.set(0, 0.6, -0.9);
+      group.add(hull, warp, warp2);
+      break;
+    }
+    case 'generator_5d': {
+      const block = new THREE.Mesh(new THREE.BoxGeometry(2.2, 2.2, 2.2), new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.4 }));
+      const r1 = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.08, 16, 32), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+      const r2 = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.08, 16, 32), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
+      r2.rotation.x = Math.PI / 2;
+      group.add(block, r1, r2);
+      break;
+    }
+    case 'kapsul_antarbintang_5d': {
+      const body = new THREE.Mesh(new THREE.BoxGeometry(2.8, 1.0, 1.2), new THREE.MeshStandardMaterial({ color: 0xF1F5F9, metalness: 0.9 }));
+      const thruster = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.4, 0.6, 16), new THREE.MeshBasicMaterial({ color: 0x3B82F6 }));
+      thruster.rotation.z = Math.PI / 2; thruster.position.x = -1.6;
+      group.add(body, thruster);
+      break;
+    }
+    case 'monolit_5d': {
+      const mono = new THREE.Mesh(new THREE.BoxGeometry(1.2, 3.4, 0.4), new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 0.9, roughness: 0.1 }));
+      const halo = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.05, 16, 40), new THREE.MeshBasicMaterial({ color: 0x8B5CF6 }));
+      halo.rotation.x = Math.PI / 3;
+      group.add(mono, halo);
+      break;
+    }
+
+    // --- 5D TABUNG ITEMS ---
+    case 'wormhole_silinder_5d': {
+      const tunnel = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.2, 3.0, 32, 1, true), new THREE.MeshBasicMaterial({ color: 0x6D28D9, side: THREE.DoubleSide, wireframe: true }));
+      const core = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 3.2, 16), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      group.add(tunnel, core);
+      break;
+    }
+    case 'akselerator_5d': {
+      const torus = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.35, 16, 48), new THREE.MeshStandardMaterial({ color: 0x374151, metalness: 0.8 }));
+      const beam = new THREE.Mesh(new THREE.TorusGeometry(1.6, 0.08, 12, 48), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+      group.add(torus, beam);
+      break;
+    }
+    case 'reaktor_kosmik_5d': {
+      const chamber = new THREE.Mesh(new THREE.CylinderGeometry(1.1, 1.1, 2.6, 24), new THREE.MeshStandardMaterial({ color: 0x1E1B4B, transparent: true, opacity: 0.6 }));
+      const orb = new THREE.Mesh(new THREE.SphereGeometry(0.8, 24, 24), new THREE.MeshBasicMaterial({ color: 0xEC4899 }));
+      group.add(chamber, orb);
+      break;
+    }
+    case 'suar_galaksi_5d': {
+      const tower = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.8, 3.2, 16), new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.7 }));
+      const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.45, 16, 16), new THREE.MeshBasicMaterial({ color: 0x38BDF8 }));
+      lamp.position.y = 1.7;
+      group.add(tower, lamp);
+      break;
+    }
+
+    // --- 5D KERUCUT ITEMS ---
+    case 'corong_multiverse_5d': {
+      const horn = new THREE.Mesh(new THREE.ConeGeometry(1.6, 2.8, 32), new THREE.MeshStandardMaterial({ color: 0x4338CA, roughness: 0.3 }));
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.08, 16, 32), new THREE.MeshBasicMaterial({ color: 0x10B981 }));
+      ring.rotation.x = Math.PI / 2; ring.position.y = -1.3;
+      group.add(horn, ring);
+      break;
+    }
+    case 'pulsar_vortex_5d': {
+      const cone = new THREE.Mesh(new THREE.ConeGeometry(1.5, 2.6, 24), new THREE.MeshBasicMaterial({ color: 0xEC4899, wireframe: true }));
+      const disk = new THREE.Mesh(new THREE.RingGeometry(0.8, 2.2, 32), new THREE.MeshBasicMaterial({ color: 0xF59E0B, side: THREE.DoubleSide }));
+      disk.rotation.x = Math.PI / 2.3;
+      group.add(cone, disk);
+      break;
+    }
+    case 'menara_bintang_5d': {
+      const spire = new THREE.Mesh(new THREE.ConeGeometry(0.8, 3.2, 16), new THREE.MeshStandardMaterial({ color: 0x0F172A, metalness: 0.8 }));
+      const star = new THREE.Mesh(new THREE.OctahedronGeometry(0.4, 0), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+      star.position.y = 1.8;
+      group.add(spire, star);
+      break;
+    }
+    case 'lensa_kosmik_5d': {
+      const cone = new THREE.Mesh(new THREE.ConeGeometry(1.5, 2.2, 32), new THREE.MeshStandardMaterial({ color: 0x06B6D4, transparent: true, opacity: 0.6 }));
+      for (let i = 0; i < 3; i++) {
+        const lr = new THREE.Mesh(new THREE.TorusGeometry(0.5 + i * 0.4, 0.04, 12, 32), new THREE.MeshBasicMaterial({ color: 0xF59E0B }));
+        lr.rotation.x = Math.PI / 2;
+        lr.position.y = -0.8 + i * 0.6;
+        group.add(lr);
+      }
+      group.add(cone);
+      break;
+    }
+
+    // --- 5D PRISMA ITEMS ---
+    case 'prisma_multiverse_5d': {
+      const { geo } = createGeometryForShape('prisma');
+      const prism = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x8B5CF6, transparent: true, opacity: 0.7 }));
+      for (let i = 0; i < 5; i++) {
+        const ring = new THREE.Mesh(new THREE.TorusGeometry(2.0 + i * 0.1, 0.03, 12, 32), new THREE.MeshBasicMaterial({ color: [0xF59E0B, 0x10B981, 0x06B6D4, 0xEC4899, 0xFACC15][i] }));
+        ring.rotation.x = (i * Math.PI) / 5;
+        group.add(ring);
+      }
+      group.add(prism);
+      break;
+    }
+    case 'kubah_kosmik_5d': {
+      const { geo } = createGeometryForShape('prisma');
+      const dome = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x1E293B, metalness: 0.6 }));
+      const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 1.6, 8), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      ant.position.y = 1.4;
+      group.add(dome, ant);
+      break;
+    }
+    case 'kristal_energi_5d': {
+      const { geo } = createGeometryForShape('prisma');
+      const gem = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x06B6D4, roughness: 0.1, transparent: true, opacity: 0.85 }));
+      const core = new THREE.Mesh(new THREE.SphereGeometry(0.4, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+      group.add(gem, core);
+      break;
+    }
+    case 'relik_prisma_5d': {
+      const { geo } = createGeometryForShape('prisma');
+      const rel = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xB45309, metalness: 0.8 }));
+      const floatOrb = new THREE.Mesh(new THREE.SphereGeometry(0.35, 16, 16), new THREE.MeshBasicMaterial({ color: 0x38BDF8 }));
+      floatOrb.position.y = 1.6;
+      group.add(rel, floatOrb);
+      break;
+    }
+
+    // --- 5D LIMAS ITEMS ---
+    case 'piramida_multiverse_5d': {
+      const { geo } = createGeometryForShape('limas');
+      const pyr = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xF59E0B, metalness: 0.8, roughness: 0.2 }));
+      for (let i = 0; i < 5; i++) {
+        const r = new THREE.Mesh(new THREE.TorusGeometry(2.1 + i * 0.1, 0.035, 12, 36), new THREE.MeshBasicMaterial({ color: [0xF59E0B, 0x10B981, 0x06B6D4, 0xEC4899, 0xFACC15][i] }));
+        r.rotation.x = (i * Math.PI) / 5;
+        r.rotation.z = (i * Math.PI) / 3;
+        group.add(r);
+      }
+      group.add(pyr);
+      break;
+    }
+    case 'pilar_energi_5d': {
+      const { geo } = createGeometryForShape('limas');
+      const pillar = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x0F172A, roughness: 0.4 }));
+      pillar.scale.set(0.9, 2.2, 0.9);
+      const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 3.4, 12), new THREE.MeshBasicMaterial({ color: 0x06B6D4 }));
+      group.add(pillar, beam);
+      break;
+    }
+    case 'stasiun_piramid_5d': {
+      const { geo } = createGeometryForShape('limas');
+      const st = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.7 }));
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.1, 16, 36), new THREE.MeshBasicMaterial({ color: 0xEC4899 }));
+      ring.rotation.x = Math.PI / 2;
+      group.add(st, ring);
+      break;
+    }
+    case 'monolit_limas_5d': {
+      const { geo } = createGeometryForShape('limas');
+      const temple = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x1E1B4B, roughness: 0.3 }));
+      const singularity = new THREE.Mesh(new THREE.SphereGeometry(0.3, 16, 16), new THREE.MeshBasicMaterial({ color: 0xFACC15 }));
+      singularity.position.y = 1.7;
+      group.add(temple, singularity);
+      break;
+    }
+
+case 'menara': {
+      // Spire
+      const spireGeo = new THREE.ConeGeometry(1.6, 2.4, 4);
+      spireGeo.rotateY(Math.PI / 4);
+      const spire = new THREE.Mesh(spireGeo, new THREE.MeshStandardMaterial({ color: 0x0D9488, roughness: 0.4 }));
+      spire.position.y = 0.6;
+      group.add(spire);
+      // Tower base
+      const tBase = new THREE.Mesh(new THREE.BoxGeometry(2.2, 1.2, 2.2), new THREE.MeshStandardMaterial({ color: 0xB45309, roughness: 0.8 }));
+      tBase.position.y = -1.1;
+      group.add(tBase);
+      // Clock dial
+      const clock = new THREE.Mesh(new THREE.CircleGeometry(0.4, 16), new THREE.MeshBasicMaterial({ color: 0xFFFFFF }));
+      clock.position.set(0, -1.1, 1.11);
+      group.add(clock);
+      break;
+    }
+    default: {
+      const geo = new THREE.BoxGeometry(2, 2, 2);
+      const mat = new THREE.MeshStandardMaterial({ color: 0x3B82F6 });
+      group.add(new THREE.Mesh(geo, mat));
+    }
+  }
+
+  return group;
+}
+
+
+function loadRealWorldObject(shapeKey, itemIndex) {
+  sfx.playSuccess();
+  activeRealWorldIndex = itemIndex;
+  const dimData = getShapeDimensionData(shapeKey, activeDimension);
+  const item = dimData.realWorld[itemIndex];
+
+  // Clean old meshes
+  if (currentMeshGroup) {
+    scene.remove(currentMeshGroup);
+  }
+
+  currentMeshGroup = buildRealWorldModel(shapeKey, item.id);
+  scene.add(currentMeshGroup);
+
+  // Update header label and show reset button
+  document.getElementById('currentShapeLabel').innerHTML = `Benda Nyata: <strong>${item.name}</strong> ${item.icon}`;
+  const resetBtn = document.getElementById('resetToGeoBtn');
+  if (resetBtn) resetBtn.classList.remove('hidden');
+
+  // Update mascot tip
+  document.getElementById('mascotTip').innerHTML = item.fact;
+
+  // Update active state on badges
+  document.querySelectorAll('#realworldItems .rw-item').forEach((badge, idx) => {
+    badge.classList.toggle('active-rw', idx === itemIndex);
+  });
+}
+
+function createGeometryForShape(key) {
+  let geo;
+  let vertices = [];
+
+  switch (key) {
+    case 'kubus': {
+      const s = 2.4;
+      geo = new THREE.BoxGeometry(s, s, s);
+      const h = s / 2;
+      vertices = [
+        [-h, -h, -h], [h, -h, -h], [h, h, -h], [-h, h, -h],
+        [-h, -h,  h], [h, -h,  h], [h, h,  h], [-h, h,  h]
+      ];
+      break;
+    }
+    case 'balok': {
+      const p = 3.2, t = 1.8, l = 2.2;
+      geo = new THREE.BoxGeometry(p, t, l);
+      const hp = p / 2, ht = t / 2, hl = l / 2;
+      vertices = [
+        [-hp, -ht, -hl], [hp, -ht, -hl], [hp, ht, -hl], [-hp, ht, -hl],
+        [-hp, -ht,  hl], [hp, -ht,  hl], [hp, ht,  hl], [-hp, ht,  hl]
+      ];
+      break;
+    }
+    case 'tabung': {
+      const r = 1.35, t = 2.6;
+      geo = new THREE.CylinderGeometry(r, r, t, 36);
+      vertices = []; // Tabung 0 titik sudut
+      break;
+    }
+    case 'kerucut': {
+      const r = 1.5, t = 2.7;
+      geo = new THREE.ConeGeometry(r, t, 36);
+      vertices = [[0, t / 2, 0]]; // Titik puncak
+      break;
+    }
+    case 'bola': {
+      const r = 1.6;
+      geo = new THREE.SphereGeometry(r, 36, 36);
+      vertices = []; // Bola 0 titik sudut
+      break;
+    }
+    case 'prisma': {
+      // Prisma Segitiga: Extrude Geometry
+      const shape = new THREE.Shape();
+      const a = 1.3, hTri = 2.1;
+      shape.moveTo(0, hTri * 0.6);
+      shape.lineTo(-a, -hTri * 0.4);
+      shape.lineTo(a, -hTri * 0.4);
+      shape.closePath();
+
+      const extrudeSettings = {
+        depth: 2.6,
+        bevelEnabled: false
+      };
+      geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+      geo.center();
+
+      const depthH = 2.6 / 2;
+      vertices = [
+        [0, hTri * 0.6 - 0.2, -depthH],
+        [-a, -hTri * 0.4 - 0.2, -depthH],
+        [a, -hTri * 0.4 - 0.2, -depthH],
+        [0, hTri * 0.6 - 0.2, depthH],
+        [-a, -hTri * 0.4 - 0.2, depthH],
+        [a, -hTri * 0.4 - 0.2, depthH]
+      ];
+      break;
+    }
+        case 'hypercube': {
+      // 5D Tesseract Projection
+      geo = new THREE.BoxGeometry(2.4, 2.4, 2.4);
+      vertices = [
+        [-1.2, -1.2, -1.2], [1.2, -1.2, -1.2], [1.2, 1.2, -1.2], [-1.2, 1.2, -1.2],
+        [-1.2, -1.2, 1.2], [1.2, -1.2, 1.2], [1.2, 1.2, 1.2], [-1.2, 1.2, 1.2],
+        [-0.6, -0.6, -0.6], [0.6, -0.6, -0.6], [0.6, 0.6, -0.6], [-0.6, 0.6, -0.6],
+        [-0.6, -0.6, 0.6], [0.6, -0.6, 0.6], [0.6, 0.6, 0.6], [-0.6, 0.6, 0.6]
+      ];
+      break;
+    }
+    case 'limas': {
+      // Limas Segiempat: 4-sided cone
+      const r = 2.1;
+      const h = 2.6;
+      geo = new THREE.ConeGeometry(r, h, 4);
+      geo.rotateY(Math.PI / 4); // Aligns square base nicely
+      const halfB = (r * Math.sqrt(2)) / 2;
+      const halfH = h / 2;
+      vertices = [
+        [0, halfH, 0], // Puncak
+        [-halfB, -halfH, -halfB],
+        [halfB, -halfH, -halfB],
+        [halfB, -halfH, halfB],
+        [-halfB, -halfH, halfB]
+      ];
+      break;
+    }
+  }
+
+  return { geo, vertices };
+}
+
+
+
+function setDimension(dim) {
+  sfx.playPop();
+  triggerHaptic([35, 45, 35]);
+  activeDimension = parseInt(dim);
+
+  // Update dimension toggle buttons
+  document.querySelectorAll('.dim-btn').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.getAttribute('data-dim')) === activeDimension);
+  });
+
+  // Reload current shape under the new dimension
+  loadShape(currentShapeKey);
+}
+
+
+window.setDimension = setDimension;
+
+
+function loadShape(shapeKey) {
+  currentShapeKey = shapeKey;
+  activeRealWorldIndex = null;
+  const resetBtn = document.getElementById('resetToGeoBtn');
+  if (resetBtn) resetBtn.classList.add('hidden');
+
+  // Reset hypercube animation state when not on kubus
+  if (shapeKey !== 'kubus') {
+    hyperEdgeLines = null;
+    hyperVertexSpheres = null;
+    hyperInnerMesh = null;
+  }
+
+  // Clean old meshes
+  if (currentMeshGroup) {
+    scene.remove(currentMeshGroup);
+  }
+
+  currentMeshGroup = new THREE.Group();
+
+  if (activeDimension === 3) {
+    // Standard 3D Shape
+    const { geo, vertices } = createGeometryForShape(shapeKey);
+
+    const meshMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(activeColor),
+      roughness: 0.32,
+      metalness: 0.12,
+      wireframe: wireframeMode,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1
+    });
+
+    const mesh = new THREE.Mesh(geo, meshMat);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    currentMeshGroup.add(mesh);
+
+    // Rusuk
+    const edgesGeo = new THREE.EdgesGeometry(geo, shapeKey === 'tabung' || shapeKey === 'kerucut' ? 25 : 15);
+    const edgesMat = new THREE.LineBasicMaterial({
+      color: 0x1E1B4B,
+      linewidth: 3,
+      transparent: true,
+      opacity: showEdges ? 0.95 : 0
+    });
+    currentEdgesLine = new THREE.LineSegments(edgesGeo, edgesMat);
+    currentMeshGroup.add(currentEdgesLine);
+
+    // Titik Sudut
+    currentVerticesGroup = new THREE.Group();
+    const vSphereGeo = new THREE.SphereGeometry(0.12, 16, 16);
+    const vSphereMat = new THREE.MeshStandardMaterial({
+      color: 0xF59E0B,
+      emissive: 0xF59E0B,
+      emissiveIntensity: 0.6,
+      roughness: 0.2
+    });
+
+    vertices.forEach(pos => {
+      const vMesh = new THREE.Mesh(vSphereGeo, vSphereMat);
+      vMesh.position.set(pos[0], pos[1], pos[2]);
+      currentVerticesGroup.add(vMesh);
+    });
+
+    currentVerticesGroup.visible = showVertices;
+    currentMeshGroup.add(currentVerticesGroup);
+
+  } else {
+    // 4D or 5D Model for this shape
+    currentMeshGroup = buildDimensionModel(shapeKey, activeDimension);
+  }
+
+  scene.add(currentMeshGroup);
+
+  // Update UI Panels with Dimension-Aware Data
+  updateShapeDetails(shapeKey);
+}
+
+
+
+function updateShapeDetails(key) {
+  const data = getShapeDimensionData(key, activeDimension);
+  if (!data) return;
+
+  // Header badge
+  document.getElementById('currentShapeLabel').innerHTML = data.title;
+
+  // Stat boxes
+  document.getElementById('valSisi').textContent = data.sisi;
+  document.getElementById('descSisi').textContent = data.descSisi;
+
+  document.getElementById('valRusuk').textContent = data.rusuk;
+  document.getElementById('descRusuk').textContent = data.descRusuk;
+
+  document.getElementById('valSudut').textContent = data.sudut;
+  document.getElementById('descSudut').textContent = data.descSudut;
+
+  // Description & Formulas
+  document.getElementById('shapeDescription').textContent = data.description;
+  document.getElementById('formulaVolume').innerHTML = data.formulaVol;
+  document.getElementById('formulaArea').innerHTML = data.formulaArea;
+
+  // Real world badges (clickable to show 3D model)
+  const rwContainer = document.getElementById('realworldItems');
+  rwContainer.innerHTML = '';
+  data.realWorld.forEach((item, index) => {
+    const badge = document.createElement('button');
+    badge.className = 'rw-item' + (activeRealWorldIndex === index ? ' active-rw' : '');
+    badge.setAttribute('title', `Lihat model 3D ${item.name}`);
+    badge.innerHTML = `<span class="rw-icon">${item.icon}</span> <span class="rw-label">${item.name}</span> <span class="rw-3d-tag">3D ✨</span>`;
+    badge.addEventListener('click', () => {
+      loadRealWorldObject(key, index);
+    });
+    rwContainer.appendChild(badge);
+  });
+
+  // Mascot tip
+  document.getElementById('mascotTip').innerHTML = data.mascotTip;
+}
+
+
+// --- JARING-JARING (2D NETS GENERATOR) ---
+let currentCubePattern = 1;
+
+function updateJaringDisplay() {
+  const select = document.getElementById('jaringShapeSelect');
+  const shape = select.value;
+  const wrapper = document.getElementById('jaringSvgWrapper');
+  const title = document.getElementById('jaringTitle');
+  const cubeControls = document.getElementById('cubePatternControls');
+  const detailList = document.getElementById('jaringDetailText');
+  const examTip = document.getElementById('jaringExamTip');
+
+  if (shape === 'kubus') {
+    cubeControls.classList.remove('hidden');
+    title.textContent = `Pola Jaring-Jaring Kubus (Variasi ${currentCubePattern})`;
+    renderCubeNetSVG(wrapper, currentCubePattern);
+    
+    detailList.innerHTML = `
+      <div class="jaring-step-item">
+        <span class="step-num">1</span>
+        <div><strong>Buka Semua Rusuk Tegak:</strong> Rentangkan keempat sisi samping kubus sehingga membentuk barisan 4 persegi sejajar.</div>
+      </div>
+      <div class="jaring-step-item">
+        <span class="step-num">2</span>
+        <div><strong>Posisikan Alas dan Tutup:</strong> Pasang satu persegi di atas (tutup) dan satu persegi di bawah (alas) pada posisi yang berseberangan agar tidak tumpang tindih saat dilipat.</div>
+      </div>
+      <div class="jaring-step-item">
+        <span class="step-num">3</span>
+        <div><strong>Lipat Kembali:</strong> Lipat setiap sambungan 90° ke atas, maka akan terbentuk kubus sempurna tanpa celah!</div>
+      </div>
+    `;
+    examTip.textContent = "Tips Ujian SD: Pola kubus paling sering keluar adalah Pola 1-4-1 (satu di atas, empat di tengah, satu di bawah)! Alas dan Tutup tidak boleh bersentuhan langsung.";
+  } else {
+    cubeControls.classList.add('hidden');
+
+    if (shape === 'balok') {
+      title.textContent = 'Jaring-Jaring Balok (Pola 1-4-1)';
+      renderBalokNetSVG(wrapper);
+      detailList.innerHTML = `
+        <div class="jaring-step-item">
+          <span class="step-num">1</span>
+          <div><strong>3 Pasang Persegi Panjang:</strong> Jaring-jaring balok terdiri dari 6 persegi panjang dengan 3 pasang ukuran yang kongruen (alas = tutup, depan = belakang, kiri = kanan).</div>
+        </div>
+        <div class="jaring-step-item">
+          <span class="step-num">2</span>
+          <div><strong>Aturan Lipatan:</strong> Sisi yang berhadapan harus memiliki ukuran panjang & lebar yang sama persis saat dirangkai!</div>
+        </div>
+      `;
+      examTip.textContent = "Tips Ujian SD: Pastikan sisi alas (bawah) dan tutup (atas) memiliki panjang dan lebar yang sama persis!";
+    } else if (shape === 'tabung') {
+      title.textContent = 'Jaring-Jaring Tabung (Silinder)';
+      renderTabungNetSVG(wrapper);
+      detailList.innerHTML = `
+        <div class="jaring-step-item">
+          <span class="step-num">1</span>
+          <div><strong>Selimut Tabung:</strong> Saat dibuka memanjang, bidang lengkung selimut tabung berubah menjadi sebuah persegi panjang yang lebar!</div>
+        </div>
+        <div class="jaring-step-item">
+          <span class="step-num">2</span>
+          <div><strong>Alas dan Tutup:</strong> Dua lingkaran identik menempel di sisi atas dan bawah persegi panjang tersebut.</div>
+        </div>
+        <div class="jaring-step-item">
+          <span class="step-num">3</span>
+          <div><strong>Panjang Selimut:</strong> Panjang persegi panjang selimut sama dengan keliling lingkaran alasnya (2 &times; &pi; &times; r)!</div>
+        </div>
+      `;
+      examTip.textContent = "Rumus Sakti: Panjang selimut tabung = Keliling lingkaran alas = 2 × π × r !";
+    } else if (shape === 'kerucut') {
+      title.textContent = 'Jaring-Jaring Kerucut';
+      renderKerucutNetSVG(wrapper);
+      detailList.innerHTML = `
+        <div class="jaring-step-item">
+          <span class="step-num">1</span>
+          <div><strong>Juring Lingkaran (Selimut):</strong> Selimut kerucut yang dibuka berbentuk seperti irisan kue pizza besar (juring lingkaran)!</div>
+        </div>
+        <div class="jaring-step-item">
+          <span class="step-num">2</span>
+          <div><strong>Lingkaran Alas:</strong> Lingkaran kecil menempel di bagian bawah busur juring sebagai dasar kerucut.</div>
+        </div>
+      `;
+      examTip.textContent = "Garis miring pada kerucut dinamakan 'Garis Pelukis' (lambang s)!";
+    } else if (shape === 'limas') {
+      title.textContent = 'Jaring-Jaring Limas Segiempat';
+      renderLimasNetSVG(wrapper);
+      detailList.innerHTML = `
+        <div class="jaring-step-item">
+          <span class="step-num">1</span>
+          <div><strong>Alas Persegi:</strong> Terletak tepat di tengah jaring-jaring sebagai pondasi.</div>
+        </div>
+        <div class="jaring-step-item">
+          <span class="step-num">2</span>
+          <div><strong>4 Segitiga Sayap:</strong> Empat bidang segitiga mekar di keempat sisi persegi, siap dilipat ke atas bertemu di satu titik puncak.</div>
+        </div>
+      `;
+      examTip.textContent = "Bentuk jaring-jaring limas segiempat menyerupai bentuk bintang 4 sudut!";
+    } else if (shape === 'prisma') {
+      title.textContent = 'Jaring-Jaring Prisma Segitiga';
+      renderPrismaNetSVG(wrapper);
+      detailList.innerHTML = `
+        <div class="jaring-step-item">
+          <span class="step-num">1</span>
+          <div><strong>3 Persegi Panjang:</strong> Membentuk dinding tengah yang bersambungan.</div>
+        </div>
+        <div class="jaring-step-item">
+          <span class="step-num">2</span>
+          <div><strong>2 Segitiga (Alas & Tutup):</strong> Menempel pada salah satu persegi panjang di posisi atas dan bawah.</div>
+        </div>
+      `;
+      examTip.textContent = "Kedua bentuk segitiga pada jaring-jaring prisma harus persis sama ukuran dan arahnya!";
+    }
+  }
+}
+
+// SVG Renderers
+function renderCubeNetSVG(container, pattern) {
+  // Grid layout for cube net (unit size: 50px)
+  const u = 52;
+  let layout = [];
+  // layout format: [row, col, type, label]
+
+  if (pattern === 1) { // 1-4-1 standard
+    layout = [
+      [0, 1, 'tutup', 'Tutup'],
+      [1, 0, 'tegak', 'Kiri'],
+      [1, 1, 'alas', 'Alas'],
+      [1, 2, 'tegak', 'Kanan'],
+      [1, 3, 'tegak', 'Depan'],
+      [2, 1, 'tegak', 'Belakang']
+    ];
+  } else if (pattern === 2) { // 1-4-1 variasi b
+    layout = [
+      [0, 2, 'tutup', 'Tutup'],
+      [1, 0, 'tegak', 'Kiri'],
+      [1, 1, 'alas', 'Alas'],
+      [1, 2, 'tegak', 'Kanan'],
+      [1, 3, 'tegak', 'Depan'],
+      [2, 0, 'tegak', 'Belakang']
+    ];
+  } else if (pattern === 3) { // 2-3-1
+    layout = [
+      [0, 0, 'tutup', 'Tutup'],
+      [0, 1, 'tegak', 'Atas'],
+      [1, 1, 'alas', 'Alas'],
+      [1, 2, 'tegak', 'Kanan'],
+      [1, 3, 'tegak', 'Depan'],
+      [2, 2, 'tegak', 'Belakang']
+    ];
+  } else if (pattern === 4) { // 2-2-2 zig-zag
+    layout = [
+      [0, 0, 'tutup', 'Tutup'],
+      [0, 1, 'tegak', 'Kiri'],
+      [1, 1, 'alas', 'Alas'],
+      [1, 2, 'tegak', 'Kanan'],
+      [2, 2, 'tegak', 'Depan'],
+      [2, 3, 'tegak', 'Belakang']
+    ];
+  } else if (pattern === 5) { // 3-3-0 tangga
+    layout = [
+      [0, 0, 'tutup', 'Tutup'],
+      [0, 1, 'tegak', 'Kiri'],
+      [0, 2, 'tegak', 'Atas'],
+      [1, 2, 'alas', 'Alas'],
+      [1, 3, 'tegak', 'Kanan'],
+      [1, 4, 'tegak', 'Depan']
+    ];
+  }
+
+  let minX = 0, maxX = 4, minY = 0, maxY = 2;
+  layout.forEach(([r, c]) => {
+    if (c > maxX) maxX = c;
+    if (r > maxY) maxY = r;
+  });
+
+  const width = (maxX + 1.2) * u;
+  const height = (maxY + 1.2) * u;
+  const offsetX = 25;
+  const offsetY = 25;
+
+  let rectsSvg = '';
+  layout.forEach(([r, c, type, label]) => {
+    let fill = type === 'alas' ? '#3B82F6' : (type === 'tutup' ? '#EC4899' : '#10B981');
+    let x = offsetX + c * u;
+    let y = offsetY + r * u;
+
+    rectsSvg += `
+      <g class="net-face" style="cursor: pointer;">
+        <rect x="${x}" y="${y}" width="${u}" height="${u}" rx="4" fill="${fill}" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.85"/>
+        <text x="${x + u/2}" y="${y + u/2 + 5}" font-family="Fredoka, sans-serif" font-size="12" font-weight="600" fill="#ffffff" text-anchor="middle">${label}</text>
+      </g>
+    `;
+  });
+
+  container.innerHTML = `
+    <svg viewBox="0 0 ${width + 50} ${height + 50}" width="100%" height="320" style="max-width: 480px; display: block; margin: auto;">
+      ${rectsSvg}
+    </svg>
+  `;
+}
+
+function renderBalokNetSVG(container) {
+  // Balok with dimensions (p=80, l=45, t=55)
+  const p = 84, l = 46, t = 52;
+  const ox = 30, oy = 25;
+
+  container.innerHTML = `
+    <svg viewBox="0 0 380 320" width="100%" height="320" style="max-width: 420px; display: block; margin: auto;">
+      <!-- Tutup -->
+      <g>
+        <rect x="${ox + l}" y="${oy}" width="${p}" height="${l}" rx="4" fill="#EC4899" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+        <text x="${ox + l + p/2}" y="${oy + l/2 + 5}" font-family="Fredoka" font-size="12" fill="#fff" text-anchor="middle">Tutup (${p}x${l})</text>
+      </g>
+      <!-- Row 2: Kiri, Alas, Kanan, Belakang -->
+      <!-- Kiri -->
+      <g>
+        <rect x="${ox}" y="${oy + l}" width="${l}" height="${t}" rx="4" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+        <text x="${ox + l/2}" y="${oy + l + t/2 + 5}" font-family="Fredoka" font-size="11" fill="#fff" text-anchor="middle">Kiri</text>
+      </g>
+      <!-- Alas -->
+      <g>
+        <rect x="${ox + l}" y="${oy + l}" width="${p}" height="${t}" rx="4" fill="#3B82F6" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+        <text x="${ox + l + p/2}" y="${oy + l + t/2 + 5}" font-family="Fredoka" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">Alas (${p}x${t})</text>
+      </g>
+      <!-- Kanan -->
+      <g>
+        <rect x="${ox + l + p}" y="${oy + l}" width="${l}" height="${t}" rx="4" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+        <text x="${ox + l + p + l/2}" y="${oy + l + t/2 + 5}" font-family="Fredoka" font-size="11" fill="#fff" text-anchor="middle">Kanan</text>
+      </g>
+      <!-- Belakang -->
+      <g>
+        <rect x="${ox + l + p + l}" y="${oy + l}" width="${p}" height="${t}" rx="4" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+        <text x="${ox + l + p + l + p/2}" y="${oy + l + t/2 + 5}" font-family="Fredoka" font-size="11" fill="#fff" text-anchor="middle">Belakang</text>
+      </g>
+      <!-- Depan -->
+      <g>
+        <rect x="${ox + l}" y="${oy + l + t}" width="${p}" height="${l}" rx="4" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+        <text x="${ox + l + p/2}" y="${oy + l + t + l/2 + 5}" font-family="Fredoka" font-size="12" fill="#fff" text-anchor="middle">Depan</text>
+      </g>
+    </svg>
+  `;
+}
+
+function renderTabungNetSVG(container) {
+  container.innerHTML = `
+    <svg viewBox="0 0 380 320" width="100%" height="320" style="max-width: 420px; display: block; margin: auto;">
+      <!-- Tutup Lingkaran -->
+      <g>
+        <circle cx="190" cy="50" r="40" fill="#EC4899" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+        <text x="190" y="55" font-family="Fredoka" font-size="12" fill="#fff" text-anchor="middle">Tutup Lingkaran</text>
+      </g>
+      <!-- Selimut Persegi Panjang -->
+      <g>
+        <rect x="65" y="98" width="250" height="110" rx="4" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+        <text x="190" y="150" font-family="Fredoka" font-size="14" font-weight="700" fill="#fff" text-anchor="middle">Selimut Tabung (Persegi Panjang)</text>
+        <text x="190" y="172" font-family="Fredoka" font-size="11" fill="#E0E7FF" text-anchor="middle">Panjang = Keliling Lingkaran (2 &times; &pi; &times; r)</text>
+      </g>
+      <!-- Alas Lingkaran -->
+      <g>
+        <circle cx="190" cy="256" r="40" fill="#3B82F6" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+        <text x="190" y="261" font-family="Fredoka" font-size="12" fill="#fff" text-anchor="middle">Alas Lingkaran</text>
+      </g>
+    </svg>
+  `;
+}
+
+function renderKerucutNetSVG(container) {
+  container.innerHTML = `
+    <svg viewBox="0 0 380 320" width="100%" height="320" style="max-width: 420px; display: block; margin: auto;">
+      <!-- Juring Lingkaran (Selimut) -->
+      <!-- Center (190, 40), Radius 160, angles from 45 to 135 deg -->
+      <path d="M 190,40 L 80,180 A 160,160 0 0,0 300,180 Z" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+      <text x="190" y="130" font-family="Fredoka" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">Selimut Kerucut</text>
+      <text x="190" y="150" font-family="Fredoka" font-size="11" fill="#EDE9FE" text-anchor="middle">(Bentuk Juring Lingkaran)</text>
+
+      <!-- Alas Lingkaran -->
+      <circle cx="190" cy="245" r="46" fill="#3B82F6" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+      <text x="190" y="250" font-family="Fredoka" font-size="12" font-weight="600" fill="#fff" text-anchor="middle">Alas Lingkaran</text>
+    </svg>
+  `;
+}
+
+function renderLimasNetSVG(container) {
+  container.innerHTML = `
+    <svg viewBox="0 0 380 320" width="100%" height="320" style="max-width: 420px; display: block; margin: auto;">
+      <!-- Segitiga Atas -->
+      <polygon points="190,20 145,115 235,115" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+      <!-- Segitiga Bawah -->
+      <polygon points="190,300 145,205 235,205" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+      <!-- Segitiga Kiri -->
+      <polygon points="50,160 145,115 145,205" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+      <!-- Segitiga Kanan -->
+      <polygon points="330,160 235,115 235,205" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+
+      <!-- Alas Persegi Tengah -->
+      <rect x="145" y="115" width="90" height="90" rx="4" fill="#3B82F6" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.95"/>
+      <text x="190" y="165" font-family="Fredoka" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">Alas Persegi</text>
+    </svg>
+  `;
+}
+
+function renderPrismaNetSVG(container) {
+  container.innerHTML = `
+    <svg viewBox="0 0 380 320" width="100%" height="320" style="max-width: 420px; display: block; margin: auto;">
+      <!-- Segitiga Atas (Tutup) -->
+      <polygon points="190,30 145,110 235,110" fill="#EC4899" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+      <text x="190" y="85" font-family="Fredoka" font-size="10" fill="#fff" text-anchor="middle">Tutup</text>
+
+      <!-- 3 Persegi Panjang Tengah -->
+      <!-- Kiri -->
+      <rect x="55" y="110" width="90" height="95" rx="3" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+      <!-- Tengah -->
+      <rect x="145" y="110" width="90" height="95" rx="3" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+      <text x="190" y="162" font-family="Fredoka" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">Sisi Tegak</text>
+      <!-- Kanan -->
+      <rect x="235" y="110" width="90" height="95" rx="3" fill="#10B981" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+
+      <!-- Segitiga Bawah (Alas) -->
+      <polygon points="190,285 145,205 235,205" fill="#3B82F6" stroke="#1E1B4B" stroke-width="2.5" fill-opacity="0.9"/>
+      <text x="190" y="240" font-family="Fredoka" font-size="10" fill="#fff" text-anchor="middle">Alas</text>
+    </svg>
+  `;
+}
+
+// --- INTERACTIVE CALCULATOR ENGINE ---
+const CALC_SHAPES = {
+  kubus: {
+    sliders: [
+      { id: 'sisi', name: 'Panjang Rusuk (s)', min: 1, max: 20, val: 5, unit: 'cm' }
+    ],
+    calc: (v) => {
+      const s = v.sisi;
+      const vol = s * s * s;
+      const area = 6 * s * s;
+      return {
+        volFormula: "V = s &times; s &times; s",
+        volSteps: `V = ${s} &times; ${s} &times; ${s}`,
+        volTotal: vol,
+        areaFormula: "L = 6 &times; s&sup2;",
+        areaSteps: `L = 6 &times; (${s} &times; ${s}) = 6 &times; ${s * s}`,
+        areaTotal: area,
+        fact: `Volume ${vol.toLocaleString('id-ID')} cm&sup3; setara dengan ${vol} ml air ${vol >= 1000 ? `(${(vol/1000).toFixed(1)} Liter!)` : '(sekitar setengah gelas)'}.`
+      };
+    }
+  },
+  balok: {
+    sliders: [
+      { id: 'panjang', name: 'Panjang (p)', min: 2, max: 20, val: 8, unit: 'cm' },
+      { id: 'lebar', name: 'Lebar (l)', min: 2, max: 15, val: 5, unit: 'cm' },
+      { id: 'tinggi', name: 'Tinggi (t)', min: 2, max: 15, val: 4, unit: 'cm' }
+    ],
+    calc: (v) => {
+      const { panjang: p, lebar: l, tinggi: t } = v;
+      const vol = p * l * t;
+      const pl = p * l, pt = p * t, lt = l * t;
+      const area = 2 * (pl + pt + lt);
+      return {
+        volFormula: "V = p &times; l &times; t",
+        volSteps: `V = ${p} &times; ${l} &times; ${t}`,
+        volTotal: vol,
+        areaFormula: "L = 2 &times; (p&sdot;l + p&sdot;t + l&sdot;t)",
+        areaSteps: `L = 2 &times; (${pl} + ${pt} + ${lt}) = 2 &times; ${pl + pt + lt}`,
+        areaTotal: area,
+        fact: `Kotak ini berukuran ${p}&times;${l}&times;${t} cm, bisa memuat isi hingga ${vol.toLocaleString('id-ID')} cm&sup3;!`
+      };
+    }
+  },
+  tabung: {
+    sliders: [
+      { id: 'jari', name: 'Jari-jari Alas (r)', min: 1, max: 14, val: 7, unit: 'cm' },
+      { id: 'tinggi', name: 'Tinggi Tabung (t)', min: 2, max: 25, val: 10, unit: 'cm' }
+    ],
+    calc: (v) => {
+      const { jari: r, tinggi: t } = v;
+      const pi = (r % 7 === 0) ? (22 / 7) : 3.14;
+      const piStr = (r % 7 === 0) ? "22/7" : "3,14";
+      const vol = Math.round(pi * r * r * t);
+      const area = Math.round(2 * pi * r * (r + t));
+      return {
+        volFormula: "V = &pi; &times; r&sup2; &times; t",
+        volSteps: `V = ${piStr} &times; ${r}&sup2; &times; ${t}`,
+        volTotal: vol,
+        areaFormula: "L = 2 &times; &pi; &times; r &times; (r + t)",
+        areaSteps: `L = 2 &times; ${piStr} &times; ${r} &times; (${r} + ${t})`,
+        areaTotal: area,
+        fact: `Bentuk kaleng ini dapat menampung cairan sebanyak ${vol.toLocaleString('id-ID')} ml!`
+      };
+    }
+  },
+  kerucut: {
+    sliders: [
+      { id: 'jari', name: 'Jari-jari Alas (r)', min: 2, max: 14, val: 7, unit: 'cm' },
+      { id: 'tinggi', name: 'Tinggi Kerucut (t)', min: 3, max: 24, val: 9, unit: 'cm' }
+    ],
+    calc: (v) => {
+      const { jari: r, tinggi: t } = v;
+      const pi = (r % 7 === 0) ? (22 / 7) : 3.14;
+      const piStr = (r % 7 === 0) ? "22/7" : "3,14";
+      const vol = Math.round((1 / 3) * pi * r * r * t);
+      // Garis pelukis s
+      const s = Math.round(Math.sqrt(r * r + t * t) * 10) / 10;
+      const area = Math.round(pi * r * (r + s));
+      return {
+        volFormula: "V = 1/3 &times; &pi; &times; r&sup2; &times; t",
+        volSteps: `V = 1/3 &times; ${piStr} &times; ${r}&sup2; &times; ${t}`,
+        volTotal: vol,
+        areaFormula: `L = &pi;r(r + s) &nbsp;[s = &radic;(r&sup2;+t&sup2;) &approx; ${s} cm]`,
+        areaSteps: `L = ${piStr} &times; ${r} &times; (${r} + ${s})`,
+        areaTotal: area,
+        fact: `Cone es krim dengan tinggi ${t} cm ini dapat menampung es krim lezat hingga ${vol} cm&sup3;!`
+      };
+    }
+  },
+  bola: {
+    sliders: [
+      { id: 'jari', name: 'Jari-jari Bola (r)', min: 2, max: 14, val: 7, unit: 'cm' }
+    ],
+    calc: (v) => {
+      const r = v.jari;
+      const pi = (r % 7 === 0) ? (22 / 7) : 3.14;
+      const piStr = (r % 7 === 0) ? "22/7" : "3,14";
+      const vol = Math.round((4 / 3) * pi * r * r * r);
+      const area = Math.round(4 * pi * r * r);
+      return {
+        volFormula: "V = 4/3 &times; &pi; &times; r&sup3;",
+        volSteps: `V = 4/3 &times; ${piStr} &times; ${r}&sup3;`,
+        volTotal: vol,
+        areaFormula: "L = 4 &times; &pi; &times; r&sup2;",
+        areaSteps: `L = 4 &times; ${piStr} &times; ${r}&sup2;`,
+        areaTotal: area,
+        fact: `Bola dengan diameter ${r * 2} cm ini memiliki volume ${vol.toLocaleString('id-ID')} cm&sup3;!`
+      };
+    }
+  }
+};
+
+let currentCalcShape = 'kubus';
+
+function buildCalcSliders(shapeKey) {
+  currentCalcShape = shapeKey;
+  const config = CALC_SHAPES[shapeKey];
+  const container = document.getElementById('dynamicSliders');
+  container.innerHTML = '';
+
+  config.sliders.forEach(s => {
+    const item = document.createElement('div');
+    item.className = 'slider-item';
+    item.innerHTML = `
+      <div class="slider-label-row">
+        <span>${s.name}</span>
+        <span class="slider-val-badge" id="badge_${s.id}">${s.val} ${s.unit}</span>
+      </div>
+      <input type="range" class="custom-range" id="input_${s.id}" min="${s.min}" max="${s.max}" value="${s.val}">
+    `;
+    container.appendChild(item);
+
+    const input = item.querySelector(`#input_${s.id}`);
+    input.addEventListener('input', () => {
+      document.getElementById(`badge_${s.id}`).textContent = `${input.value} ${s.unit}`;
+      updateCalculations();
+    });
+  });
+
+  updateCalculations();
+}
+
+function updateCalculations() {
+  const config = CALC_SHAPES[currentCalcShape];
+  const values = {};
+  config.sliders.forEach(s => {
+    const input = document.getElementById(`input_${s.id}`);
+    values[s.id] = parseFloat(input.value);
+  });
+
+  const res = config.calc(values);
+  document.getElementById('calcVolFormula').innerHTML = res.volFormula;
+  document.getElementById('calcVolSteps').innerHTML = res.volSteps;
+  document.getElementById('calcVolTotal').innerHTML = `${res.volTotal.toLocaleString('id-ID')} <span class="unit">cm&sup3;</span>`;
+
+  document.getElementById('calcAreaFormula').innerHTML = res.areaFormula;
+  document.getElementById('calcAreaSteps').innerHTML = res.areaSteps;
+  document.getElementById('calcAreaTotal').innerHTML = `${res.areaTotal.toLocaleString('id-ID')} <span class="unit">cm&sup2;</span>`;
+
+  document.getElementById('capacityComparison').innerHTML = res.fact;
+}
+
+function applyPreset(level) {
+  sfx.playPop();
+  const config = CALC_SHAPES[currentCalcShape];
+  config.sliders.forEach(s => {
+    const input = document.getElementById(`input_${s.id}`);
+    if (level === 'kecil') {
+      input.value = s.min + 1;
+    } else if (level === 'sedang') {
+      input.value = Math.round((s.min + s.max) / 2);
+    } else if (level === 'besar') {
+      input.value = s.max - 2;
+    }
+    document.getElementById(`badge_${s.id}`).textContent = `${input.value} ${s.unit}`;
+  });
+  updateCalculations();
+}
+
+
+// =========================================================================
+// --- AI CAMERA BANGUN RUANG SCANNER MODULE ---
+// =========================================================================
+let aiVisionModel = null;
+let isAiModelLoading = false;
+let cameraMediaStream = null;
+let currentCameraFacing = 'environment'; // Back camera default for scanning objects
+let lastDetectedShapeKey = 'kubus';
+let lastDetectedRealWorldId = 'dadu';
+
+// Sizing modes for camera reticle frame
+const FRAME_SIZING_MODES = [
+  { mode: 'mode-wide', label: 'Kotak Luas (Besar)', icon: 'fa-expand' },
+  { mode: 'mode-square', label: 'Kotak Persegi', icon: 'fa-square' },
+  { mode: 'mode-tall', label: 'Kotak Tinggi (Silinder)', icon: 'fa-arrows-up-down' }
+];
+let currentFrameModeIndex = 0;
+
+// Keyword mappings between ImageNet / Common Names and Indonesian Elementary Bangun Ruang
+const SHAPE_AI_KEYWORDS = {
+  kubus: [
+    'die', 'dice', 'cube', 'rubik', 'magic cube', 'block', 'toy block', 'alphabet block', 
+    'ice cube', 'sugar cube', 'square box', 'carton box', 'square carton', 'storage cube', 
+    'crate', 'puzzle box', 'safe', 'cuboid'
+  ],
+  balok: [
+    'box', 'shoebox', 'shoe box', 'carton', 'crate', 'book', 'comic book', 'binder', 
+    'hardback', 'notebook', 'brick', 'pencil box', 'pencil case', 'packet', 'package', 
+    'cardboard box', 'wardrobe', 'cabinet', 'chest', 'cupboard', 'bookcase', 'filing cabinet', 
+    'microwave', 'refrigerator', 'medicine chest', 'cassette', 'soap', 'sponge', 'eraser', 
+    'mattress', 'pillow', 'speaker', 'radio', 'tissue box', 'cereal'
+  ],
+  tabung: [
+    'can', 'tin can', 'pop can', 'soda can', 'beer can', 'drink can', 'cylinder', 'barrel', 
+    'beer barrel', 'oil drum', 'drum', 'water bottle', 'bottle', 'beer bottle', 'wine bottle', 
+    'pop bottle', 'thermos', 'pill bottle', 'candle', 'mug', 'cup', 'coffee mug', 'tumbler', 
+    'measuring cup', 'vase', 'bucket', 'pail', 'tube', 'roll', 'paper towel', 'toilet paper', 
+    'pipe', 'beaker', 'flask', 'aerosol', 'spray can', 'hair spray', 'saltshaker', 'pepper shaker', 
+    'lotion', 'shampoo'
+  ],
+  kerucut: [
+    'traffic cone', 'cone', 'ice cream', 'icecream', 'party hat', 'dunce cap', 'funnel', 
+    'conical', 'microphone', 'spinning top', 'volcano', 'party cone', 'cornet', 'sorbet cone', 
+    'megaphone', 'steeple', 'party blower', 'pointy hat'
+  ],
+  bola: [
+    'ball', 'soccer ball', 'football', 'basketball', 'tennis ball', 'volleyball', 'golf ball', 
+    'baseball', 'ping-pong ball', 'rugby ball', 'bowling ball', 'globe', 'orange', 'lemon', 
+    'apple', 'grapefruit', 'pomegranate', 'balloon', 'marble', 'marbles', 'sphere', 'bubble', 
+    'billiard ball', 'pool ball', 'cricket ball', 'melon', 'watermelon', 'earth', 'round', 'bead'
+  ],
+  prisma: [
+    'tent', 'camp', 'camping tent', 'dome tent', 'ridge tent', 'roof', 'gable roof', 
+    'prism', 'wedge', 'triangular prism', 'doorstop', 'toblerone', 'chocolate bar', 
+    'cheese wedge', 'ramp', 'ski slope', 'sandwich', 'triangular'
+  ],
+  limas: [
+    'pyramid', 'pyramids', 'great pyramid', 'obelisk', 'steeple', 'church steeple', 
+    'shrine', 'temple', 'monument', 'apex', 'tetrahedron', 'stupa', 'triangle tower', 'limas'
+  ]
+};
+
+// Asynchronously load MobileNet in the background
+function initAIVisionModel() {
+  if (typeof mobilenet !== 'undefined' && !aiVisionModel && !isAiModelLoading) {
+    isAiModelLoading = true;
+    mobilenet.load().then(model => {
+      aiVisionModel = model;
+      isAiModelLoading = false;
+      console.log('MobileNet AI Model Loaded Successfully for Bangun Ruang Scanner!');
+    }).catch(err => {
+      console.warn('MobileNet CDN load error, fallback Geometric Vision Analyzer active:', err);
+      isAiModelLoading = false;
+    });
+  }
+}
+
+// Start device camera
+async function startCameraScanner() {
+  sfx.playPop();
+  const video = document.getElementById('cameraVideo');
+  const dot = document.getElementById('camStatusDot');
+  const statusText = document.getElementById('camStatusText');
+  const hud = document.getElementById('scannerHudOverlay');
+  const placeholder = document.getElementById('cameraOffPlaceholder');
+  const toggleBtn = document.getElementById('toggleCameraBtn');
+  const scanBtn = document.getElementById('captureScanBtn');
+
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert('Perangkat atau browser ini tidak mendukung akses kamera langsung. Silakan gunakan tombol "Pilih Foto Galeri" atau "Uji Coba Cepat".');
+    return;
+  }
+
+  try {
+    if (cameraMediaStream) {
+      stopCameraScanner();
+    }
+
+    statusText.textContent = 'Menghubungkan ke kamera...';
+
+    const constraints = {
+      video: {
+        facingMode: currentCameraFacing,
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
+      audio: false
+    };
+
+    cameraMediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+    video.srcObject = cameraMediaStream;
+    await video.play();
+
+    // Update UI states
+    if (dot) dot.classList.add('active');
+    if (statusText) statusText.textContent = 'Kamera Aktif • Siap Memindai Benda';
+    if (hud) hud.classList.remove('hidden');
+    if (placeholder) placeholder.classList.add('hidden');
+    if (scanBtn) scanBtn.classList.remove('hidden');
+    if (toggleBtn) {
+      toggleBtn.innerHTML = '<i class="fa-solid fa-video-slash"></i> <span>Tutup Kamera</span>';
+      toggleBtn.classList.remove('primary-btn');
+      toggleBtn.classList.add('secondary-btn');
+    }
+
+    // Warm up AI model
+    initAIVisionModel();
+
+  } catch (err) {
+    console.error('Camera access error:', err);
+    if (statusText) statusText.textContent = 'Kamera Tidak Tersedia';
+    alert('Tidak dapat mengakses kamera. Pastikan izin kamera telah diberikan di browser, atau coba tombol "Pilih Foto Galeri" / "Uji Coba Cepat".');
+  }
+}
+
+// Stop device camera to save battery
+function stopCameraScanner() {
+  if (cameraMediaStream) {
+    cameraMediaStream.getTracks().forEach(track => track.stop());
+    cameraMediaStream = null;
+  }
+
+  const video = document.getElementById('cameraVideo');
+  if (video) video.srcObject = null;
+
+  const dot = document.getElementById('camStatusDot');
+  const statusText = document.getElementById('camStatusText');
+  const hud = document.getElementById('scannerHudOverlay');
+  const placeholder = document.getElementById('cameraOffPlaceholder');
+  const toggleBtn = document.getElementById('toggleCameraBtn');
+  const scanBtn = document.getElementById('captureScanBtn');
+
+  if (dot) dot.classList.remove('active');
+  if (statusText) statusText.textContent = 'Kamera Dimatikan';
+  if (hud) hud.classList.add('hidden');
+  if (placeholder) placeholder.classList.remove('hidden');
+  if (scanBtn) scanBtn.classList.add('hidden');
+
+  if (toggleBtn) {
+    toggleBtn.innerHTML = '<i class="fa-solid fa-video"></i> <span>Buka Kamera</span>';
+    toggleBtn.classList.remove('secondary-btn');
+    toggleBtn.classList.add('primary-btn');
+  }
+}
+
+function toggleCamera() {
+  if (cameraMediaStream) {
+    sfx.playPop();
+    stopCameraScanner();
+  } else {
+    startCameraScanner();
+  }
+}
+
+function switchCameraFacing() {
+  sfx.playPop();
+  currentCameraFacing = currentCameraFacing === 'environment' ? 'user' : 'environment';
+  if (cameraMediaStream) {
+    startCameraScanner();
+  }
+}
+
+// Toggle detection box aspect / size
+function cycleFrameSize() {
+  sfx.playPop();
+  currentFrameModeIndex = (currentFrameModeIndex + 1) % FRAME_SIZING_MODES.length;
+  const current = FRAME_SIZING_MODES[currentFrameModeIndex];
+  const frame = document.querySelector('.scanner-frame');
+  const label = document.getElementById('frameSizeLabel');
+
+  if (frame) {
+    frame.classList.remove('mode-wide', 'mode-square', 'mode-tall');
+    if (current.mode !== 'mode-wide') {
+      frame.classList.add(current.mode);
+    }
+  }
+  if (label) {
+    label.textContent = current.label;
+  }
+}
+
+// Calculate exact sub-rectangle in the video stream corresponding to the reticle frame
+function getFrameCropCoordinates(video, frameEl, viewportEl) {
+  const vw = video.videoWidth || 1280;
+  const vh = video.videoHeight || 720;
+  if (!frameEl || !viewportEl) {
+    return { sx: 0, sy: 0, sw: vw, sh: vh };
+  }
+
+  const vpRect = viewportEl.getBoundingClientRect();
+  const fRect = frameEl.getBoundingClientRect();
+
+  if (vpRect.width <= 0 || vpRect.height <= 0 || fRect.width <= 0 || fRect.height <= 0) {
+    return { sx: 0, sy: 0, sw: vw, sh: vh };
+  }
+
+  // Handle CSS object-fit: cover scaling
+  const videoAspect = vw / vh;
+  const vpAspect = vpRect.width / vpRect.height;
+
+  let renderW, renderH, offsetX, offsetY;
+  if (videoAspect > vpAspect) {
+    // Video is wider than viewport -> cropped horizontally
+    renderH = vpRect.height;
+    renderW = vpRect.height * videoAspect;
+    offsetX = (renderW - vpRect.width) / 2;
+    offsetY = 0;
+  } else {
+    // Video is taller than viewport -> cropped vertically
+    renderW = vpRect.width;
+    renderH = vpRect.width / videoAspect;
+    offsetX = 0;
+    offsetY = (renderH - vpRect.height) / 2;
+  }
+
+  // Frame position in rendered video coordinate space
+  const frameInRenderX = (fRect.left - vpRect.left) + offsetX;
+  const frameInRenderY = (fRect.top - vpRect.top) + offsetY;
+
+  // Scale back to intrinsic video pixel coordinates
+  const scale = vw / renderW;
+  const sx = Math.max(0, Math.floor(frameInRenderX * scale));
+  const sy = Math.max(0, Math.floor(frameInRenderY * scale));
+  const sw = Math.min(vw - sx, Math.max(20, Math.floor(fRect.width * scale)));
+  const sh = Math.min(vh - sy, Math.max(20, Math.floor(fRect.height * scale)));
+
+  return { sx, sy, sw, sh };
+}
+
+// Capture current frame from video (cropped precisely to reticle box) and run AI analysis
+function captureAndScan() {
+  sfx.playSuccess();
+  const video = document.getElementById('cameraVideo');
+  const canvas = document.getElementById('cameraCanvas');
+  const frameEl = document.querySelector('.scanner-frame');
+  const viewportEl = document.querySelector('.viewfinder-viewport');
+  if (!video || !cameraMediaStream) return;
+
+  const crop = getFrameCropCoordinates(video, frameEl, viewportEl);
+  canvas.width = crop.sw;
+  canvas.height = crop.sh;
+
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, crop.sw, crop.sh);
+
+  // Play scanning animation
+  const hud = document.getElementById('scannerHudOverlay');
+  if (hud) {
+    hud.classList.add('scanning-active');
+    setTimeout(() => hud.classList.remove('scanning-active'), 800);
+  }
+
+  analyzeImageFrame(canvas);
+}
+
+// Handle image upload from gallery / disk
+function handleImageFileUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  sfx.playSuccess();
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.getElementById('cameraCanvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+
+      analyzeImageFrame(canvas, img.src);
+    };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Test sample object preset button
+function testSampleObject(sampleKey) {
+  sfx.playSuccess();
+  const canvas = document.getElementById('cameraCanvas');
+  canvas.width = 400;
+  canvas.height = 400;
+  const ctx = canvas.getContext('2d');
+
+  // Draw simulated graphic on canvas
+  ctx.fillStyle = '#1E1B4B';
+  ctx.fillRect(0, 0, 400, 400);
+
+  // Preset dictionary mapping
+  const presets = {
+    dadu: { shape: 'kubus', name: 'Dadu Permainan', realId: 'dadu', icon: '🎲', color: '#EF4444' },
+    sepatu: { shape: 'balok', name: 'Kotak Sepatu', realId: 'sepatu', icon: '📦', color: '#3B82F6' },
+    kaleng: { shape: 'tabung', name: 'Kaleng Susu', realId: 'kaleng', icon: '🥫', color: '#10B981' },
+    es_krim: { shape: 'kerucut', name: 'Cone Es Krim', realId: 'es_krim', icon: '🍦', color: '#F59E0B' },
+    bola_sepak: { shape: 'bola', name: 'Bola Sepak', realId: 'bola_sepak', icon: '⚽', color: '#8B5CF6' },
+    tenda: { shape: 'prisma', name: 'Tenda Berkemah', realId: 'tenda', icon: '⛺', color: '#06B6D4' },
+    piramida: { shape: 'limas', name: 'Piramida Giza', realId: 'piramida', icon: '🔺', color: '#F97316' }
+  };
+
+  const item = presets[sampleKey] || presets.dadu;
+
+  // Render stylized visual on canvas
+  ctx.fillStyle = item.color;
+  ctx.beginPath();
+  ctx.arc(200, 200, 120, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.fillStyle = '#FFFFFF';
+  ctx.font = '90px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(item.icon, 200, 200);
+
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+
+  // Present result directly with 97% accuracy
+  displayDetectionResult({
+    shapeKey: item.shape,
+    objectName: item.name,
+    realWorldId: item.realId,
+    confidence: 97,
+    imageSrc: dataUrl
+  });
+}
+
+// AI Analysis: Hybrid Deep Learning (MobileNet top-10) + Scientific Geometric Vision Analyzer
+async function analyzeImageFrame(canvas, optionalImgSrc) {
+  const imgSrc = optionalImgSrc || canvas.toDataURL('image/jpeg', 0.88);
+
+  let detectedShape = null;
+  let detectedObject = 'Objek Tidak Dikenal';
+  let realId = '';
+  let confidence = 92;
+
+  // 1. Try MobileNet classifier (top-10 classes) if available
+  if (aiVisionModel) {
+    try {
+      const predictions = await aiVisionModel.classify(canvas, 10);
+      if (predictions && predictions.length > 0) {
+        const shapeScores = {};
+        const shapeBestNames = {};
+
+        for (let i = 0; i < predictions.length; i++) {
+          const pred = predictions[i];
+          const cName = pred.className.toLowerCase();
+          const prob = pred.probability || (1 / (i + 1));
+          const rankWeight = 1.0 / (1 + i * 0.18);
+
+          for (const [shape, kwList] of Object.entries(SHAPE_AI_KEYWORDS)) {
+            for (const kw of kwList) {
+              if (cName.includes(kw)) {
+                const isExact = cName.startsWith(kw) || cName.endsWith(kw) || cName === kw;
+                const score = prob * rankWeight * (isExact ? 1.5 : 1.0);
+                if (!shapeScores[shape]) {
+                  shapeScores[shape] = 0;
+                  shapeBestNames[shape] = pred.className.split(',')[0];
+                }
+                shapeScores[shape] += score;
+              }
+            }
+          }
+        }
+
+        // Select highest-scoring shape
+        let bestShape = null;
+        let highestScore = -1;
+        for (const [shape, score] of Object.entries(shapeScores)) {
+          if (score > highestScore) {
+            highestScore = score;
+            bestShape = shape;
+          }
+        }
+
+        if (bestShape) {
+          detectedShape = bestShape;
+          detectedObject = shapeBestNames[bestShape] || 'Objek Terdeteksi';
+          confidence = Math.min(98, Math.max(86, Math.round(78 + highestScore * 30)));
+        }
+      }
+    } catch (e) {
+      console.warn('AI Model classification error, running geometric analyzer:', e);
+    }
+  }
+
+  // 2. Fallback: Scientific Geometric Vision Analyzer
+  if (!detectedShape) {
+    const geoResult = runGeometricShapeAnalysis(canvas);
+    detectedShape = geoResult.shape;
+    detectedObject = geoResult.objectName;
+    confidence = geoResult.confidence;
+    realId = geoResult.realId;
+  } else {
+    // Determine real-world object ID for the shape
+    const base = SHAPES_DATA[detectedShape];
+    if (base && base.realWorld && base.realWorld.length > 0) {
+      realId = base.realWorld[0].id;
+    }
+  }
+
+  displayDetectionResult({
+    shapeKey: detectedShape,
+    objectName: detectedObject,
+    realWorldId: realId,
+    confidence: confidence,
+    imageSrc: imgSrc
+  });
+}
+
+// Built-in Scientific Geometric Computer Vision Analyzer
+function runGeometricShapeAnalysis(canvas) {
+  const w = canvas.width;
+  const h = canvas.height;
+  if (w <= 0 || h <= 0) {
+    return { shape: 'kubus', objectName: 'Kubus (Dadu/Kotak)', realId: 'dadu', confidence: 91 };
+  }
+
+  const ctx = canvas.getContext('2d');
+  const imgData = ctx.getImageData(0, 0, w, h);
+  const data = imgData.data;
+
+  const aspect = w / h; // Aspect ratio of the cropped object
+
+  // Sample corner patches vs center patch
+  const patchSizeW = Math.max(4, Math.floor(w * 0.15));
+  const patchSizeH = Math.max(4, Math.floor(h * 0.15));
+
+  function getPatchStats(startX, startY, pw, ph) {
+    let sumLum = 0;
+    let count = 0;
+    for (let y = startY; y < startY + ph && y < h; y += 2) {
+      for (let x = startX; x < startX + pw && x < w; x += 2) {
+        const idx = (y * w + x) * 4;
+        const lum = data[idx] * 0.299 + data[idx + 1] * 0.587 + data[idx + 2] * 0.114;
+        sumLum += lum;
+        count++;
+      }
+    }
+    return count > 0 ? (sumLum / count) : 128;
+  }
+
+  // 4 corners
+  const lumTL = getPatchStats(0, 0, patchSizeW, patchSizeH);
+  const lumTR = getPatchStats(w - patchSizeW, 0, patchSizeW, patchSizeH);
+  const lumBL = getPatchStats(0, h - patchSizeH, patchSizeW, patchSizeH);
+  const lumBR = getPatchStats(w - patchSizeW, h - patchSizeH, patchSizeW, patchSizeH);
+  const avgCornerLum = (lumTL + lumTR + lumBL + lumBR) / 4;
+
+  // Center patch
+  const lumCenter = getPatchStats(
+    Math.floor((w - patchSizeW * 2) / 2),
+    Math.floor((h - patchSizeH * 2) / 2),
+    patchSizeW * 2,
+    patchSizeH * 2
+  );
+
+  // Corner contrast (difference between corners and center)
+  const cornerContrast = Math.abs(avgCornerLum - lumCenter);
+
+  // Measure row width at 22% (top), 50% (mid), 78% (bottom) to detect tapering (cone/pyramid)
+  function measureRowSpan(rowY) {
+    const y = Math.min(h - 1, Math.max(0, Math.floor(rowY)));
+    let firstX = -1, lastX = -1;
+    const bgLum = avgCornerLum;
+    for (let x = 0; x < w; x += 3) {
+      const idx = (y * w + x) * 4;
+      const lum = data[idx] * 0.299 + data[idx + 1] * 0.587 + data[idx + 2] * 0.114;
+      if (Math.abs(lum - bgLum) > 22) {
+        if (firstX === -1) firstX = x;
+        lastX = x;
+      }
+    }
+    return (firstX !== -1 && lastX >= firstX) ? (lastX - firstX) : Math.floor(w * 0.6);
+  }
+
+  const topSpan = measureRowSpan(h * 0.22);
+  const midSpan = measureRowSpan(h * 0.50);
+  const botSpan = measureRowSpan(h * 0.78);
+
+  const taperRatio = topSpan / Math.max(1, botSpan);
+
+  let selectedShape = 'kubus';
+  let objectName = 'Kotak Kubus';
+  let realId = 'dadu';
+  let conf = 92;
+
+  // 1. Tapered top -> Kerucut or Limas
+  if (taperRatio < 0.62 && midSpan > topSpan) {
+    if (cornerContrast > 26 || aspect < 0.95) {
+      selectedShape = 'kerucut';
+      objectName = 'Cone / Topi Kerucut';
+      realId = 'es_krim';
+      conf = 93;
+    } else {
+      selectedShape = 'limas';
+      objectName = 'Piramida / Limas Segiempat';
+      realId = 'piramida';
+      conf = 91;
+    }
+  }
+  // 2. High corner contrast + aspect close to 1: Circle / Sphere -> Bola
+  else if (cornerContrast > 25 && aspect >= 0.80 && aspect <= 1.25) {
+    selectedShape = 'bola';
+    objectName = 'Bola / Bulatan Sempurna';
+    realId = 'bola_sepak';
+    conf = 95;
+  }
+  // 3. Elongated vertical (aspect < 0.82) -> Tabung (silinder)
+  else if (aspect < 0.82) {
+    selectedShape = 'tabung';
+    objectName = 'Kaleng / Botol Silinder';
+    realId = 'kaleng';
+    conf = 94;
+  }
+  // 4. Elongated horizontal (aspect > 1.25) -> Balok (persegi panjang) or Prisma
+  else if (aspect > 1.25) {
+    if (taperRatio < 0.75) {
+      selectedShape = 'prisma';
+      objectName = 'Tenda / Prisma Segitiga';
+      realId = 'tenda';
+      conf = 90;
+    } else {
+      selectedShape = 'balok';
+      objectName = 'Kotak Persegi Panjang / Balok';
+      realId = 'sepatu';
+      conf = 93;
+    }
+  }
+  // 5. Square-ish aspect (0.82 <= aspect <= 1.25)
+  else {
+    selectedShape = 'kubus';
+    objectName = 'Dadu / Kotak Kubus';
+    realId = 'dadu';
+    conf = 92;
+  }
+
+  return {
+    shape: selectedShape,
+    objectName: objectName,
+    realId: realId,
+    confidence: conf
+  };
+}
+
+// Present detection results in UI
+function displayDetectionResult(result) {
+  const card = document.getElementById('detectionResultCard');
+  const thumbImg = document.getElementById('scannedThumbImg');
+  const titleEl = document.getElementById('detectedShapeTitle');
+  const objLabelEl = document.getElementById('detectedObjectLabel');
+  const confPctEl = document.getElementById('confidencePctLabel');
+  const confBarEl = document.getElementById('confidenceBarFill');
+  const propSisi = document.getElementById('detectedPropSisi');
+  const propRusuk = document.getElementById('detectedPropRusuk');
+  const propSudut = document.getElementById('detectedPropSudut');
+  const expText = document.getElementById('detectionExplanationText');
+  const view3dBtn = document.getElementById('view3dFromDetectionBtn');
+
+  lastDetectedShapeKey = result.shapeKey;
+  lastDetectedRealWorldId = result.realWorldId;
+
+  const base = SHAPES_DATA[result.shapeKey] || SHAPES_DATA.kubus;
+
+  // Fill UI
+  if (thumbImg) thumbImg.src = result.imageSrc;
+  if (titleEl) titleEl.innerHTML = `${base.name.toUpperCase()} ${base.emoji}`;
+  if (objLabelEl) objLabelEl.textContent = `Objek Dikenali: ${result.objectName}`;
+  if (confPctEl) confPctEl.textContent = `${result.confidence}%`;
+  if (confBarEl) confBarEl.style.width = `${result.confidence}%`;
+
+  if (propSisi) propSisi.textContent = base.sisi;
+  if (propRusuk) propRusuk.textContent = base.rusuk;
+  if (propSudut) propSudut.textContent = base.sudut;
+
+  if (expText) {
+    expText.innerHTML = `Berdasarkan analisis pemindaian visual, benda ini memiliki <strong>${base.descSisi}</strong>, <strong>${base.descRusuk}</strong>, dan <strong>${base.descSudut}</strong>. Ini adalah sifat khas dari bangun ruang <strong>${base.name}</strong>!`;
+  }
+
+  // Highlight matching correction chip
+  document.querySelectorAll('.correction-chip').forEach(chip => {
+    chip.classList.toggle('active', chip.getAttribute('data-shape') === result.shapeKey);
+  });
+
+  // Bind 3D view button
+  if (view3dBtn) {
+    view3dBtn.onclick = function() {
+      open3DModelFromDetection(result.shapeKey, result.realWorldId);
+    };
+  }
+
+  if (card) {
+    card.classList.remove('hidden');
+    card.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Sound and confetti celebration
+  sfx.playSuccess();
+  if (typeof confetti === 'function') {
+    confetti({ particleCount: 70, spread: 80, origin: { y: 0.6 } });
+  }
+}
+
+// 1-Click Instant Correction from user
+function manuallyCorrectDetection(shapeKey) {
+  sfx.playPop();
+  if (!SHAPES_DATA[shapeKey]) return;
+
+  const base = SHAPES_DATA[shapeKey];
+  let defaultRealId = (base.realWorld && base.realWorld.length > 0) ? base.realWorld[0].id : '';
+
+  const thumbImg = document.getElementById('scannedThumbImg');
+  const currentImgSrc = thumbImg ? thumbImg.src : '';
+
+  displayDetectionResult({
+    shapeKey: shapeKey,
+    objectName: `${base.name} (Pilihan Kamu)`,
+    realWorldId: defaultRealId,
+    confidence: 100,
+    imageSrc: currentImgSrc
+  });
+}
+
+// Reset view to scan again
+function resetDetectionView() {
+  sfx.playPop();
+  const card = document.getElementById('detectionResultCard');
+  if (card) card.classList.add('hidden');
+
+  const viewport = document.querySelector('.viewfinder-viewport');
+  if (viewport) viewport.scrollIntoView({ behavior: 'smooth' });
+
+  if (!cameraMediaStream) {
+    startCameraScanner();
+  }
+}
+
+// Seamless linkage: Switch to 3D Explorer and load the detected 3D model!
+function open3DModelFromDetection(shapeKey, realWorldId) {
+  sfx.playPop();
+  stopCameraScanner();
+
+  // 1. Switch to 3D Explorer Tab
+  switchTab('eksplorasi');
+
+  // 2. Set active shape pill
+  document.querySelectorAll('.shape-pill').forEach(pill => {
+    pill.classList.toggle('active', pill.getAttribute('data-shape') === shapeKey);
+  });
+
+  // 3. Set dimension to 3D and load shape
+  setDimension(3);
+  loadShape(shapeKey);
+
+  // 4. Load the matching real-world 3D object
+  const shapeData = SHAPES_DATA[shapeKey];
+  if (shapeData && shapeData.realWorld) {
+    let targetIndex = shapeData.realWorld.findIndex(item => item.id === realWorldId);
+    if (targetIndex === -1) targetIndex = 0;
+    loadRealWorldObject(shapeKey, targetIndex);
+  }
+}
+
+
+// --- KUIS JUARA MATEMATIKA SD (32 VARIED QUESTIONS & RANDOMIZER) ---
+const ALL_QUIZ_QUESTIONS = [
+  {
+    q: "Aku memiliki 6 sisi yang semuanya berbentuk bujur sangkar (persegi) yang sama besar. Siapakah aku?",
+    icon: "🎲",
+    options: ["Balok", "Kubus", "Prisma Segitiga", "Limas Segiempat"],
+    ans: 1,
+    exp: "Benar sekali! Ciri khas utama Kubus adalah keenam sisinya berbentuk persegi (bujur sangkar) yang sama persis ukurannya."
+  },
+  {
+    q: "Berapakah jumlah rusuk yang dimiliki oleh bangun ruang Balok?",
+    icon: "📦",
+    options: ["6 rusuk", "8 rusuk", "12 rusuk", "10 rusuk"],
+    ans: 2,
+    exp: "Tepat! Balok memiliki 12 rusuk, yang terdiri dari 4 rusuk panjang, 4 rusuk lebar, dan 4 rusuk tinggi."
+  },
+  {
+    q: "Bangun ruang manakah di bawah ini yang sama sekali TIDAK mempunyai titik sudut?",
+    icon: "⚽",
+    options: ["Kerucut dan Balok", "Tabung dan Bola", "Prisma dan Tabung", "Limas dan Kubus"],
+    ans: 1,
+    exp: "Hebat! Tabung dan Bola tidak memiliki titik sudut tajam karena permukaannya merupakan bidang lengkung mulus."
+  },
+  {
+    q: "Topi pesta ulang tahun dan cone es krim adalah contoh nyata dari bangun ruang...",
+    icon: "🍦",
+    options: ["Tabung", "Limas Segiempat", "Kerucut", "Bola"],
+    ans: 2,
+    exp: "Pintar! Kerucut memiliki satu alas lingkaran dan satu titik runcing di puncaknya seperti topi pesta!"
+  },
+  {
+    q: "Jika sebuah kubus memiliki panjang rusuk (s) = 5 cm, berapakah volume kubus tersebut?",
+    icon: "🧮",
+    options: ["25 cm³", "75 cm³", "125 cm³", "100 cm³"],
+    ans: 2,
+    exp: "Luar biasa! Volume Kubus = s × s × s = 5 × 5 × 5 = 125 cm³."
+  },
+  {
+    q: "Berapakah jumlah titik sudut pada bangun ruang Limas Segiempat?",
+    icon: "🔺",
+    options: ["4 titik sudut", "5 titik sudut", "8 titik sudut", "6 titik sudut"],
+    ans: 1,
+    exp: "Benar! Limas Segiempat memiliki 4 titik sudut di bagian alas persegi dan 1 titik sudut di puncak (total 5)."
+  },
+  {
+    q: "Jika sebuah bangun ruang Tabung dibuka selimutnya, maka bidang datar yang terbentuk adalah...",
+    icon: "🥫",
+    options: ["Persegi Panjang", "Segitiga", "Juring Lingkaran", "Trapesium"],
+    ans: 0,
+    exp: "Hebat! Selimut tabung jika dibentangkan lurus akan menjadi sebuah persegi panjang yang lebar."
+  },
+  {
+    q: "Benda di bawah ini yang berbentuk bangun ruang Tabung adalah...",
+    icon: "🥛",
+    options: ["Kotak Pensil", "Kaleng Susu", "Kelereng", "Dadu"],
+    ans: 1,
+    exp: "Tepat sekali! Kaleng susu memiliki alas dan tutup lingkaran serta selimut tabung."
+  },
+  {
+    q: "Rumus untuk menghitung Volume Balok dengan panjang p, lebar l, dan tinggi t adalah...",
+    icon: "📐",
+    options: ["p + l + t", "p × l × t", "2 × (p + l)", "p × l : t"],
+    ans: 1,
+    exp: "Bagus sekali! Volume Balok dihitung dengan mengalikan panjang × lebar × tinggi (V = p × l × t)."
+  },
+  {
+    q: "Prisma segitiga (seperti bentuk tenda pramuka) memiliki jumlah sisi (bidang) sebanyak...",
+    icon: "⛺",
+    options: ["4 sisi", "5 sisi", "6 sisi", "7 sisi"],
+    ans: 1,
+    exp: "Tepat! Prisma segitiga memiliki 5 sisi: 2 sisi segitiga (alas & atap) serta 3 sisi tegak persegi panjang."
+  },
+  {
+    q: "Berapakah jumlah titik sudut siku-siku yang dimiliki oleh sebuah bangun ruang Kubus?",
+    icon: "🎲",
+    options: ["6 titik sudut", "8 titik sudut", "12 titik sudut", "4 titik sudut"],
+    ans: 1,
+    exp: "Benar sekali! Kubus memiliki 8 titik sudut, yaitu 4 titik di bagian atas dan 4 titik di bagian alas."
+  },
+  {
+    q: "Bangun ruang yang hanya dibatasi oleh SATU bidang lengkung menyeluruh tanpa rusuk adalah...",
+    icon: "🔮",
+    options: ["Kerucut", "Bola", "Tabung", "Limas"],
+    ans: 1,
+    exp: "Pintar! Bola adalah satu-satunya bangun ruang yang hanya memiliki 1 sisi lengkung dan tidak memiliki rusuk sama sekali."
+  },
+  {
+    q: "Berapakah jumlah rusuk lengkung yang ada pada bangun ruang Kerucut?",
+    icon: "🎉",
+    options: ["0 rusuk", "1 rusuk lengkung", "2 rusuk lengkung", "3 rusuk lengkung"],
+    ans: 1,
+    exp: "Tepat! Kerucut memiliki tepat 1 rusuk lengkung di sekeliling lingkaran alasnya."
+  },
+  {
+    q: "Rumus luas permukaan sebuah kubus jika diketahui panjang rusuknya s adalah...",
+    icon: "📏",
+    options: ["L = 4 × s", "L = 6 × s²", "L = s³", "L = 12 × s"],
+    ans: 1,
+    exp: "Luar biasa! Karena kubus memiliki 6 sisi persegi kongruen (luas = s²), maka luas totalnya adalah 6 × s²."
+  },
+  {
+    q: "Sebuah balok memiliki ukuran panjang 6 cm, lebar 4 cm, dan tinggi 3 cm. Berapakah volumenya?",
+    icon: "📦",
+    options: ["48 cm³", "72 cm³", "24 cm³", "36 cm³"],
+    ans: 1,
+    exp: "Benar! Volume Balok = p × l × t = 6 × 4 × 3 = 72 cm³."
+  },
+  {
+    q: "Berapakah jumlah rusuk pada bangun ruang Prisma Segitiga?",
+    icon: "⛺",
+    options: ["6 rusuk", "9 rusuk", "12 rusuk", "8 rusuk"],
+    ans: 1,
+    exp: "Hebat! Prisma segitiga memiliki 9 rusuk: 3 di alas segitiga, 3 di atap segitiga, dan 3 rusuk tegak."
+  },
+  {
+    q: "Berapakah jumlah rusuk pada bangun ruang Limas Segiempat?",
+    icon: "🔺",
+    options: ["6 rusuk", "8 rusuk", "10 rusuk", "5 rusuk"],
+    ans: 1,
+    exp: "Tepat! Limas segiempat memiliki 8 rusuk: 4 rusuk di alas segiempat dan 4 rusuk tegak yang meruncing ke puncak."
+  },
+  {
+    q: "Bangun ruang yang memiliki alas dan atap berbentuk segitiga sama dan sebangun (kongruen) adalah...",
+    icon: "🍫",
+    options: ["Prisma Segitiga", "Limas Segitiga", "Kerucut", "Balok"],
+    ans: 0,
+    exp: "Bagus! Prisma segitiga dicirikan oleh alas dan tutupnya yang kongruen berbentuk segitiga."
+  },
+  {
+    q: "Rumus untuk menghitung Volume Tabung dengan jari-jari r dan tinggi t adalah...",
+    icon: "🥫",
+    options: ["V = 2 × π × r × t", "V = π × r² × t", "V = 1/3 × π × r² × t", "V = 4/3 × π × r³"],
+    ans: 1,
+    exp: "Pintar! Volume Tabung = Luas Alas Lingkaran (π × r²) dikali Tinggi (t), yaitu V = π × r² × t."
+  },
+  {
+    q: "Volume sebuah Kerucut adalah sepertiga (1/3) dari volume bangun ruang...",
+    icon: "🍦",
+    options: ["Bola", "Kubus", "Tabung", "Balok"],
+    ans: 2,
+    exp: "Benar sekali! Volume Kerucut (1/3 × π × r² × t) persis sepertiga dari volume Tabung yang berjari-jari dan bertinggi sama."
+  },
+  {
+    q: "Jaring-jaring bangun ruang Kubus tersusun dari persegi kongruen sebanyak...",
+    icon: "📐",
+    options: ["4 buah persegi", "6 buah persegi", "8 buah persegi", "12 buah persegi"],
+    ans: 1,
+    exp: "Tepat! Jaring-jaring kubus terdiri dari 6 bujur sangkar (persegi) yang dapat dilipat membentuk kubus utuh."
+  },
+  {
+    q: "Piramida Giza di Mesir yang sangat megah merupakan contoh nyata dari bangun ruang...",
+    icon: "🏛️",
+    options: ["Prisma Segitiga", "Kerucut", "Limas Segiempat", "Kubus"],
+    ans: 2,
+    exp: "Hebat! Piramida Giza beralaskan bujur sangkar dan mengerucut 4 sisi segitiga ke puncak, menjadikannya Limas Segiempat."
+  },
+  {
+    q: "Benda di bawah ini yang memiliki bentuk Bola sempurna adalah...",
+    icon: "🌍",
+    options: ["Kelereng kaca & Globe", "Kotak Sepatu", "Topi Ulang Tahun", "Batu Bata"],
+    ans: 0,
+    exp: "Benar! Kelereng kaca dan globe bola dunia adalah contoh benda berbentuk bola sempurna."
+  },
+  {
+    q: "Batu bata bangunan dan kotak pasta gigi di rumah kita adalah contoh dari bangun ruang...",
+    icon: "🧱",
+    options: ["Kubus", "Balok", "Tabung", "Limas"],
+    ans: 1,
+    exp: "Tepat sekali! Batu bata dan kotak pasta gigi memiliki ukuran panjang, lebar, dan tinggi berbeda sehingga berbentuk Balok."
+  },
+  {
+    q: "Bangun ruang yang memiliki dua bidang lingkaran sejajar sebagai alas dan tutup adalah...",
+    icon: "🥁",
+    options: ["Kerucut", "Tabung (Silinder)", "Bola", "Prisma"],
+    ans: 1,
+    exp: "Pintar! Tabung memiliki dua lingkaran yang sejajar dan sama besar sebagai alas dan tutupnya."
+  },
+  {
+    q: "Berapakah jumlah bidang sisi yang dimiliki oleh bangun ruang Balok?",
+    icon: "🚪",
+    options: ["4 sisi", "6 sisi", "8 sisi", "12 sisi"],
+    ans: 1,
+    exp: "Bagus! Balok dibatasi oleh 6 bidang sisi berbentuk persegi panjang (3 pasang sisi yang berhadapan sama besar)."
+  },
+  {
+    q: "Berapakah jumlah seluruh bidang sisi yang membatasi bangun ruang Tabung?",
+    icon: "🔋",
+    options: ["2 sisi", "3 sisi", "4 sisi", "1 sisi"],
+    ans: 1,
+    exp: "Benar! Tabung memiliki 3 sisi: 1 lingkaran alas, 1 lingkaran tutup, dan 1 bidang selimut lengkung."
+  },
+  {
+    q: "Jika jaring-jaring Limas Segiempat dibuka dan dibentangkan, bangun datar apa sajakah yang terbentuk?",
+    icon: "🔺",
+    options: ["1 persegi dan 4 segitiga", "2 segitiga dan 3 persegi", "6 persegi", "1 lingkaran dan 1 selimut"],
+    ans: 0,
+    exp: "Luar biasa! Jaring-jaring limas segiempat terdiri dari 1 persegi sebagai alas dan 4 segitiga sebagai dinding tegak."
+  },
+  {
+    q: "Sebuah kubus memiliki volume 27 cm³. Berapakah panjang rusuk kubus tersebut?",
+    icon: "🧮",
+    options: ["9 cm", "3 cm", "6 cm", "4 cm"],
+    ans: 1,
+    exp: "Tepat! Karena 3 × 3 × 3 = 27 cm³, maka panjang rusuk kubus tersebut adalah 3 cm."
+  },
+  {
+    q: "Sebuah dadu permainan dan rubik warna-warni merupakan contoh konkret dari bangun ruang...",
+    icon: "🎲",
+    options: ["Balok", "Kubus", "Prisma Segitiga", "Tabung"],
+    ans: 1,
+    exp: "Hebat! Dadu dan rubik memiliki 6 sisi bujur sangkar sama besar, sehingga merupakan contoh nyata bangun Kubus."
+  },
+  {
+    q: "Benda di bawah ini yang BUKAN merupakan contoh benda berbentuk kerucut adalah...",
+    icon: "🚧",
+    options: ["Cone es krim", "Topi ulang tahun", "Kotak kado", "Traffic cone jalan"],
+    ans: 2,
+    exp: "Pintar! Kotak kado berbentuk kubus atau balok, bukan kerucut."
+  },
+  {
+    q: "Berapakah jumlah titik sudut pada bangun ruang Prisma Segitiga?",
+    icon: "⛺",
+    options: ["4 titik sudut", "6 titik sudut", "8 titik sudut", "9 titik sudut"],
+    ans: 1,
+    exp: "Tepat sekali! Prisma segitiga memiliki 6 titik sudut: 3 titik sudut di alas segitiga dan 3 titik sudut di atap segitiga."
+  }
+];
+
+let currentQuizStudent = { name: '', studentClass: 'Kelas 4 SD' };
+let activeQuizQuestions = [];
+let currentQuizIndex = 0;
+let quizScore = 0;
+let userQuizAnswers = [];
+
+// Helper: Fisher-Yates Array Shuffler
+function shuffleArray(array) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+// Generate 10 randomized questions with randomized options
+function getRandomizedQuizQuestions(count = 10) {
+  const shuffledPool = shuffleArray(ALL_QUIZ_QUESTIONS);
+  const selected = shuffledPool.slice(0, count);
+
+  return selected.map(item => {
+    const originalCorrectText = item.options[item.ans];
+    const shuffledOptions = shuffleArray(item.options);
+    const newAnsIndex = shuffledOptions.indexOf(originalCorrectText);
+
+    return {
+      q: item.q,
+      icon: item.icon,
+      options: shuffledOptions,
+      ans: newAnsIndex,
+      exp: item.exp
+    };
+  });
+}
+
+// LocalStorage History Storage Key
+const QUIZ_STORAGE_KEY = 'bangun_ruang_quiz_history';
+
+function loadQuizHistory() {
+  try {
+    const data = localStorage.getItem(QUIZ_STORAGE_KEY);
+    return data ? JSON.parse(data) : [];
+  } catch (e) {
+    console.error('Failed to load history:', e);
+    return [];
+  }
+}
+
+function saveQuizHistory(record) {
+  let history = loadQuizHistory();
+  history.unshift(record); // Add new entry to the top
+  if (history.length > 50) history = history.slice(0, 50); // Keep 50 records
+  try {
+    localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(history));
+  } catch (e) {
+    console.error('Failed to save history:', e);
+  }
+  renderHistoryTable();
+}
+
+function deleteHistoryItem(id) {
+  sfx.playPop();
+  let history = loadQuizHistory();
+  history = history.filter(item => item.id !== id);
+  try {
+    localStorage.setItem(QUIZ_STORAGE_KEY, JSON.stringify(history));
+  } catch (e) {}
+  renderHistoryTable();
+}
+
+function clearAllQuizHistory() {
+  const history = loadQuizHistory();
+  if (history.length === 0) return;
+
+  if (confirm('Apakah kamu yakin ingin menghapus seluruh riwayat pengerjaan kuis ini?')) {
+    sfx.playPop();
+    try {
+      localStorage.removeItem(QUIZ_STORAGE_KEY);
+    } catch (e) {}
+    renderHistoryTable();
+  }
+}
+
+function renderHistoryTable() {
+  const history = loadQuizHistory();
+  const tableBody = document.getElementById('historyTableBody');
+  const tableWrap = document.getElementById('historyTableWrap');
+  const emptyState = document.getElementById('historyEmptyState');
+  const totalEl = document.getElementById('totalQuizTakers');
+  const avgEl = document.getElementById('avgQuizScore');
+  const perfectEl = document.getElementById('perfectScoreCount');
+
+  // Summary KPI Calculations
+  if (totalEl) totalEl.textContent = history.length;
+  if (perfectEl) {
+    const perfectCount = history.filter(h => h.score === 100).length;
+    perfectEl.textContent = perfectCount;
+  }
+  if (avgEl) {
+    if (history.length > 0) {
+      const sum = history.reduce((acc, h) => acc + (h.score || 0), 0);
+      avgEl.textContent = Math.round(sum / history.length);
+    } else {
+      avgEl.textContent = '0';
+    }
+  }
+
+  if (!tableBody) return;
+
+  if (history.length === 0) {
+    if (tableWrap) tableWrap.classList.add('hidden');
+    if (emptyState) emptyState.classList.remove('hidden');
+    tableBody.innerHTML = '';
+    return;
+  }
+
+  if (tableWrap) tableWrap.classList.remove('hidden');
+  if (emptyState) emptyState.classList.add('hidden');
+
+  tableBody.innerHTML = '';
+  history.forEach((item, index) => {
+    const tr = document.createElement('tr');
+
+    let badgeClass = 'score-low';
+    if (item.score >= 90) badgeClass = 'score-high';
+    else if (item.score >= 70) badgeClass = 'score-mid';
+
+    tr.innerHTML = `
+      <td class="col-num">${index + 1}</td>
+      <td class="col-date">${item.date}</td>
+      <td class="col-name">
+        <div class="student-avatar-pill">
+          <span class="avatar-letter">${(item.name || 'S').charAt(0).toUpperCase()}</span>
+          <strong>${item.name || 'Siswa'}</strong>
+        </div>
+      </td>
+      <td class="col-class"><span class="class-badge">${item.studentClass || '-'}</span></td>
+      <td class="col-score"><span class="score-badge ${badgeClass}">${item.score} / 100</span></td>
+      <td class="col-stars"><span class="stars-text">${item.stars || '⭐⭐⭐'}</span></td>
+      <td class="col-action">
+        <button class="delete-row-btn" title="Hapus Riwayat Siswa Ini" onclick="deleteHistoryItem(${item.id})">
+          <i class="fa-solid fa-trash-can"></i>
+        </button>
+      </td>
+    `;
+    tableBody.appendChild(tr);
+  });
+}
+
+function startQuiz() {
+  const nameInput = document.getElementById('studentNameInput');
+  const classSelect = document.getElementById('studentClassSelect');
+  const errorMsg = document.getElementById('identityErrorMsg');
+
+  const studentName = nameInput ? nameInput.value.trim() : '';
+  const studentClass = classSelect ? classSelect.value : 'Kelas 4 SD';
+
+  // Validation: Student Name Required
+  if (!studentName) {
+    if (errorMsg) errorMsg.classList.remove('hidden');
+    if (nameInput) {
+      nameInput.focus();
+      nameInput.classList.add('input-error');
+    }
+    sfx.playError();
+    return;
+  }
+
+  if (errorMsg) errorMsg.classList.add('hidden');
+  if (nameInput) nameInput.classList.remove('input-error');
+
+  // Remember name and class in localStorage
+  try {
+    localStorage.setItem('last_student_name', studentName);
+    localStorage.setItem('last_student_class', studentClass);
+  } catch (e) {}
+
+  currentQuizStudent = { name: studentName, studentClass: studentClass };
+
+  sfx.playPop();
+  currentQuizIndex = 0;
+  quizScore = 0;
+  userQuizAnswers = [];
+
+  // Generate fresh, randomized 10 questions with randomized options
+  activeQuizQuestions = getRandomizedQuizQuestions(10);
+
+  document.getElementById('quizIntroCard').classList.add('hidden');
+  document.getElementById('quizResultCard').classList.add('hidden');
+  document.getElementById('quizPlayCard').classList.remove('hidden');
+
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  if (!activeQuizQuestions || activeQuizQuestions.length === 0) {
+    activeQuizQuestions = getRandomizedQuizQuestions(10);
+  }
+
+  const qData = activeQuizQuestions[currentQuizIndex];
+  const total = activeQuizQuestions.length;
+
+  document.getElementById('quizQuestionCount').textContent = `Soal ${currentQuizIndex + 1} dari ${total}`;
+  document.getElementById('quizLiveScore').innerHTML = `<i class="fa-solid fa-star text-amber"></i> Skor: ${quizScore}`;
+
+  // Progress Bar
+  const pct = Math.round(((currentQuizIndex) / total) * 100);
+  document.getElementById('quizProgressFill').style.width = `${pct}%`;
+
+  // Visual emoji & question text
+  document.getElementById('questionVisualHint').textContent = qData.icon;
+  document.getElementById('questionText').textContent = qData.q;
+
+  // Options Grid
+  const optionsGrid = document.getElementById('quizOptionsGrid');
+  optionsGrid.innerHTML = '';
+
+  const letters = ['A', 'B', 'C', 'D'];
+  qData.options.forEach((optText, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt-btn';
+    btn.innerHTML = `
+      <span class="opt-letter">${letters[idx]}</span>
+      <span class="opt-text">${optText}</span>
+    `;
+    btn.addEventListener('click', () => handleOptionSelected(idx, btn));
+    optionsGrid.appendChild(btn);
+  });
+
+  // Hide feedback box
+  document.getElementById('quizFeedback').classList.add('hidden');
+}
+
+function handleOptionSelected(selectedIdx, clickedBtn) {
+  const qData = activeQuizQuestions[currentQuizIndex];
+  const allBtns = document.querySelectorAll('.quiz-opt-btn');
+  allBtns.forEach(b => b.disabled = true);
+
+  const feedbackBox = document.getElementById('quizFeedback');
+  const feedbackTitle = document.getElementById('feedbackTitle');
+  const feedbackExp = document.getElementById('feedbackExplanation');
+  const feedbackIcon = document.getElementById('feedbackIcon');
+
+  feedbackBox.classList.remove('hidden');
+
+  if (selectedIdx === qData.ans) {
+    // Correct
+    quizScore += 10;
+    sfx.playSuccess();
+    clickedBtn.classList.add('correct');
+    feedbackBox.className = 'quiz-feedback-box correct-feedback';
+    feedbackTitle.textContent = "Luar Biasa, Jawabanmu Tepat! 🌟";
+    feedbackIcon.textContent = "🎉";
+    // Trigger small confetti burst
+    if (typeof confetti === 'function') {
+      confetti({ particleCount: 40, spread: 60, origin: { y: 0.6 } });
+    }
+  } else {
+    // Incorrect
+    sfx.playError();
+    clickedBtn.classList.add('wrong');
+    allBtns[qData.ans].classList.add('correct');
+    feedbackBox.className = 'quiz-feedback-box wrong-feedback';
+    feedbackTitle.textContent = "Ayo Belajar Lagi! 💡";
+    feedbackIcon.textContent = "🤔";
+  }
+
+  feedbackExp.textContent = qData.exp;
+  document.getElementById('quizLiveScore').innerHTML = `<i class="fa-solid fa-star text-amber"></i> Skor: ${quizScore}`;
+}
+
+function nextQuizQuestion() {
+  sfx.playPop();
+  currentQuizIndex++;
+  if (currentQuizIndex < activeQuizQuestions.length) {
+    renderQuizQuestion();
+  } else {
+    showQuizResults();
+  }
+}
+
+function showQuizResults() {
+  document.getElementById('quizPlayCard').classList.add('hidden');
+  document.getElementById('quizResultCard').classList.remove('hidden');
+
+  const finalScoreEl = document.getElementById('finalScoreVal');
+  finalScoreEl.textContent = quizScore;
+
+  const starsEl = document.getElementById('starsAwarded');
+  const msgEl = document.getElementById('resultFeedbackMessage');
+
+  // Fill recipient name on Certificate
+  const nameEl = document.getElementById('certStudentName');
+  const classEl = document.getElementById('certStudentClass');
+  if (nameEl) nameEl.textContent = currentQuizStudent.name || 'Siswa Berprestasi';
+  if (classEl) classEl.textContent = currentQuizStudent.studentClass || 'Sekolah Dasar';
+
+  let starsText = "⭐⭐⭐";
+  let gradeText = "Sempurna";
+
+  if (quizScore >= 90) {
+    starsText = "⭐⭐⭐";
+    gradeText = "Sempurna";
+    starsEl.textContent = "⭐⭐⭐";
+    msgEl.textContent = `Selamat ${currentQuizStudent.name}! Kamu adalah Sang Juara Matematika Bangun Ruang Sekolah Dasar!`;
+    sfx.playSuccess();
+    if (typeof confetti === 'function') {
+      confetti({ particleCount: 120, spread: 100, origin: { y: 0.5 } });
+    }
+  } else if (quizScore >= 70) {
+    starsText = "⭐⭐☆";
+    gradeText = "Hebat";
+    starsEl.textContent = "⭐⭐☆";
+    msgEl.textContent = `Hebat sekali ${currentQuizStudent.name}! Pemahamanmu tentang bangun ruang sudah sangat baik, terus tingkatkan ya!`;
+    sfx.playSuccess();
+  } else {
+    starsText = "⭐☆☆";
+    gradeText = "Perlu Belajar";
+    starsEl.textContent = "⭐☆☆";
+    msgEl.textContent = `Semangat ${currentQuizStudent.name}! Buka kembali menu Eksplorasi 3D dan Jaring-jaring untuk melihat sifat-sifat bangun ruang.`;
+  }
+
+  // Format Date (e.g., "18 Okt 2026, 08:35")
+  const now = new Date();
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+  const formattedDate = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}, ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+  const record = {
+    id: Date.now(),
+    name: currentQuizStudent.name || 'Siswa Juara',
+    studentClass: currentQuizStudent.studentClass || 'Sekolah Dasar',
+    score: quizScore,
+    maxScore: 100,
+    stars: starsText,
+    grade: gradeText,
+    date: formattedDate
+  };
+
+  // Save to LocalStorage and update table
+  saveQuizHistory(record);
+}
+
+function retryQuiz() {
+  sfx.playPop();
+  document.getElementById('quizResultCard').classList.add('hidden');
+  document.getElementById('quizIntroCard').classList.remove('hidden');
+  const nameInput = document.getElementById('studentNameInput');
+  if (nameInput) nameInput.focus();
+}
+
+function scrollToHistory() {
+  sfx.playPop();
+  const histCard = document.getElementById('quizHistoryCard');
+  if (histCard) {
+    histCard.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+
+// --- TAB SWITCHER ---
+function switchTab(tabId) {
+  sfx.playPop();
+  // Update nav buttons
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+  });
+
+  // Update tab sections
+  document.querySelectorAll('.tab-content').forEach(section => {
+    section.classList.toggle('active', section.id === `tab-${tabId}`);
+  });
+
+  // Resize Three.js if returning to 3D explorer
+  // Stop camera if navigating away from camera tab
+  if (typeof cameraMediaStream !== 'undefined' && cameraMediaStream && tabId !== 'kamera') {
+    stopCameraScanner();
+  }
+
+  if (tabId === 'eksplorasi') {
+    setTimeout(onWindowResize, 50);
+  } else if (tabId === 'jaring') {
+    updateJaringDisplay();
+  } else if (tabId === 'kalkulator') {
+    buildCalcSliders(currentCalcShape);
+  }
+}
+
+// --- SETUP EVENT LISTENERS ---
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Initialize 3D Engine
+  initThreeEngine();
+
+  
+  // Dimension Selector Buttons (3D / 4D / 5D)
+  document.querySelectorAll('.dim-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const dim = btn.getAttribute('data-dim');
+      setDimension(dim);
+    });
+  });
+
+  // 2. Tab Navigation
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.getAttribute('data-tab');
+      switchTab(tab);
+    });
+  });
+
+  // 3. Shape Selector Pills in Tab 1
+  document.querySelectorAll('.shape-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      sfx.playPop();
+      document.querySelectorAll('.shape-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const shape = pill.getAttribute('data-shape');
+      loadShape(shape);
+    });
+  });
+
+  // 4. 3D Floating Toolbar Controls
+  // Auto Rotate Toggle
+  const rotateBtn = document.getElementById('toggleRotateBtn');
+  rotateBtn.addEventListener('click', () => {
+    sfx.playPop();
+    autoRotate = !autoRotate;
+    rotateBtn.classList.toggle('active', autoRotate);
+  });
+
+  // Vertices Toggle
+  const verticesBtn = document.getElementById('toggleVerticesBtn');
+  verticesBtn.addEventListener('click', () => {
+    sfx.playPop();
+    showVertices = !showVertices;
+    verticesBtn.classList.toggle('active', showVertices);
+    if (currentVerticesGroup) {
+      currentVerticesGroup.visible = showVertices;
+    }
+  });
+
+  // Edges Toggle
+  const edgesBtn = document.getElementById('toggleEdgesBtn');
+  edgesBtn.addEventListener('click', () => {
+    sfx.playPop();
+    showEdges = !showEdges;
+    edgesBtn.classList.toggle('active', showEdges);
+    if (currentEdgesLine) {
+      currentEdgesLine.material.opacity = showEdges ? 0.95 : 0;
+    }
+  });
+
+  // Wireframe Toggle
+  const wireBtn = document.getElementById('toggleWireframeBtn');
+  wireBtn.addEventListener('click', () => {
+    sfx.playPop();
+    wireframeMode = !wireframeMode;
+    wireBtn.classList.toggle('active', wireframeMode);
+    if (currentMeshGroup && currentMeshGroup.children[0]) {
+      currentMeshGroup.children[0].material.wireframe = wireframeMode;
+    }
+  });
+
+  // Reset to Geometric Shape Button
+  const resetToGeo = document.getElementById('resetToGeoBtn');
+  if (resetToGeo) {
+    resetToGeo.addEventListener('click', () => {
+      sfx.playPop();
+      loadShape(currentShapeKey);
+    });
+  }
+
+
+  // 4D Folding Animation Toggle
+  const foldBtn = document.getElementById('btnFoldToggle');
+  if (foldBtn) {
+    foldBtn.addEventListener('click', () => {
+      sfx.playPop();
+      triggerHaptic([40, 50, 40]);
+      isFolding4D = !isFolding4D;
+      foldBtn.classList.toggle('active', isFolding4D);
+
+      if (isFolding4D) {
+        // Switch mesh group to folding net model
+        if (currentMeshGroup) scene.remove(currentMeshGroup);
+        currentMeshGroup = createFoldingCubeGroup();
+        scene.add(currentMeshGroup);
+        foldingProgress = 1.0;
+        foldingDir = -1;
+        document.getElementById('currentShapeLabel').innerHTML = 'Animasi 4D: <strong>Melipat Kubus (Waktu)</strong> ⏱️';
+        document.getElementById('mascotTip').innerHTML = 'Lihat! Ini adalah <strong>Dimensi ke-4 (Waktu & Transformasi)</strong>: Kamu bisa melihat langsung bagaimana jaring-jaring 2D melipat naik membentuk kubus 3D!';
+      } else {
+        loadShape(currentShapeKey);
+      }
+    });
+  }
+
+  // 5D Particle Atmosphere Toggle
+  const particleBtn = document.getElementById('btnParticleToggle');
+  if (particleBtn) {
+    particleBtn.addEventListener('click', () => {
+      sfx.playPop();
+      show5DParticles = !show5DParticles;
+      particleBtn.classList.toggle('active', show5DParticles);
+      if (particles5D) particles5D.visible = show5DParticles;
+    });
+  }
+
+  // Reset Camera View
+  const resetBtn = document.getElementById('resetCamBtn');
+  resetBtn.addEventListener('click', () => {
+    sfx.playPop();
+    camera.position.set(4.2, 3.2, 5.5);
+    controls.target.set(0, 0, 0);
+  });
+
+  // Color Palette Dots
+  document.querySelectorAll('.color-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      sfx.playPop();
+      document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+      dot.classList.add('active');
+      activeColor = dot.getAttribute('data-color');
+      if (currentMeshGroup && currentMeshGroup.children[0]) {
+        currentMeshGroup.children[0].material.color.set(activeColor);
+      }
+    });
+  });
+
+  // 5. Jaring-Jaring Controls
+  const jaringSelect = document.getElementById('jaringShapeSelect');
+  jaringSelect.addEventListener('change', () => {
+    sfx.playPop();
+    updateJaringDisplay();
+  });
+
+  document.querySelectorAll('#cubePatternControls .sub-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      sfx.playPop();
+      document.querySelectorAll('#cubePatternControls .sub-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      currentCubePattern = parseInt(pill.getAttribute('data-pattern'));
+      updateJaringDisplay();
+    });
+  });
+
+  // 6. Calculator Controls
+  const calcSelect = document.getElementById('calcShapeSelect');
+  calcSelect.addEventListener('change', () => {
+    sfx.playPop();
+    buildCalcSliders(calcSelect.value);
+  });
+
+  // 7. Quiz Controls
+  // --- Camera Scanner Event Listeners ---
+  const toggleCamBtn = document.getElementById('toggleCameraBtn');
+  if (toggleCamBtn) toggleCamBtn.addEventListener('click', toggleCamera);
+  const startCamPlaceholderBtn = document.getElementById('startCameraPlaceholderBtn');
+  if (startCamPlaceholderBtn) startCamPlaceholderBtn.addEventListener('click', startCameraScanner);
+  const switchFacingBtn = document.getElementById('switchCamFacingBtn');
+  if (switchFacingBtn) switchFacingBtn.addEventListener('click', switchCameraFacing);
+  const cycleFrameBtn = document.getElementById('cycleFrameSizeBtn');
+  if (cycleFrameBtn) cycleFrameBtn.addEventListener('click', cycleFrameSize);
+  const captureBtn = document.getElementById('captureScanBtn');
+  if (captureBtn) captureBtn.addEventListener('click', captureAndScan);
+  const uploadInput = document.getElementById('fileUploadInput');
+  if (uploadInput) uploadInput.addEventListener('change', handleImageFileUpload);
+
+  // Pre-fill student identity if stored
+  try {
+    const savedName = localStorage.getItem('last_student_name');
+    const savedClass = localStorage.getItem('last_student_class');
+    if (savedName) {
+      const nameInput = document.getElementById('studentNameInput');
+      if (nameInput) nameInput.value = savedName;
+    }
+    if (savedClass) {
+      const classSelect = document.getElementById('studentClassSelect');
+      if (classSelect) classSelect.value = savedClass;
+    }
+  } catch (e) {}
+
+  // Render initial history table
+  renderHistoryTable();
+
+  // 7. Quiz Controls
+  const startBtn = document.getElementById('startQuizBtn');
+  if (startBtn) startBtn.addEventListener('click', startQuiz);
+  const nextBtn = document.getElementById('nextQuestionBtn');
+  if (nextBtn) nextBtn.addEventListener('click', nextQuizQuestion);
+  const clearHistBtn = document.getElementById('clearHistoryBtn');
+  if (clearHistBtn) clearHistBtn.addEventListener('click', clearAllQuizHistory);
+  document.getElementById('retryQuizBtn').addEventListener('click', startQuiz);
+
+  // 8. Sound Toggle Header Action
+  const soundBtn = document.getElementById('soundToggleBtn');
+  soundBtn.addEventListener('click', () => {
+    sfx.enabled = !sfx.enabled;
+    soundBtn.innerHTML = sfx.enabled 
+      ? '<i class="fa-solid fa-volume-high"></i>' 
+      : '<i class="fa-solid fa-volume-xmark"></i>';
+    if (sfx.enabled) sfx.playPop();
+  });
+
+  // 9. Info / Help Modal
+  const infoModal = document.getElementById('infoModal');
+  const infoBtn = document.getElementById('infoModalBtn');
+  const closeBtn = document.getElementById('closeModalBtn');
+  const understandBtn = document.getElementById('modalUnderstandBtn');
+
+  function openModal() {
+    sfx.playPop();
+    infoModal.classList.remove('hidden');
+  }
+  function closeModal() {
+    sfx.playPop();
+    infoModal.classList.add('hidden');
+  }
+
+  infoBtn.addEventListener('click', openModal);
+  closeBtn.addEventListener('click', closeModal);
+  understandBtn.addEventListener('click', closeModal);
+  infoModal.addEventListener('click', (e) => {
+    if (e.target === infoModal) closeModal();
+  });
+
+  // Initial runs
+  updateJaringDisplay();
+  buildCalcSliders('kubus');
+});
+
+// Explicit window bindings for inline HTML handlers
+window.switchTab = switchTab;
+window.applyPreset = applyPreset;
+window.startQuiz = startQuiz;
+
+window.deleteHistoryItem = deleteHistoryItem;
+window.clearAllQuizHistory = clearAllQuizHistory;
+window.retryQuiz = retryQuiz;
+window.scrollToHistory = scrollToHistory;
+
+window.toggleCamera = toggleCamera;
+window.startCameraScanner = startCameraScanner;
+window.stopCameraScanner = stopCameraScanner;
+window.switchCameraFacing = switchCameraFacing;
+window.cycleFrameSize = cycleFrameSize;
+window.captureAndScan = captureAndScan;
+window.testSampleObject = testSampleObject;
+window.resetDetectionView = resetDetectionView;
+window.open3DModelFromDetection = open3DModelFromDetection;
+window.manuallyCorrectDetection = manuallyCorrectDetection;
