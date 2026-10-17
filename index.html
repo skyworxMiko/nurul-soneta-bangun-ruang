@@ -3449,6 +3449,11 @@ body {
   align-items: center;
   justify-content: center;
   box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.7);
+  transition: box-shadow 0.2s ease;
+}
+
+.viewfinder-viewport.is-active {
+  cursor: pointer;
 }
 
 #cameraVideo {
@@ -3523,7 +3528,21 @@ body {
   flex-direction: column;
   justify-content: space-between;
   box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.45), 0 0 30px rgba(6, 182, 212, 0.25);
-  transition: width 0.3s ease, height 0.3s ease, max-width 0.3s ease, max-height 0.3s ease;
+  transition: width 0.3s ease, height 0.3s ease, max-width 0.3s ease, max-height 0.3s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  pointer-events: auto;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.scanner-frame:hover {
+  border-color: rgba(16, 185, 129, 0.95);
+  box-shadow: 0 0 0 9999px rgba(15, 23, 42, 0.45), 0 0 35px rgba(16, 185, 129, 0.45);
+}
+
+.scanner-frame:active {
+  transform: scale(0.985);
+  border-color: #10B981;
 }
 
 /* Frame size variations */
@@ -3609,6 +3628,56 @@ body {
   backdrop-filter: blur(6px);
   border: 1px solid rgba(56, 189, 248, 0.35);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  pointer-events: none;
+}
+
+/* Floating Tap-to-Capture Hint Badge */
+.scanner-tap-hint {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(16, 185, 129, 0.7);
+  color: #10B981;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.35rem 0.95rem;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  z-index: 15;
+  animation: pulseTapHint 2.4s infinite ease-in-out;
+  white-space: nowrap;
+}
+
+@keyframes pulseTapHint {
+  0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.95; }
+  50% { transform: translateX(-50%) scale(1.05); opacity: 1; border-color: #34D399; }
+}
+
+/* Camera Shutter Flash Effect */
+.shutter-flash {
+  position: absolute;
+  inset: 0;
+  background: #FFFFFF;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50;
+  transition: opacity 0.12s ease-out;
+}
+
+.shutter-flash.flash-active {
+  opacity: 0.92;
+  transition: none;
 }
 
 /* Camera Action Buttons */
@@ -4607,17 +4676,18 @@ body {
           <div class="viewfinder-viewport">
             <video id="cameraVideo" autoplay playsinline muted></video>
             <canvas id="cameraCanvas"></canvas>
+            <div id="shutterFlash" class="shutter-flash"></div>
 
             <!-- HUD Reticle Target Overlay -->
             <div id="scannerHudOverlay" class="scanner-hud-overlay hidden">
-              <div class="scanner-frame">
+              <div class="scanner-frame" id="scannerFrameBox" title="Ketuk untuk langsung foto & deteksi">
                 <span class="corner top-left"></span>
                 <span class="corner top-right"></span>
                 <span class="corner bottom-left"></span>
                 <span class="corner bottom-right"></span>
+                <div class="scanner-tap-hint"><i class="fa-solid fa-camera"></i> Ketuk Kotak untuk Foto</div>
                 <div class="scanner-laser-line"></div>
-                <div class="scanner-guide-text"><i class="fa-solid fa-crosshairs"></i> Letakkan Benda di Dalam Kotak
-                </div>
+                <div class="scanner-guide-text"><i class="fa-solid fa-hand-pointer"></i> <span>Ketuk Kotak untuk Langsung Foto & Deteksi</span></div>
               </div>
             </div>
 
@@ -5982,6 +6052,43 @@ class SoundEffects {
       gain.connect(this.ctx.destination);
       osc.start();
       osc.stop(this.ctx.currentTime + 0.26);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  playShutter() {
+    triggerHaptic([30, 20, 45]);
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const now = this.ctx.currentTime;
+      // Click 1 (shutter opening mechanical snap)
+      const osc1 = this.ctx.createOscillator();
+      const gain1 = this.ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(1400, now);
+      osc1.frequency.exponentialRampToValueAtTime(380, now + 0.035);
+      gain1.gain.setValueAtTime(0.28, now);
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+      osc1.connect(gain1);
+      gain1.connect(this.ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 0.04);
+
+      // Click 2 (shutter close blade snap 45ms later)
+      const osc2 = this.ctx.createOscillator();
+      const gain2 = this.ctx.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(850, now + 0.045);
+      osc2.frequency.exponentialRampToValueAtTime(260, now + 0.095);
+      gain2.gain.setValueAtTime(0.32, now + 0.045);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.095);
+      osc2.connect(gain2);
+      gain2.connect(this.ctx.destination);
+      osc2.start(now + 0.045);
+      osc2.stop(now + 0.10);
     } catch (e) {
       console.log(e);
     }
@@ -8373,37 +8480,108 @@ function updateAiModelStatusUI(status) {
   }
 }
 
-// Comprehensive Weighted Keyword Mapping across ImageNet 1,000 Classes
-const SHAPE_AI_KEYWORDS = {
-  kubus: {
-    primary: ['die', 'dice', 'rubik', 'magic cube', 'cube', 'toy block', 'alphabet block', 'wooden block', 'ice cube', 'sugar cube', 'puzzle box', 'square box'],
-    secondary: ['block', 'puzzle', 'safe', 'cuboid', 'box, square']
+// High-Precision Semantic & Geometric Taxonomy for ImageNet 1,000 Classes
+const SHAPE_AI_RULES = [
+  // --- BALOK (Prisma Segiempat / Kotak Panjang / TV / Elektronik / Buku) ---
+  {
+    shape: 'balok',
+    regex: /\b(television|tv|monitor|crt screen|screen|desktop computer|laptop|notebook computer|hand-held computer|home theater|entertainment center)\b/i,
+    defaultName: 'Televisi / Layar Monitor',
+    weight: 96
   },
-  balok: {
-    primary: ['shoe box', 'shoebox', 'book', 'comic book', 'binder', 'notebook', 'hardback', 'paperback', 'brick', 'tissue box', 'pencil box', 'pencil case', 'cellphone', 'cellular telephone', 'cellular phone', 'smartphone', 'smart phone', 'remote control', 'remote', 'carton', 'cardboard box', 'cereal box', 'packet', 'package', 'cassette', 'hard disc'],
-    secondary: ['box', 'crate', 'refrigerator', 'microwave', 'wardrobe', 'cabinet', 'chest', 'cupboard', 'bookcase', 'filing cabinet', 'dresser', 'radio', 'tape player', 'soap dispenser', 'soap', 'sponge', 'eraser', 'mattress', 'pillow', 'speaker', 'modem', 'laptop', 'desktop computer', 'keyboard', 'wallet', 'envelope', 'pencil sharpener', 'matchbox', 'medicine chest']
+  {
+    shape: 'balok',
+    regex: /\b(cellular telephone|cellphone|mobile phone|remote control|remote|radio|cassette|loudspeaker|speaker|computer keyboard)\b/i,
+    defaultName: 'Ponsel / Remote / Elektronik',
+    weight: 88
   },
-  tabung: {
-    primary: ['can', 'tin can', 'pop can', 'soda can', 'beer can', 'drink can', 'canister', 'cylinder', 'water bottle', 'bottle', 'beer bottle', 'wine bottle', 'pop bottle', 'thermos', 'tumbler', 'pill bottle', 'coffee mug', 'mug', 'cup', 'glass', 'beaker', 'flask', 'tube', 'pipe', 'spray can', 'aerosol', 'roll', 'paper towel', 'toilet paper', 'candle', 'battery'],
-    secondary: ['drum', 'barrel', 'beer barrel', 'oil drum', 'measuring cup', 'vase', 'bucket', 'pail', 'hair spray', 'saltshaker', 'pepper shaker', 'lotion', 'shampoo', 'candleholder', 'lipstick', 'whiskey jug', 'water jug', 'jug', 'pitcher', 'goblet', 'ashcan', 'trash can', 'flowerpot', 'shaving cream', 'lighter', 'coffeepot', 'teapot']
+  {
+    shape: 'balok',
+    regex: /\b(book|comic book|binder|notebook|hardback|paperback|bookcase|envelope|packet)\b/i,
+    defaultName: 'Buku Paket / Modul Bacaan',
+    weight: 88
   },
-  kerucut: {
-    primary: ['traffic cone', 'cone', 'ice cream', 'icecream', 'party hat', 'dunce cap', 'funnel', 'conical', 'party cone', 'cornet', 'sorbet cone', 'megaphone', 'pointy hat'],
-    secondary: ['microphone', 'spinning top', 'volcano', 'steeple', 'party blower', 'lampshade', 'bell', 'cornet']
+  {
+    shape: 'balok',
+    regex: /\b(carton|crate|shoe box|shoebox|pencil box|pencil case|matchbox|filing cabinet|china cabinet|wardrobe|chest|dresser|cupboard|medicine chest|refrigerator|microwave)\b/i,
+    defaultName: 'Kardus / Kotak Balok',
+    weight: 92
   },
-  bola: {
-    primary: ['ball', 'soccer ball', 'football', 'basketball', 'tennis ball', 'volleyball', 'golf ball', 'baseball', 'ping-pong ball', 'rugby ball', 'bowling ball', 'globe', 'orange', 'lemon', 'apple', 'grapefruit', 'pomegranate', 'melon', 'watermelon', 'balloon', 'marble', 'marbles', 'sphere', 'bubble', 'billiard ball', 'pool ball', 'cricket ball'],
-    secondary: ['round', 'orb', 'bead', 'tomato', 'clock', 'analog clock', 'stopwatch', 'wheel', 'disc', 'frisbee', 'egg']
+  {
+    shape: 'balok',
+    regex: /\b(soap dispenser|sponge|eraser|mattress|pillow|brick|doormat)\b/i,
+    defaultName: 'Penghapus / Spons Balok',
+    weight: 82
   },
-  prisma: {
-    primary: ['tent', 'camping tent', 'dome tent', 'ridge tent', 'toblerone', 'wedge', 'triangular prism', 'doorstop', 'cheese wedge', 'sandwich', 'triangular', 'triangle'],
-    secondary: ['camp', 'roof', 'gable roof', 'prism', 'chocolate bar', 'ramp', 'ski slope']
+
+  // --- KUBUS (Kubus Persegi Sama Sisi 1:1) ---
+  {
+    shape: 'kubus',
+    regex: /\b(die|dice|cube|rubik|magic cube|toy block|alphabet block|wooden block|ice cube|sugar cube|puzzle box|safe)\b/i,
+    defaultName: 'Dadu / Kotak Kubus Rubik',
+    weight: 95
   },
-  limas: {
-    primary: ['pyramid', 'pyramids', 'great pyramid', 'obelisk', 'steeple', 'church steeple', 'apex', 'tetrahedron', 'limas'],
-    secondary: ['shrine', 'temple', 'monument', 'stupa', 'triangle tower', 'gazebo']
+
+  // --- TABUNG (Silinder Melingkar / Botol / Kaleng) ---
+  {
+    shape: 'tabung',
+    regex: /\b(bottle|beer bottle|wine bottle|pop bottle|water bottle|soda bottle|pill bottle|thermos|tumbler)\b/i,
+    defaultName: 'Botol Minum Silinder',
+    weight: 95
+  },
+  {
+    shape: 'tabung',
+    regex: /\b(can|tin can|pop can|soda can|beer can|milk can|canister)\b/i,
+    exclude: /\b(opener|toucan|american|african)\b/i,
+    defaultName: 'Kaleng Minuman / Susu',
+    weight: 95
+  },
+  {
+    shape: 'tabung',
+    regex: /\b(coffee mug|mug|cup|measuring cup|beaker|flask|cylinder|tube|pipe|spray can|aerosol|hair spray|roll|paper towel|toilet paper|candle|battery|drum|barrel|oil drum|bucket|pail|vase|cocktail shaker|coffeepot|teapot)\b/i,
+    defaultName: 'Gelas / Wadah Silinder',
+    weight: 88
+  },
+
+  // --- KERUCUT (Kerucut Lancip / Cone) ---
+  {
+    shape: 'kerucut',
+    regex: /\b(ice cream|icecream|traffic cone|party hat|dunce cap|funnel|conical|megaphone|cornet)\b/i,
+    defaultName: 'Es Krim Cone / Topi Kerucut',
+    weight: 96
+  },
+
+  // --- BOLA (Bulatan Sempurna / Bola Olahraga) ---
+  {
+    shape: 'bola',
+    regex: /\b(ball|soccer ball|football|basketball|tennis ball|volleyball|golf ball|baseball|ping-pong ball|rugby ball|bowling ball|croquet ball)\b/i,
+    exclude: /\b(helmet|player|glove|bat)\b/i,
+    defaultName: 'Bola Olahraga Bulat',
+    weight: 95
+  },
+  {
+    shape: 'bola',
+    regex: /\b(globe|orange|lemon|apple|grapefruit|pomegranate|melon|watermelon|balloon|marble|sphere|bubble)\b/i,
+    defaultName: 'Bola / Buah Bulat',
+    weight: 90
+  },
+
+  // --- PRISMA (Prisma Segitiga / Tenda / Wedge) ---
+  {
+    shape: 'prisma',
+    regex: /\b(tent|mountain tent|ridge tent|dome tent|camping tent|wedge|cheese wedge|sandwich|toblerone|triangular prism)\b/i,
+    defaultName: 'Tenda Kemah (Prisma)',
+    weight: 95
+  },
+
+  // --- LIMAS (Limas Piramida Segiempat) ---
+  {
+    shape: 'limas',
+    regex: /\b(pyramid|obelisk|steeple|church steeple|apex|tetrahedron)\b/i,
+    defaultName: 'Piramida / Limas Segiempat',
+    weight: 95
   }
-};
+];
 
 // Asynchronously load MobileNet in the background
 function initAIVisionModel() {
@@ -8468,8 +8646,10 @@ async function startCameraScanner() {
     await video.play();
 
     // Update UI states
+    const viewport = document.querySelector('.viewfinder-viewport');
+    if (viewport) viewport.classList.add('is-active');
     if (dot) dot.classList.add('active');
-    if (statusText) statusText.textContent = 'Kamera Aktif • Siap Memindai Benda';
+    if (statusText) statusText.textContent = 'Kamera Aktif • Ketuk Kotak untuk Jepret Foto';
     if (hud) hud.classList.remove('hidden');
     if (placeholder) placeholder.classList.add('hidden');
     if (scanBtn) scanBtn.classList.remove('hidden');
@@ -8498,6 +8678,9 @@ function stopCameraScanner() {
 
   const video = document.getElementById('cameraVideo');
   if (video) video.srcObject = null;
+
+  const viewport = document.querySelector('.viewfinder-viewport');
+  if (viewport) viewport.classList.remove('is-active');
 
   const dot = document.getElementById('camStatusDot');
   const statusText = document.getElementById('camStatusText');
@@ -8605,13 +8788,26 @@ function getFrameCropCoordinates(video, frameEl, viewportEl) {
 
 // Capture current frame from video (cropped precisely to reticle box) and run AI analysis
 function captureAndScan() {
-  sfx.playSuccess();
   const video = document.getElementById('cameraVideo');
   const canvas = document.getElementById('cameraCanvas');
   const frameEl = document.querySelector('.scanner-frame');
   const viewportEl = document.querySelector('.viewfinder-viewport');
+  const flashEl = document.getElementById('shutterFlash');
   if (!video || !cameraMediaStream) return;
 
+  // Authentic SLR camera shutter sound & haptic vibration
+  if (sfx.playShutter) sfx.playShutter();
+  else sfx.playSuccess();
+
+  // Instant visual camera shutter flash animation
+  if (flashEl) {
+    flashEl.classList.add('flash-active');
+    setTimeout(() => {
+      flashEl.classList.remove('flash-active');
+    }, 120);
+  }
+
+  // Frame crop calculation strictly inside reticle box
   const crop = getFrameCropCoordinates(video, frameEl, viewportEl);
   canvas.width = crop.sw;
   canvas.height = crop.sh;
@@ -8619,7 +8815,7 @@ function captureAndScan() {
   const ctx = canvas.getContext('2d');
   ctx.drawImage(video, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, crop.sw, crop.sh);
 
-  // Play scanning animation
+  // Play scanning HUD laser animation
   const hud = document.getElementById('scannerHudOverlay');
   if (hud) {
     hud.classList.add('scanning-active');
@@ -8734,23 +8930,14 @@ async function analyzeImageFrame(canvas, optionalImgSrc) {
           const prob = pred.probability || (1 / (i + 1));
           const rankWeight = 1.0 / (1 + i * 0.15);
 
-          for (const [shape, kwObj] of Object.entries(SHAPE_AI_KEYWORDS)) {
-            // Check primary distinctive keywords
-            for (const kw of kwObj.primary) {
-              if (cName.includes(kw)) {
-                const isExact = cName === kw || cName.startsWith(kw + ',') || cName.startsWith(kw + ' ');
-                const points = prob * rankWeight * (isExact ? 60 : 40);
-                aiScores[shape] += points;
-                if (!bestAiShapeMatch) {
-                  bestAiShapeMatch = shape;
-                  bestAiPredictionName = pred.className.split(',')[0];
-                }
-              }
-            }
-            // Check secondary keywords
-            for (const kw of kwObj.secondary) {
-              if (cName.includes(kw)) {
-                aiScores[shape] += prob * rankWeight * 20;
+          for (const rule of SHAPE_AI_RULES) {
+            if (rule.exclude && rule.exclude.test(cName)) continue;
+            if (rule.regex.test(cName)) {
+              const points = prob * rankWeight * rule.weight;
+              aiScores[rule.shape] += points;
+              if (!bestAiShapeMatch) {
+                bestAiShapeMatch = rule.shape;
+                bestAiPredictionName = rule.defaultName;
               }
             }
           }
@@ -8938,53 +9125,65 @@ function runGeometricShapeAnalysis(canvas) {
 
   const scores = { kubus: 0, balok: 0, tabung: 0, kerucut: 0, bola: 0, prisma: 0, limas: 0 };
 
-  // --- Bola ---
-  if (circularityScore > 0.40 && objAspect >= 0.80 && objAspect <= 1.25) {
-    scores.bola += 60 + circularityScore * 40;
-  } else if (objAspect >= 0.86 && objAspect <= 1.16) {
-    scores.bola += 30;
+  // --- Bola (Lingkaran Sempurna) ---
+  if (circularityScore > 0.40 && objAspect >= 0.82 && objAspect <= 1.22) {
+    scores.bola += 65 + circularityScore * 35;
+  } else if (objAspect >= 0.88 && objAspect <= 1.14 && circularityScore > 0.25) {
+    scores.bola += 40;
   }
 
-  // --- Kerucut & Limas (Tapered Top) ---
-  if (taperRatio < 0.62 && widthMid > widthTop) {
-    const taperStrength = (1 - taperRatio) * 65;
-    if (circularityScore > 0.30 || objAspect < 0.95) {
-      scores.kerucut += 50 + taperStrength;
-      scores.limas += 35 + taperStrength * 0.7;
+  // --- Kerucut & Limas (Upright Tapered Shapes ONLY) ---
+  // STRICT GUARD: Kerucut & Limas MUST be upright/portrait (objAspect <= 1.15).
+  // A wide horizontal rectangle (objAspect > 1.15) like a TV, monitor, book, or shoe box can NEVER be a Kerucut!
+  if (objAspect <= 1.15 && taperRatio < 0.65 && widthMid >= widthTop) {
+    const taperStrength = (1 - taperRatio) * 60;
+    if (circularityScore > 0.30 || objAspect < 0.90) {
+      scores.kerucut += 55 + taperStrength;
+      scores.limas += 35 + taperStrength * 0.6;
     } else {
-      scores.limas += 50 + taperStrength;
-      scores.kerucut += 35 + taperStrength * 0.7;
+      scores.limas += 55 + taperStrength;
+      scores.kerucut += 35 + taperStrength * 0.6;
     }
   }
 
-  // --- Tabung (Cylinder) ---
-  if (objAspect < 0.90 && isParallel) {
-    scores.tabung += 60 + (1 - objAspect) * 35;
-    scores.balok += 35;
-  } else if (isParallel && circularityScore > 0.20) {
-    scores.tabung += 45;
+  // --- Tabung (Silinder Vertikal) ---
+  if (objAspect <= 0.88 && isParallel) {
+    scores.tabung += 68 + (1 - objAspect) * 35;
+    scores.balok += 25;
+  } else if (isParallel && circularityScore > 0.20 && objAspect <= 1.0) {
+    scores.tabung += 48;
   }
 
-  // --- Balok (Cuboid) ---
-  if (objAspect > 1.22) {
-    scores.balok += 60 + (objAspect - 1) * 20;
-    scores.prisma += 35;
-  } else if (objAspect < 0.82) {
-    scores.balok += 45;
+  // --- Balok (Cuboid: Horizontal Landscape / Vertical Stand) ---
+  if (objAspect >= 1.20) {
+    // Horizontal / landscape rectangle (TV, laptop, monitor, shoe box, book, phone)
+    scores.balok += 68 + Math.min(30, (objAspect - 1.2) * 25);
+    if (objAspect >= 1.30) {
+      scores.balok += 28; // Strong TV / 16:9 screen boost
+      // Strip any false cone/sphere points on wide rectangular surfaces
+      scores.kerucut = Math.min(scores.kerucut, 5);
+      scores.limas = Math.min(scores.limas, 10);
+      scores.bola = Math.min(scores.bola, 5);
+    }
+  } else if (objAspect <= 0.80) {
+    // Vertical / portrait rectangle (standing box, tall book)
+    if (!isParallel || circularityScore < 0.25) {
+      scores.balok += 55;
+    }
   }
 
-  // --- Kubus (Square) ---
-  if (objAspect >= 0.82 && objAspect <= 1.22) {
-    if (circularityScore < 0.40) {
-      scores.kubus += 58 + (1 - Math.abs(objAspect - 1)) * 30;
+  // --- Kubus (Square 1:1) ---
+  if (objAspect >= 0.82 && objAspect <= 1.20) {
+    if (circularityScore < 0.35) {
+      scores.kubus += 62 + (1 - Math.abs(objAspect - 1)) * 30;
     } else {
-      scores.kubus += 25;
+      scores.kubus += 20;
     }
   }
 
   // --- Prisma Segitiga ---
-  if (objAspect > 1.15 && taperRatio < 0.75) {
-    scores.prisma += 52;
+  if (objAspect >= 1.05 && objAspect <= 1.55 && taperRatio < 0.70 && taperRatio > 0.35) {
+    scores.prisma += 50;
   }
 
   return { scores, objAspect, circularityScore, taperRatio };
@@ -9008,6 +9207,12 @@ function displayDetectionResult(result) {
   lastDetectedRealWorldId = result.realWorldId;
 
   const base = SHAPES_DATA[result.shapeKey] || SHAPES_DATA.kubus;
+
+  // Scroll and reveal result card
+  if (card) {
+    card.classList.remove('hidden');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
 
   // Fill UI
   if (thumbImg) thumbImg.src = result.imageSrc;
@@ -10132,6 +10337,46 @@ document.addEventListener('DOMContentLoaded', () => {
   if (captureBtn) captureBtn.addEventListener('click', captureAndScan);
   const uploadInput = document.getElementById('fileUploadInput');
   if (uploadInput) uploadInput.addEventListener('change', handleImageFileUpload);
+
+  // Direct Click/Tap on Reticle Box or Viewport to Instantly Capture & Detect
+  const scannerFrameBox = document.querySelector('.scanner-frame');
+  const viewfinderViewportEl = document.querySelector('.viewfinder-viewport');
+
+  function handleBoxDirectCapture(e) {
+    if (cameraMediaStream) {
+      if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+      captureAndScan();
+    }
+  }
+
+  if (scannerFrameBox) {
+    scannerFrameBox.addEventListener('click', handleBoxDirectCapture);
+    scannerFrameBox.addEventListener('touchend', (e) => {
+      if (cameraMediaStream) {
+        e.preventDefault();
+        captureAndScan();
+      }
+    }, { passive: false });
+  }
+
+  if (viewfinderViewportEl) {
+    viewfinderViewportEl.addEventListener('click', (e) => {
+      if (e.target.closest('#cameraOffPlaceholder') || e.target.closest('button') || e.target.closest('label')) {
+        return;
+      }
+      if (cameraMediaStream) {
+        captureAndScan();
+      }
+    });
+  }
+
+  // Warm up AI model in background early on page load
+  setTimeout(() => {
+    initAIVisionModel();
+  }, 1200);
 
   // Pre-fill student identity if stored
   try {
