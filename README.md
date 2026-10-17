@@ -10,6 +10,7 @@ Website interaktif berbasis animasi 3D dan teknologi web modern untuk membantu s
 * **NIM:** 24129418
 * **Program Studi:** Pendidikan Guru Sekolah Dasar (PGSD)
 * **Fakultas / Universitas:** Fakultas Ilmu Pendidikan • Universitas Negeri Padang (UNP)
+* **🌐 Link Website Live Vercel:** [https://nurul-soneta.vercel.app/](https://nurul-soneta.vercel.app/)
 
 ---
 
@@ -62,6 +63,20 @@ Bentuk bangun ruang kini dapat diganti-ganti secara langsung melalui tombol dime
 * **🧊 Mode 3D (Bangun Ruang SD)**: 7 bangun ruang fisik (Kubus, Balok, Tabung, Kerucut, Bola, Prisma, Limas) dengan 3 sumbu ($X, Y, Z$) lengkap dengan 28 contoh benda nyata di sekitar kita.
 * **⏱️ Mode 4D (Tesseract / 4-Cube)**: Proyeksi kubus dalam 4 dimensi ruang ($X, Y, Z, W$) dengan 16 titik sudut ($2^4$), 32 rusuk, dan 8 kubus pembatas yang berputar membalik secara dinamis seiring waktu!
 * **🌌 Mode 5D (Penteract / 5-Cube)**: Proyeksi kubus dalam 5 dimensi ruang ($X, Y, Z, W, V$) dengan 32 titik sudut koordinat ($2^5$), 80 rusuk hiper-ruang, dan 10 tesseract sel pembatas yang berputar kosmik dalam proyeksi multi-sumbu!
+
+### 7. 📸 Detektor Kamera AI Bangun Ruang (Deep Learning & Computer Vision)
+* Menggunakan kamera perangkat secara langsung untuk mendeteksi benda konkret (kotak sepatu, dadu, kaleng, bola, cone, dll).
+* **Pemotongan Presisi (ROI Cropping):** Kamera memotong tepat pada kotak bidik (*scanner frame*) sehingga latar belakang ruangan tidak mengganggu akurasi AI.
+* **Klasifikasi Cerdas MobileNet (Top-10):** Menganalisis 10 prediksi probabilitas terbaik dari ribuan kelas objek.
+* **Analyzer Geometri Ilmiah (Fallback CV):** Menghitung rasio aspek ($W/H$), kontras 4 sudut (uji bola), dan rasio tirus (*taper ratio*) untuk kerucut/limas.
+* **Integrasi 3D 1-Klik:** Dari hasil pindai, siswa dapat langsung mengklik tombol *"Lihat Model 3D Benda Ini"* untuk membuka model interaktif Three.js.
+
+### 8. 📱 Barcode / QR Code Presentasi & Uji Coba Peserta (Live Vercel)
+* Tersedia kartu Barcode/QR Code di Beranda yang mengarah langsung ke `https://nurul-soneta.vercel.app/`.
+* Peserta presentasi cukup memindai menggunakan kamera HP/Google Lens untuk ikut menguji aplikasi secara langsung.
+* **Pilihan Halaman Tujuan:** Presenter dapat memilih apakah kode QR membuka Beranda, langsung ke Detektor Kamera AI (`#tab-kamera`), Kuis Juara (`#tab-kuis`), atau Eksplorasi 3D (`#tab-eksplorasi`).
+* **Mode Proyektor Layar Penuh:** Membuka tampilan kode QR berukuran besar di proyektor kelas agar mudah dipindai oleh audiens dari jarak jauh.
+* **Fitur Salin Link & Unduh Gambar:** Untuk memudahkan pembagian tautan ke grup kelas atau materi slide presentasi.
 
 ---
 
