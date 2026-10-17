@@ -14,7 +14,7 @@
     rel="stylesheet">
 
   <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Three.js & Controls -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -519,10 +519,15 @@ body {
 
 .stat-value {
   font-family: var(--font-heading);
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-main);
-  line-height: 1.1;
+  line-height: 1.2;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.1rem;
 }
 
 .stat-title {
@@ -1732,7 +1737,8 @@ body {
   }
 
   .stat-value {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
+    min-height: 1.8rem;
   }
 
   .stat-title {
@@ -4036,22 +4042,22 @@ body {
     </div>
 
     <nav class="main-nav">
-      <button class="nav-btn active" data-tab="home">
+      <button class="nav-btn active" data-tab="home" onclick="switchTab('home')">
         <i class="fa-solid fa-house"></i> <span>Beranda & Biodata</span>
       </button>
-      <button class="nav-btn" data-tab="eksplorasi">
+      <button class="nav-btn" data-tab="eksplorasi" onclick="switchTab('eksplorasi')">
         <i class="fa-solid fa-cube"></i> <span>Eksplorasi 3D</span>
       </button>
-      <button class="nav-btn" data-tab="jaring">
+      <button class="nav-btn" data-tab="jaring" onclick="switchTab('jaring')">
         <i class="fa-solid fa-layer-group"></i> <span>Jaring-Jaring</span>
       </button>
-      <button class="nav-btn" data-tab="kalkulator">
+      <button class="nav-btn" data-tab="kalkulator" onclick="switchTab('kalkulator')">
         <i class="fa-solid fa-calculator"></i> <span>Kalkulator & Rumus</span>
       </button>
-      <button class="nav-btn camera-nav-btn" data-tab="kamera">
+      <button class="nav-btn camera-nav-btn" data-tab="kamera" onclick="switchTab('kamera')">
         <i class="fa-solid fa-camera"></i> <span>Kamera AI</span>
       </button>
-      <button class="nav-btn quiz-nav-btn" data-tab="kuis">
+      <button class="nav-btn quiz-nav-btn" data-tab="kuis" onclick="switchTab('kuis')">
         <i class="fa-solid fa-gamepad"></i> <span>Kuis Juara</span>
       </button>
     </nav>
@@ -5174,9 +5180,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 4D: <strong>Tesseract (Kubus 4D)</strong> 🎲⏱️',
           dimBadge: '4D',
-          sisi: '8 Sel Kubus 3D',
-          rusuk: '32 Rusuk 4D',
-          sudut: '16 Titik Sudut (2⁴)',
+          sisi: '8 Sel 3D',
+          rusuk: '32 Rusuk',
+          sudut: '16 Sudut (2⁴)',
           descSisi: '8 Kubus 3D membungkus ruang Tesseract',
           descRusuk: '32 Rusuk 4 Dimensi pada sumbu (X, Y, Z, W)',
           descSudut: '16 Titik sudut koordinat hiper-ruang',
@@ -5196,9 +5202,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 4D: <strong>Hiper-Balok 4D (Cuboid 4D)</strong> 📦⏱️',
           dimBadge: '4D',
-          sisi: '8 Sel Balok 3D',
-          rusuk: '32 Rusuk 4D',
-          sudut: '16 Titik Sudut',
+          sisi: '8 Sel Balok',
+          rusuk: '32 Rusuk',
+          sudut: '16 Sudut',
           descSisi: '8 Sel balok 3D saling berhadapan kongruen',
           descRusuk: '32 Rusuk (p, l, t, w saling ortogonal)',
           descSudut: '16 Sudut siku-siku 4 dimensi',
@@ -5218,9 +5224,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 4D: <strong>Hiper-Silinder 4D</strong> 🥫⏱️',
           dimBadge: '4D',
-          sisi: '2 Bola Tutup + 1 Selimut 4D',
-          rusuk: '0 (Mulus Melingkar)',
-          sudut: '0 (Tanpa Titik Sudut)',
+          sisi: '2 Bola + Selimut',
+          rusuk: '0 Rusuk',
+          sudut: '0 Sudut',
           descSisi: 'Dibatasi 2 bola sferik 3D dan selimut silinder hiperbolik',
           descRusuk: 'Tidak memiliki rusuk tajam',
           descSudut: '0 (Permukaan mulus sempurna)',
@@ -5240,9 +5246,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 4D: <strong>Hiper-Kerucut 4D</strong> 🍦⏱️',
           dimBadge: '4D',
-          sisi: '1 Bola Alas + 1 Selimut Mengerucut',
-          rusuk: '1 Permukaan Batas',
-          sudut: '1 Titik Puncak Krono',
+          sisi: '1 Bola + Selimut',
+          rusuk: '1 Rusuk',
+          sudut: '1 Puncak 4D',
           descSisi: 'Alas berbentuk bola 3D dengan selimut hiperbolik',
           descRusuk: 'Batas lengkung sferik alas',
           descSudut: '1 Titik puncak singularitas dimensi 4',
@@ -5263,8 +5269,8 @@ function getShapeDimensionData(key, dim) {
           title: 'Dimensi 4D: <strong>Hipersfer (Glome 4D)</strong> 🔮⏱️',
           dimBadge: '4D',
           sisi: '1 Volume 4D',
-          rusuk: '0 (Cincin Fluks)',
-          sudut: '0 (Mulus 4D)',
+          rusuk: '0 Rusuk',
+          sudut: '0 Sudut',
           descSisi: 'Lapisan ruang sferik 4D (x² + y² + z² + w² = r²)',
           descRusuk: 'Tidak memiliki rusuk tajam',
           descSudut: 'Tidak memiliki titik sudut tajam',
@@ -5284,9 +5290,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 4D: <strong>Hiper-Prisma Segitiga 4D</strong> ⛺⏱️',
           dimBadge: '4D',
-          sisi: '2 Prisma Segitiga + 3 Balok Selubung',
-          rusuk: '18 Rusuk 4D',
-          sudut: '12 Titik Sudut',
+          sisi: '2 Prisma + 3 Balok',
+          rusuk: '18 Rusuk',
+          sudut: '12 Sudut',
           descSisi: 'Dua prisma 3D sejajar dihubungkan 3 sel balok',
           descRusuk: '18 Rusuk pembentuk kerangka 4 dimensi',
           descSudut: '12 Titik sudut pertemuan rusuk 4D',
@@ -5306,9 +5312,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 4D: <strong>Hiper-Limas 4D (5-Cell Polytope)</strong> 🔺⏱️',
           dimBadge: '4D',
-          sisi: '1 Sel Balok Alas + 4 Sel Limas',
-          rusuk: '16 Rusuk 4D',
-          sudut: '9 Titik Sudut',
+          sisi: '1 Balok + 4 Limas',
+          rusuk: '16 Rusuk',
+          sudut: '9 Sudut',
           descSisi: 'Alas berbentuk balok 3D menuju 1 puncak waktu',
           descRusuk: '16 Rusuk penghubung sudut alas ke puncak',
           descSudut: '8 Sudut alas + 1 Titik puncak 4D',
@@ -5333,9 +5339,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 5D: <strong>Penteract (Kubus 5D)</strong> 🎲🌌',
           dimBadge: '5D',
-          sisi: '10 Sel Tesseract 4D',
-          rusuk: '80 Rusuk Kosmik',
-          sudut: '32 Titik Sudut (2⁵)',
+          sisi: '10 Tesseract',
+          rusuk: '80 Rusuk',
+          sudut: '32 Sudut (2⁵)',
           descSisi: '10 Tesseract 4D membungkus Penteract',
           descRusuk: '80 Rusuk Hiper-Ruang (X, Y, Z, W, V)',
           descSudut: '32 Titik sudut koordinat (2^5 = 32)',
@@ -5355,9 +5361,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 5D: <strong>Hiper-Balok Kosmik 5D</strong> 📦🌌',
           dimBadge: '5D',
-          sisi: '10 Sel Hiper-Balok 4D',
-          rusuk: '80 Rusuk 5D',
-          sudut: '32 Titik Sudut',
+          sisi: '10 Hiper-Balok',
+          rusuk: '80 Rusuk',
+          sudut: '32 Sudut',
           descSisi: '10 Hiper-Balok 4D pada 5 sumbu ortogonal',
           descRusuk: '80 Rusuk ruang berarah (p, l, t, w, v)',
           descSudut: '32 Titik simetri ruang 5 dimensi',
@@ -5377,9 +5383,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 5D: <strong>Silinder Kosmik 5D</strong> 🥫🌌',
           dimBadge: '5D',
-          sisi: 'Medan Silinder 5 Sumbu',
-          rusuk: '0 Rusuk Tajam (5 Cincin Fluks)',
-          sudut: '0 (Mulus Simetris)',
+          sisi: '5 Sumbu Silinder',
+          rusuk: '5 Cincin Fluks',
+          sudut: '0 Sudut',
           descSisi: 'Selimut melengkung 5 dimensi dengan 2 bola glome 4D',
           descRusuk: '0 (Garis medan fluks kontinu)',
           descSudut: '0 (Bentuk halus berputar)',
@@ -5399,9 +5405,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 5D: <strong>Hiper-Kerucut Kosmik 5D</strong> 🍦🌌',
           dimBadge: '5D',
-          sisi: '1 Alas 4D + Selimut 5 Sumbu',
+          sisi: '1 Glome + Selimut',
           rusuk: '0 Rusuk',
-          sudut: '1 Puncak Singularity 5D',
+          sudut: '1 Puncak 5D',
           descSisi: 'Alas berbentuk glome 4D menuju 1 titik kosmik',
           descRusuk: '0 (Batas kontinu)',
           descSudut: '1 Titik fokus kuantum gravitasi',
@@ -5421,9 +5427,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 5D: <strong>Hipersfer Kosmik 5D (4-Sphere)</strong> 🌌🔮',
           dimBadge: '5D',
-          sisi: '1 Hiper-Volume 5D',
-          rusuk: '0 (5 Medan Orbit)',
-          sudut: '0 (Simetri 5D)',
+          sisi: '1 Medan 5D',
+          rusuk: '0 Rusuk',
+          sudut: '0 Sudut',
           descSisi: 'Ruang sferik 5D (x² + y² + z² + w² + v² = r²)',
           descRusuk: '0 (Mulus tanpa rusuk)',
           descSudut: '0 (Simetri sempurna di 5 sumbu)',
@@ -5443,9 +5449,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 5D: <strong>Hiper-Prisma Kosmik 5D</strong> ⛺🌌',
           dimBadge: '5D',
-          sisi: 'Multi-Prisma 5 Sumbu',
-          rusuk: '30 Rusuk Koordinat 5D',
-          sudut: '20 Titik Sudut',
+          sisi: '2 Hiper-Prisma',
+          rusuk: '30 Rusuk',
+          sudut: '20 Sudut',
           descSisi: 'Jaringan prisma segitiga pada 5 arah dimensi',
           descRusuk: '30 Rusuk pembagi kisi energi kosmik',
           descSudut: '20 Titik sudut simetri kristal',
@@ -5465,9 +5471,9 @@ function getShapeDimensionData(key, dim) {
         return {
           title: 'Dimensi 5D: <strong>Hiper-Limas Kosmik 5D</strong> 🔺🌌',
           dimBadge: '5D',
-          sisi: 'Struktur Kompleks 5-Polytope',
-          rusuk: '25 Rusuk Koordinat 5D',
-          sudut: '15 Titik Sudut',
+          sisi: '1 Balok 4D + Limas',
+          rusuk: '25 Rusuk',
+          sudut: '15 Sudut',
           descSisi: 'Struktur limas bertingkat berdimensi lima',
           descRusuk: '25 Rusuk kisi fluks kosmik',
           descSudut: '15 Titik temu koordinat ruang 5D',
@@ -7915,14 +7921,31 @@ function updateShapeDetails(key) {
   // Header badge
   document.getElementById('currentShapeLabel').innerHTML = data.title;
 
-  // Stat boxes
-  document.getElementById('valSisi').textContent = data.sisi;
+  // Stat boxes with adaptive font scaling to prevent cramped/overflowing text
+  const applyStatValue = (valId, text) => {
+    const el = document.getElementById(valId);
+    if (!el) return;
+    const str = String(text != null ? text : '').trim();
+    el.textContent = str || '-';
+    const len = str.length;
+    if (len > 14) {
+      el.style.fontSize = '0.92rem';
+    } else if (len > 9) {
+      el.style.fontSize = '1.05rem';
+    } else if (len > 4) {
+      el.style.fontSize = '1.18rem';
+    } else {
+      el.style.fontSize = '1.55rem';
+    }
+  };
+
+  applyStatValue('valSisi', data.sisi);
   document.getElementById('descSisi').textContent = data.descSisi;
 
-  document.getElementById('valRusuk').textContent = data.rusuk;
+  applyStatValue('valRusuk', data.rusuk);
   document.getElementById('descRusuk').textContent = data.descRusuk;
 
-  document.getElementById('valSudut').textContent = data.sudut;
+  applyStatValue('valSudut', data.sudut);
   document.getElementById('descSudut').textContent = data.descSudut;
 
   // Description & Formulas
@@ -8674,8 +8697,7 @@ function initAIVisionModel() {
         console.log('GitHub COCO-SSD Object Detection Model Ready!');
         updateAiModelStatusUI('ready');
       })
-      .catch(err => {
-        console.log('COCO-SSD background load note (Built-in detector active):', err.message);
+      .catch(() => {
         isCocoModelLoading = false;
       });
   }
@@ -9230,10 +9252,12 @@ async function analyzeImageFrame(canvas, optionalImgSrc, scanSessionId) {
     try {
       const cocoDetections = await cocoDetectorModel.detect(canvas);
       if (cocoDetections && cocoDetections.length > 0) {
+        console.log('📸 Pindaian COCO-SSD:', cocoDetections);
         for (const det of cocoDetections) {
           const cls = (det.class || '').toLowerCase();
           const mapping = COCO_SHAPE_MAPPINGS[cls];
-          if (mapping && det.score > 0.38) {
+          if (mapping && det.score > 0.35) {
+            console.log(`🎯 Objek Dikenali COCO-SSD: "${det.class}" (${Math.round(det.score * 100)}%) -> Bentuk: ${mapping.shape.toUpperCase()} ("${mapping.name}")`);
             if (!bestCocoMatch || det.score > bestCocoMatch.score) {
               bestCocoMatch = {
                 shape: mapping.shape,
@@ -9253,7 +9277,7 @@ async function analyzeImageFrame(canvas, optionalImgSrc, scanSessionId) {
 
   // If COCO-SSD identified an everyday object, award strong confidence
   if (bestCocoMatch) {
-    aiScores[bestCocoMatch.shape] += bestCocoMatch.score * 135;
+    aiScores[bestCocoMatch.shape] += bestCocoMatch.score * 150;
     bestAiShapeMatch = bestCocoMatch.shape;
     bestAiPredictionName = bestCocoMatch.name;
     highestPredProb = bestCocoMatch.score;
@@ -9322,7 +9346,9 @@ async function analyzeImageFrame(canvas, optionalImgSrc, scanSessionId) {
       else multiplier = 0.5;
     }
 
-    if (bestAiShapeMatch) {
+    if (bestCocoMatch && bestCocoMatch.shape === shape) {
+      finalScores[shape] = (scoreAI * 0.85 + scoreGeo * 0.15 + 40) * multiplier;
+    } else if (bestAiShapeMatch) {
       finalScores[shape] = (scoreAI * 0.65 + scoreGeo * 0.35) * multiplier;
     } else {
       // Offline / CV only mode
@@ -9344,9 +9370,11 @@ async function analyzeImageFrame(canvas, optionalImgSrc, scanSessionId) {
     limas: { name: 'Piramida / Limas Segiempat', realId: 'piramida', icon: '🔺' }
   };
 
-  let detectedObjName = (bestAiShapeMatch === winnerKey && bestAiPredictionName) 
-    ? bestAiPredictionName 
-    : shapeDetails[winnerKey].name;
+  let detectedObjName = bestCocoMatch
+    ? bestCocoMatch.name
+    : ((bestAiShapeMatch === winnerKey && bestAiPredictionName) 
+        ? bestAiPredictionName 
+        : shapeDetails[winnerKey].name);
 
   // Smart contextual Indonesian object naming based on geometric aspect ratio & contours
   if (!bestAiShapeMatch || detectedObjName === shapeDetails[winnerKey].name) {
@@ -9428,9 +9456,13 @@ function runGeometricShapeAnalysis(canvas) {
     }
   }
 
-  // 2. 2D Gradient / Edge Detection
+  // 2. 2D Gradient / Edge Detection & Orientation Histogram
   const edges = new Float32Array(gw * gh);
   let totalEdge = 0;
+  let horizEdges = 0;
+  let vertEdges = 0;
+  let diagEdges = 0;
+
   for (let gy = 1; gy < gh - 1; gy++) {
     for (let gx = 1; gx < gw - 1; gx++) {
       const idx = gy * gw + gx;
@@ -9439,8 +9471,23 @@ function runGeometricShapeAnalysis(canvas) {
       const mag = Math.sqrt(dx * dx + dy * dy);
       edges[idx] = mag;
       totalEdge += mag;
+
+      if (mag > 12) {
+        const absX = Math.abs(dx);
+        const absY = Math.abs(dy);
+        if (absY > absX * 1.8) horizEdges++;
+        else if (absX > absY * 1.8) vertEdges++;
+        else diagEdges++;
+      }
     }
   }
+
+  const activeEdges = horizEdges + vertEdges + diagEdges;
+  const horizRatio = activeEdges > 0 ? (horizEdges / activeEdges) : 0.33;
+  const vertRatio = activeEdges > 0 ? (vertEdges / activeEdges) : 0.33;
+  const diagRatio = activeEdges > 0 ? (diagEdges / activeEdges) : 0.33;
+  const rectRatio = horizRatio + vertRatio;
+
   const avgEdge = totalEdge / (gw * gh);
   const edgeThreshold = Math.max(10, avgEdge * 1.2);
 
@@ -9489,9 +9536,9 @@ function runGeometricShapeAnalysis(canvas) {
   }
 
   const cornerFillRatio = cornerEdges / Math.max(1, (qW * qH * 4));
-  const circularityScore = (objAspect >= 0.76 && objAspect <= 1.28) ? Math.max(0, 1 - cornerFillRatio * 3.2) : 0;
+  const circularityScore = (objAspect >= 0.78 && objAspect <= 1.25) ? Math.max(0, 1 - cornerFillRatio * 3.0) : 0;
 
-  // 5. Section Widths (Tapering Test for Kerucut / Limas)
+  // 5. Section Widths (Tapering Test)
   function measureSectionWidth(normY) {
     const gy = Math.min(gh - 1, Math.max(0, Math.floor(minGy + objH * normY)));
     let firstX = -1, lastX = -1;
@@ -9512,68 +9559,53 @@ function runGeometricShapeAnalysis(canvas) {
 
   const scores = { kubus: 0, balok: 0, tabung: 0, kerucut: 0, bola: 0, prisma: 0, limas: 0 };
 
-  // --- Bola (Lingkaran Sempurna) ---
-  if (circularityScore > 0.40 && objAspect >= 0.82 && objAspect <= 1.22) {
-    scores.bola += 65 + circularityScore * 35;
-  } else if (objAspect >= 0.88 && objAspect <= 1.14 && circularityScore > 0.25) {
-    scores.bola += 40;
+  // --- A. True Cone (Kerucut) ---
+  // STRICT: Kerucut MUST have dominant diagonal edges (>0.40), sharp narrow top (<0.40), and NOT orthogonal box
+  if (diagRatio >= 0.40 && taperRatio < 0.40 && objAspect <= 1.10 && rectRatio < 0.55) {
+    scores.kerucut += 105 + (1 - taperRatio) * 20;
+    scores.limas += 60;
   }
-
-  // --- Kerucut & Limas (Upright Tapered Shapes ONLY) ---
-  // STRICT GUARD: Kerucut & Limas MUST be upright/portrait (objAspect <= 1.15).
-  // A wide horizontal rectangle (objAspect > 1.15) like a TV, monitor, book, or shoe box can NEVER be a Kerucut!
-  if (objAspect <= 1.15 && taperRatio < 0.65 && widthMid >= widthTop) {
-    const taperStrength = (1 - taperRatio) * 60;
-    if (circularityScore > 0.30 || objAspect < 0.90) {
-      scores.kerucut += 55 + taperStrength;
-      scores.limas += 35 + taperStrength * 0.6;
+  // --- B. Tabung (Silinder Vertikal) ---
+  else if (vertRatio >= 0.38 && objAspect <= 0.95 && isParallel) {
+    scores.tabung += 105 + (1 - objAspect) * 25;
+    scores.balok += 35;
+  }
+  // --- C. Bola (Sphere Sempurna) ---
+  else if (circularityScore > 0.40 && diagRatio >= 0.30 && cornerFillRatio < 0.25 && taperRatio >= 0.70) {
+    scores.bola += 100 + circularityScore * 25;
+  }
+  // --- D. Prisma Segitiga (Tenda / Atap) ---
+  else if (diagRatio >= 0.35 && objAspect >= 1.05 && taperRatio < 0.65) {
+    scores.prisma += 95 + diagRatio * 20;
+  }
+  // --- E. Balok (TV, Layar Monitor, Laptop, Buku, Kotak Panjang, Sepatu) ---
+  // Horizontal rectangular (objAspect >= 1.15) OR Portrait standing (objAspect <= 0.85) OR dominant orthogonal box
+  else if (objAspect >= 1.15 || objAspect <= 0.85 || rectRatio >= 0.55) {
+    if (objAspect >= 1.15 || objAspect <= 0.85) {
+      scores.balok += 98 + Math.min(25, Math.abs(objAspect - 1.0) * 20);
+      if (objAspect >= 1.30) scores.balok += 25; // TV / Monitor boost
     } else {
-      scores.limas += 55 + taperStrength;
-      scores.kerucut += 35 + taperStrength * 0.6;
+      scores.kubus += 95 + (1 - Math.abs(objAspect - 1.0)) * 20;
     }
   }
-
-  // --- Tabung (Silinder Vertikal) ---
-  if (objAspect <= 0.88 && isParallel) {
-    scores.tabung += 68 + (1 - objAspect) * 35;
-    scores.balok += 25;
-  } else if (isParallel && circularityScore > 0.20 && objAspect <= 1.0) {
-    scores.tabung += 48;
+  // --- F. Kubus (Square 1:1) ---
+  else if (objAspect >= 0.85 && objAspect <= 1.15) {
+    scores.kubus += 95 + (1 - Math.abs(objAspect - 1.0)) * 20;
+  }
+  // Fallback
+  else {
+    if (objAspect >= 1.15) scores.balok += 85;
+    else scores.kubus += 80;
   }
 
-  // --- Balok (Cuboid: Horizontal Landscape / Vertical Stand) ---
-  if (objAspect >= 1.20) {
-    // Horizontal / landscape rectangle (TV, laptop, monitor, shoe box, book, phone)
-    scores.balok += 68 + Math.min(30, (objAspect - 1.2) * 25);
-    if (objAspect >= 1.30) {
-      scores.balok += 28; // Strong TV / 16:9 screen boost
-      // Strip any false cone/sphere points on wide rectangular surfaces
-      scores.kerucut = Math.min(scores.kerucut, 5);
-      scores.limas = Math.min(scores.limas, 10);
-      scores.bola = Math.min(scores.bola, 5);
-    }
-  } else if (objAspect <= 0.80) {
-    // Vertical / portrait rectangle (standing box, tall book)
-    if (!isParallel || circularityScore < 0.25) {
-      scores.balok += 55;
-    }
+  // Safety strip: A wide rectangular object (TV, monitor) can NEVER score cone, ball, or pyramid points
+  if (objAspect >= 1.15) {
+    scores.kerucut = 0;
+    scores.bola = 0;
+    scores.limas = 0;
   }
 
-  // --- Kubus (Square 1:1) ---
-  if (objAspect >= 0.82 && objAspect <= 1.20) {
-    if (circularityScore < 0.35) {
-      scores.kubus += 62 + (1 - Math.abs(objAspect - 1)) * 30;
-    } else {
-      scores.kubus += 20;
-    }
-  }
-
-  // --- Prisma Segitiga ---
-  if (objAspect >= 1.05 && objAspect <= 1.55 && taperRatio < 0.70 && taperRatio > 0.35) {
-    scores.prisma += 50;
-  }
-
-  return { scores, objAspect, circularityScore, taperRatio };
+  return { scores, objAspect, circularityScore, taperRatio, rectRatio, diagRatio };
 }
 
 // Present detection results in UI with Candidate Chips
@@ -10522,7 +10554,7 @@ window.addEventListener('hashchange', checkInitialTabFromHash);
 
 // --- TAB SWITCHER ---
 function switchTab(tabId) {
-  sfx.playPop();
+  if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
   // Update nav buttons
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
@@ -10547,6 +10579,7 @@ function switchTab(tabId) {
     buildCalcSliders(currentCalcShape);
   }
 }
+window.switchTab = switchTab;
 
 // --- SETUP EVENT LISTENERS ---
 document.addEventListener('DOMContentLoaded', () => {

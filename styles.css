@@ -490,10 +490,15 @@ body {
 
 .stat-value {
   font-family: var(--font-heading);
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--text-main);
-  line-height: 1.1;
+  line-height: 1.2;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.1rem;
 }
 
 .stat-title {
@@ -1703,7 +1708,8 @@ body {
   }
 
   .stat-value {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
+    min-height: 1.8rem;
   }
 
   .stat-title {
