@@ -3240,6 +3240,149 @@ body {
   100% { transform: scale(0.95); opacity: 0.8; }
 }
 
+.ai-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.22rem 0.7rem;
+  border-radius: var(--radius-full);
+  margin-left: 0.5rem;
+  border: 1px solid #CBD5E1;
+  background: #F8FAFC;
+  transition: all 0.2s ease;
+}
+
+.ai-status-badge.ready {
+  background: #ECFDF5;
+  color: #047857;
+  border-color: #A7F3D0;
+}
+
+.ai-status-badge.loading {
+  background: #FEF3C7;
+  color: #B45309;
+  border-color: #FDE68A;
+}
+
+.ai-status-badge.fallback {
+  background: #EEF2FF;
+  color: #4F46E5;
+  border-color: #C7D2FE;
+}
+
+.detection-mode-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: #F8FAFC;
+  border-bottom: 1.5px solid #E2E8F0;
+  flex-wrap: wrap;
+}
+
+.mode-bar-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.mode-bar-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.mode-chip {
+  background: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  border-radius: var(--radius-full);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.mode-chip:hover {
+  background: #EEF2FF;
+  border-color: #6366F1;
+  color: #4F46E5;
+}
+
+.mode-chip.active {
+  background: #4F46E5;
+  border-color: #4F46E5;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+}
+
+.detection-candidates-row {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin: 0.85rem 0;
+  padding: 0.65rem 0.85rem;
+  background: #F1F5F9;
+  border-radius: var(--radius-md);
+  flex-wrap: wrap;
+  border: 1px dashed #CBD5E1;
+}
+
+.cand-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.cand-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.cand-chip-btn {
+  background: #FFFFFF;
+  border: 1.5px solid #CBD5E1;
+  border-radius: var(--radius-full);
+  padding: 0.25rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.cand-chip-btn:hover {
+  background: #EDE9FE;
+  border-color: #8B5CF6;
+  color: #6D28D9;
+  transform: translateY(-1px);
+}
+
+.cand-chip-btn.winner {
+  background: #ECFDF5;
+  border-color: #10B981;
+  color: #047857;
+  font-weight: 700;
+}
+
 .viewfinder-tools {
   display: flex;
   gap: 0.5rem;
