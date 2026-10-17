@@ -3319,6 +3319,9 @@ let cameraMediaStream = null;
 let currentCameraFacing = 'environment'; // Back camera default for scanning objects
 let lastDetectedShapeKey = 'kubus';
 let lastDetectedRealWorldId = 'dadu';
+let lastCaptureTimestamp = 0;
+let currentScanSessionId = 0;
+let isCurrentlyScanning = false;
 
 // Sizing modes for camera reticle frame
 const FRAME_SIZING_MODES = [
@@ -3508,57 +3511,6 @@ function initAIVisionModel() {
   }
 }
 
-// --- FULLSCREEN CAMERA CONTROLLER ---
-let isCameraFullscreen = false;
-
-function setCameraFullscreen(enabled) {
-  isCameraFullscreen = !!enabled;
-  const card = document.querySelector('.camera-viewfinder-card');
-  const toggleBtn = document.getElementById('toggleFullscreenCamBtn');
-
-  if (isCameraFullscreen) {
-    if (card) card.classList.add('is-fullscreen');
-    document.body.classList.add('camera-fullscreen-active');
-    if (toggleBtn) {
-      toggleBtn.innerHTML = '<i class="fa-solid fa-compress"></i> <span id="fsToggleLabel">Layar Biasa</span>';
-    }
-    // Attempt standard browser fullscreen on devices that support it
-    if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => {});
-    }
-  } else {
-    if (card) card.classList.remove('is-fullscreen');
-    document.body.classList.remove('camera-fullscreen-active');
-    if (toggleBtn) {
-      toggleBtn.innerHTML = '<i class="fa-solid fa-expand"></i> <span id="fsToggleLabel">Layar Penuh</span>';
-    }
-    closeFsResultSheet();
-    if (document.fullscreenElement && document.exitFullscreen) {
-      document.exitFullscreen().catch(() => {});
-    }
-  }
-}
-
-function toggleCameraFullscreen() {
-  sfx.playPop();
-  setCameraFullscreen(!isCameraFullscreen);
-}
-
-function closeFsResultSheet() {
-  const sheet = document.getElementById('fsResultBottomSheet');
-  if (sheet) sheet.classList.add('hidden');
-}
-
-function resumeFsCamera() {
-  sfx.playPop();
-  closeFsResultSheet();
-}
-
-window.setCameraFullscreen = setCameraFullscreen;
-window.toggleCameraFullscreen = toggleCameraFullscreen;
-window.closeFsResultSheet = closeFsResultSheet;
-window.resumeFsCamera = resumeFsCamera;
-
 async function startCameraScanner() {
   sfx.playPop();
   const video = document.getElementById('cameraVideo');
@@ -3600,8 +3552,7 @@ async function startCameraScanner() {
     if (dot) dot.classList.add('active');
     if (statusText) statusText.textContent = 'Kamera Aktif • Ketuk Layar / Shutter untuk Jepret Foto';
 
-    // Automatically enter immersive Fullscreen Camera Mode
-    setCameraFullscreen(true);
+
     if (hud) hud.classList.remove('hidden');
     if (placeholder) placeholder.classList.add('hidden');
     if (scanBtn) scanBtn.classList.remove('hidden');
@@ -3633,7 +3584,7 @@ function stopCameraScanner() {
 
   const viewport = document.querySelector('.viewfinder-viewport');
   if (viewport) viewport.classList.remove('is-active');
-  setCameraFullscreen(false);
+
 
   const dot = document.getElementById('camStatusDot');
   const statusText = document.getElementById('camStatusText');
@@ -3746,7 +3697,19 @@ function captureAndScan() {
   const frameEl = document.querySelector('.scanner-frame');
   const viewportEl = document.querySelector('.viewfinder-viewport');
   const flashEl = document.getElementById('shutterFlash');
+  const captureBtn = document.getElementById('captureScanBtn');
   if (!video || !cameraMediaStream) return;
+
+  // Anti-debounce guard: prevent double-clicks or touch/click ghost events (minimum 350ms cooldown)
+  const now = Date.now();
+  if (now - lastCaptureTimestamp < 350) {
+    return;
+  }
+  lastCaptureTimestamp = now;
+
+  // Increment unique scan session ID so obsolete/concurrent scans are cleanly discarded
+  const scanSessionId = ++currentScanSessionId;
+  isCurrentlyScanning = true;
 
   // Authentic SLR camera shutter sound & haptic vibration
   if (sfx.playShutter) sfx.playShutter();
@@ -3760,13 +3723,29 @@ function captureAndScan() {
     }, 120);
   }
 
+  // Shutter button haptic active animation
+  if (captureBtn) {
+    captureBtn.classList.add('is-scanning');
+    setTimeout(() => captureBtn.classList.remove('is-scanning'), 600);
+  }
+
   // Frame crop calculation strictly inside reticle box
   const crop = getFrameCropCoordinates(video, frameEl, viewportEl);
+
+  // 1. Explicitly clear and draw to main canvas (guarantees zero residual pixels from previous photos)
   canvas.width = crop.sw;
   canvas.height = crop.sh;
-
   const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, crop.sw, crop.sh);
   ctx.drawImage(video, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, crop.sw, crop.sh);
+
+  // 2. Create isolated immutable snapshot canvas for AI analysis (guarantees zero crosstalk across rapid scans)
+  const snapshotCanvas = document.createElement('canvas');
+  snapshotCanvas.width = crop.sw;
+  snapshotCanvas.height = crop.sh;
+  const snapCtx = snapshotCanvas.getContext('2d');
+  snapCtx.drawImage(video, crop.sx, crop.sy, crop.sw, crop.sh, 0, 0, crop.sw, crop.sh);
+  const snapDataUrl = snapshotCanvas.toDataURL('image/jpeg', 0.92);
 
   // Play scanning HUD laser animation
   const hud = document.getElementById('scannerHudOverlay');
@@ -3775,7 +3754,31 @@ function captureAndScan() {
     setTimeout(() => hud.classList.remove('scanning-active'), 800);
   }
 
-  analyzeImageFrame(canvas);
+  // 3. Instant UI Reset: Immediately update thumbnail with NEW photo and show loading state
+  // to give user 100% immediate visual confirmation that the previous photo has been replaced
+  const resultCard = document.getElementById('detectionResultCard');
+  const thumbImg = document.getElementById('scannedThumbImg');
+  const titleEl = document.getElementById('detectedShapeTitle');
+  const objLabelEl = document.getElementById('detectedObjectLabel');
+  const confPctEl = document.getElementById('confidencePctLabel');
+  const confBarEl = document.getElementById('confidenceBarFill');
+  const candBox = document.getElementById('detectionCandidateChips');
+
+  if (thumbImg) thumbImg.src = snapDataUrl;
+  if (titleEl) titleEl.innerHTML = '<span style="color:#0284C7; font-size:1.35rem; display:inline-flex; align-items:center; gap:0.5rem;"><i class="fa-solid fa-spinner fa-spin"></i> AI Menganalisis Foto Baru...</span>';
+  if (objLabelEl) objLabelEl.textContent = 'Memindai citra kamera secara real-time...';
+  if (confPctEl) confPctEl.textContent = '...%';
+  if (confBarEl) confBarEl.style.width = '35%';
+  if (candBox) candBox.innerHTML = '';
+  if (resultCard) {
+    resultCard.classList.add('is-analyzing');
+    if (resultCard.classList.contains('hidden')) {
+      resultCard.classList.remove('hidden');
+    }
+  }
+
+  // 4. Run AI analysis with fresh snapshot & session ID
+  analyzeImageFrame(snapshotCanvas, snapDataUrl, scanSessionId);
 }
 
 // Handle image upload from gallery / disk
@@ -3788,13 +3791,37 @@ function handleImageFileUpload(e) {
   reader.onload = function(event) {
     const img = new Image();
     img.onload = function() {
+      const scanSessionId = ++currentScanSessionId;
+      isCurrentlyScanning = true;
+
       const canvas = document.getElementById('cameraCanvas');
       canvas.width = img.width;
       canvas.height = img.height;
       const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0);
 
-      analyzeImageFrame(canvas, img.src);
+      // Instant UI transition
+      const resultCard = document.getElementById('detectionResultCard');
+      const thumbImg = document.getElementById('scannedThumbImg');
+      const titleEl = document.getElementById('detectedShapeTitle');
+      const objLabelEl = document.getElementById('detectedObjectLabel');
+      const confPctEl = document.getElementById('confidencePctLabel');
+      const confBarEl = document.getElementById('confidenceBarFill');
+      const candBox = document.getElementById('detectionCandidateChips');
+
+      if (thumbImg) thumbImg.src = img.src;
+      if (titleEl) titleEl.innerHTML = '<span style="color:#0284C7; font-size:1.35rem; display:inline-flex; align-items:center; gap:0.5rem;"><i class="fa-solid fa-spinner fa-spin"></i> AI Menganalisis Berkas Foto...</span>';
+      if (objLabelEl) objLabelEl.textContent = 'Memindai citra yang diunggah...';
+      if (confPctEl) confPctEl.textContent = '...%';
+      if (confBarEl) confBarEl.style.width = '35%';
+      if (candBox) candBox.innerHTML = '';
+      if (resultCard) {
+        resultCard.classList.add('is-analyzing');
+        resultCard.classList.remove('hidden');
+      }
+
+      analyzeImageFrame(canvas, img.src, scanSessionId);
     };
     img.src = event.target.result;
   };
@@ -3851,8 +3878,151 @@ function testSampleObject(sampleKey) {
 }
 
 // AI Analysis: Hybrid Deep Learning (MobileNet top-10) + Scientific Geometric Vision Analyzer
+
+// Universal Real-World Semantic & Geometric Classifier for 1,000+ Everyday Objects
+function classifyRealWorldObject(className) {
+  if (!className) return { shape: 'balok', name: 'Benda Kotak / Balok' };
+  const lower = className.toLowerCase();
+
+  // 1. Animals / Biological / Organic Forms
+  if (/dog|terrier|hound|retriever|poodle|shepherd|spaniel|bulldog|husky|cat|tabby|siamese|persian|cougar|lynx|leopard|jaguar|lion|tiger|bird|finch|sparrow|eagle|hawk|owl|pelican|toucan|duck|goose|swan|fish|shark|whale|ray|carp|goldfish|salmon|trout|snake|lizard|turtle|alligator|crocodile|frog|toad|spider|beetle|butterfly|moth|ant|fly|bee|wasp|bear|wolf|fox|deer|rabbit|monkey|gorilla|chimpanzee|elephant/i.test(lower)) {
+    return {
+      shape: 'bola',
+      isOrganic: true,
+      name: 'Makhluk Hidup / Hewan (Bentuk Organik Alami)'
+    };
+  }
+
+  // 2. Cones (Kerucut)
+  if (/\b(cone|ice cream|icecream|party hat|dunce cap|funnel|conical|megaphone|cornet|sorbet)\b/i.test(lower)) {
+    let n = 'Cone / Kerucut';
+    if (/ice cream|icecream/i.test(lower)) n = 'Es Krim Cone';
+    else if (/funnel/i.test(lower)) n = 'Corong Kerucut';
+    else if (/party hat/i.test(lower)) n = 'Topi Pesta Kerucut';
+    else if (/traffic cone/i.test(lower)) n = 'Traffic Cone (Kerucut Lalu Lintas)';
+    return { shape: 'kerucut', name: n };
+  }
+
+  // 3. Spheres & Balls (Bola)
+  if (/\b(ball|soccer ball|football|basketball|tennis ball|volleyball|golf ball|baseball|ping-pong ball|rugby ball|bowling ball|croquet ball|billiard ball|pool ball|cricket ball)\b/i.test(lower) && !/\b(helmet|glove|bat|player)\b/i.test(lower)) {
+    return { shape: 'bola', name: 'Bola Olahraga Bulat' };
+  }
+  if (/\b(globe|balloon|hot-air balloon|marble|sphere|bubble|orb)\b/i.test(lower)) {
+    let n = 'Bola / Bulatan Sempurna';
+    if (/globe/i.test(lower)) n = 'Globe (Bola Dunia)';
+    else if (/balloon/i.test(lower)) n = 'Balon Bulat';
+    return { shape: 'bola', name: n };
+  }
+  if (/\b(orange|lemon|apple|grapefruit|pomegranate|melon|watermelon|cantaloupe|honeydew|coconut|fig|jackfruit|strawberry|tomato|cabbage|onion|egg)\b/i.test(lower)) {
+    return { shape: 'bola', name: 'Buah / Benda Bulat' };
+  }
+
+  // 4. Pyramids (Limas)
+  if (/\b(pyramid|obelisk|steeple|church steeple|apex|tetrahedron)\b/i.test(lower)) {
+    let n = 'Piramida / Obelisk (Limas Segiempat)';
+    if (/obelisk/i.test(lower)) n = 'Tugu Obelisk (Limas)';
+    return { shape: 'limas', name: n };
+  }
+
+  // 5. Triangular Prisms (Prisma Segitiga)
+  if (/\b(tent|mountain tent|ridge tent|dome tent|camping tent|wedge|cheese wedge|sandwich|toblerone|triangular prism|doorstop|gable)\b/i.test(lower)) {
+    let n = 'Tenda / Prisma Segitiga';
+    if (/tent/i.test(lower)) n = 'Tenda Kemah (Prisma Segitiga)';
+    else if (/sandwich/i.test(lower)) n = 'Roti Sandwich Segitiga (Prisma)';
+    else if (/toblerone/i.test(lower)) n = 'Cokelat Toblerone (Prisma)';
+    return { shape: 'prisma', name: n };
+  }
+
+  // 6. Cubes (Kubus)
+  if (/\b(die|dice|cube|rubik|magic cube|toy block|alphabet block|wooden block|ice cube|sugar cube|puzzle box|safe)\b/i.test(lower) && !/\b(safety pin)\b/i.test(lower)) {
+    let n = 'Dadu / Kotak Kubus';
+    if (/die|dice/i.test(lower)) n = 'Dadu Permainan';
+    else if (/safe/i.test(lower)) n = 'Brankas Kubus';
+    else if (/rubik/i.test(lower)) n = 'Kubus Rubik';
+    return { shape: 'kubus', name: n };
+  }
+
+  // 7. Cylinders (Tabung)
+  if (/\b(bottle|beer bottle|wine bottle|pop bottle|water bottle|soda bottle|pill bottle|thermos|tumbler|flask|pitcher)\b/i.test(lower)) {
+    return { shape: 'tabung', name: 'Botol Minuman Silinder' };
+  }
+  if (/\b(can|tin can|pop can|soda can|beer can|milk can|canister)\b/i.test(lower) && !/\b(opener|toucan|american|african)\b/i.test(lower)) {
+    return { shape: 'tabung', name: 'Kaleng Minuman / Susu' };
+  }
+  if (/\b(coffee mug|mug|cup|measuring cup|beaker|goblet|chalice|coffeepot|teapot)\b/i.test(lower)) {
+    return { shape: 'tabung', name: 'Cangkir / Gelas Silinder' };
+  }
+  if (/\b(drum|barrel|cask|beer barrel|oil drum|bucket|pail|ashcan|trash can|garbage can)\b/i.test(lower)) {
+    return { shape: 'tabung', name: 'Tong / Drum / Ember Tabung' };
+  }
+  if (/\b(candle|taper|torch|battery|electric battery|flashlight|lipstick|lighter)\b/i.test(lower)) {
+    return { shape: 'tabung', name: 'Lilin / Baterai Silinder' };
+  }
+  if (/\b(electric fan|blower|fan|wall fan|ceiling fan|ventilator)\b/i.test(lower)) {
+    return { shape: 'tabung', name: 'Kipas Angin Bulat (Silinder)' };
+  }
+  if (/\b(wall clock|analog clock|digital clock|clock|stopwatch|compass|wheel|tire)\b/i.test(lower)) {
+    return { shape: 'tabung', name: 'Jam Dinding / Benda Bundar Tabung' };
+  }
+  if (/\b(pipe|tube|conduit|roll|paper towel|toilet paper|vase|urn|jar|spray can|aerosol|hair spray|ballpoint|pen)\b/i.test(lower)) {
+    return { shape: 'tabung', name: 'Wadah / Pulpen Silinder' };
+  }
+
+  // 8. Rectangular Cuboids (Balok)
+  // Displays & Electronics
+  if (/\b(television|tv|monitor|crt screen|screen|desktop computer|laptop|notebook computer|hand-held computer|home theater|entertainment center)\b/i.test(lower)) {
+    return { shape: 'balok', name: 'Televisi / Layar Monitor' };
+  }
+  if (/\b(cellular telephone|cellphone|mobile phone|remote control|remote|radio|cassette|tape player|loudspeaker|speaker|subwoofer|amplifier|keyboard|keypad|hard disc|modem|router|switch|printer|photocopier|fax|scanner|projector|webcam|ipod)\b/i.test(lower)) {
+    let n = 'Perangkat Elektronik Balok';
+    if (/phone|cellphone/i.test(lower)) n = 'Ponsel / Smartphone';
+    else if (/remote/i.test(lower)) n = 'Remote Control TV';
+    else if (/modem|router/i.test(lower)) n = 'Modem / Router Kotak';
+    else if (/keyboard/i.test(lower)) n = 'Papan Ketik (Keyboard)';
+    else if (/speaker/i.test(lower)) n = 'Speaker Kotak';
+    return { shape: 'balok', name: n };
+  }
+  // Books, Paper, Boxes, Packaging
+  if (/\b(book|comic book|binder|notebook|hardback|paperback|bookcase|envelope|packet|carton|crate|shoe box|shoebox|pencil box|pencil case|matchbox|cardboard|package)\b/i.test(lower)) {
+    let n = 'Kotak / Buku Balok';
+    if (/book|comic/i.test(lower)) n = 'Buku Paket / Bacaan';
+    else if (/carton|cardboard|crate/i.test(lower)) n = 'Kardus / Kotak Paket';
+    else if (/pencil box|pencil case/i.test(lower)) n = 'Kotak Pensil';
+    else if (/binder/i.test(lower)) n = 'Binder / Map Berkas';
+    return { shape: 'balok', name: n };
+  }
+  // Furniture, Cabinets, Appliances
+  if (/\b(filing cabinet|china cabinet|wardrobe|chest|dresser|cupboard|desk|dining table|coffee table|pool table|refrigerator|icebox|microwave|toaster|waffle iron|dishwasher|washing machine|dryer|stove|oven|air conditioner|medicine chest|espresso maker|bathtub)\b/i.test(lower)) {
+    let n = 'Perabot Rumah Balok';
+    if (/refrigerator/i.test(lower)) n = 'Kulkas / Lemari Pendingin';
+    else if (/microwave/i.test(lower)) n = 'Microwave / Oven Mini';
+    else if (/wardrobe|cabinet|cupboard/i.test(lower)) n = 'Lemari Kotak';
+    else if (/table|desk/i.test(lower)) n = 'Meja';
+    else if (/espresso/i.test(lower)) n = 'Mesin Espresso';
+    else if (/bathtub/i.test(lower)) n = 'Bak Mandi (Bathtub)';
+    return { shape: 'balok', name: n };
+  }
+  // Bags, Luggage, Household solids
+  if (/\b(briefcase|suitcase|luggage|backpack|wallet|purse|soap|sponge|eraser|mattress|pillow|doormat|brick|picture frame|mirror)\b/i.test(lower)) {
+    let n = 'Benda Kotak / Balok';
+    if (/backpack/i.test(lower)) n = 'Tas Ransel';
+    else if (/eraser|sponge|soap/i.test(lower)) n = 'Penghapus / Spons Balok';
+    else if (/pillow|mattress/i.test(lower)) n = 'Bantal / Kasur';
+    else if (/brick/i.test(lower)) n = 'Batu Bata Balok';
+    return { shape: 'balok', name: n };
+  }
+  // Vehicles
+  if (/\b(car|cab|automobile|bus|train|locomotive|truck|trailer|van|wagon|jeep|limousine)\b/i.test(lower)) {
+    return { shape: 'balok', name: 'Kendaraan / Mobil (Bentuk Balok)' };
+  }
+
+  // Fallback: Clean English label capitalized
+  const cleanWord = className.split(',')[0].trim();
+  return { shape: 'balok', name: cleanWord };
+}
+
 // AI Analysis: Ensemble Deep Learning (MobileNet Top-15) + High-Precision Computer Vision Geometry
-async function analyzeImageFrame(canvas, optionalImgSrc) {
+async function analyzeImageFrame(canvas, optionalImgSrc, scanSessionId) {
   const imgSrc = optionalImgSrc || canvas.toDataURL('image/jpeg', 0.88);
 
   // If AI model is still loading in background, give it up to 1.5s to finish
@@ -3868,30 +4038,47 @@ async function analyzeImageFrame(canvas, optionalImgSrc) {
   // 1. Run Scientific Computer Vision Geometry Engine on Canvas
   const geoResult = runGeometricShapeAnalysis(canvas);
 
-  // 2. Run MobileNet Deep Learning Classifier if available
+  // 2. Run MobileNet Deep Learning Classifier on Both Reticle Crop & Full Scene Context
   const aiScores = { kubus: 0, balok: 0, tabung: 0, kerucut: 0, bola: 0, prisma: 0, limas: 0 };
   let bestAiPredictionName = '';
   let bestAiShapeMatch = null;
+  let highestPredProb = 0;
 
   if (aiVisionModel) {
     try {
-      const predictions = await aiVisionModel.classify(canvas, 15);
-      if (predictions && predictions.length > 0) {
-        for (let i = 0; i < predictions.length; i++) {
-          const pred = predictions[i];
-          const cName = pred.className.toLowerCase();
-          const prob = pred.probability || (1 / (i + 1));
-          const rankWeight = 1.0 / (1 + i * 0.15);
+      // Primary: Classify focused reticle crop
+      const predictions = await aiVisionModel.classify(canvas, 12);
+      
+      // Secondary: Also classify live video feed for global context if available
+      let predictionsFull = [];
+      const videoEl = document.getElementById('cameraVideo');
+      if (videoEl && videoEl.videoWidth > 0 && cameraMediaStream) {
+        try {
+          predictionsFull = await aiVisionModel.classify(videoEl, 8);
+        } catch (e) {}
+      }
 
-          for (const rule of SHAPE_AI_RULES) {
-            if (rule.exclude && rule.exclude.test(cName)) continue;
-            if (rule.regex.test(cName)) {
-              const points = prob * rankWeight * rule.weight;
-              aiScores[rule.shape] += points;
-              if (!bestAiShapeMatch) {
-                bestAiShapeMatch = rule.shape;
-                bestAiPredictionName = rule.defaultName;
-              }
+      // Merge and evaluate predictions with rank weighting
+      const mergedPreds = [
+        ...predictions.map(p => ({ ...p, weight: 1.0 })),
+        ...predictionsFull.map(p => ({ ...p, weight: 0.85 }))
+      ];
+
+      if (mergedPreds && mergedPreds.length > 0) {
+        for (let i = 0; i < mergedPreds.length; i++) {
+          const pred = mergedPreds[i];
+          const prob = pred.probability || (1 / (i + 1));
+          const rankWeight = (1.0 / (1 + i * 0.12)) * (pred.weight || 1.0);
+
+          const classified = classifyRealWorldObject(pred.className);
+          if (classified && classified.shape) {
+            const points = prob * rankWeight * 95;
+            aiScores[classified.shape] += points;
+
+            if (!bestAiShapeMatch || prob > highestPredProb) {
+              highestPredProb = prob;
+              bestAiShapeMatch = classified.shape;
+              bestAiPredictionName = classified.name;
             }
           }
         }
@@ -3957,6 +4144,13 @@ async function analyzeImageFrame(canvas, optionalImgSrc) {
       confidence: basePct
     };
   });
+  
+  // Stale scan guard: discard results if user took a newer photo while this was analyzing
+  if (scanSessionId && scanSessionId !== currentScanSessionId) {
+    console.log('Stale scan session #' + scanSessionId + ' discarded. Active session is #' + currentScanSessionId);
+    return;
+  }
+  isCurrentlyScanning = false;
 
   displayDetectionResult({
     shapeKey: winnerKey,
@@ -4161,8 +4355,11 @@ function displayDetectionResult(result) {
 
   const base = SHAPES_DATA[result.shapeKey] || SHAPES_DATA.kubus;
 
+  isCurrentlyScanning = false;
+
   // Scroll and reveal result card
   if (card) {
+    card.classList.remove('is-analyzing');
     card.classList.remove('hidden');
     card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
@@ -5289,20 +5486,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const captureBtn = document.getElementById('captureScanBtn');
   if (captureBtn) captureBtn.addEventListener('click', captureAndScan);
 
-  const fsShutterBtn = document.getElementById('fsShutterCircleBtn');
-  if (fsShutterBtn) fsShutterBtn.addEventListener('click', captureAndScan);
 
-  const toggleFsBtn = document.getElementById('toggleFullscreenCamBtn');
-  if (toggleFsBtn) toggleFsBtn.addEventListener('click', toggleCameraFullscreen);
-
-  const closeCamToolBtn = document.getElementById('closeCamToolBtn');
-  if (closeCamToolBtn) closeCamToolBtn.addEventListener('click', stopCameraScanner);
-
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && isCameraFullscreen) {
-      stopCameraScanner();
-    }
-  });
 
   const uploadInput = document.getElementById('fileUploadInput');
   if (uploadInput) uploadInput.addEventListener('change', handleImageFileUpload);
@@ -5310,6 +5494,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Direct Click/Tap on Reticle Box or Viewport to Instantly Capture & Detect
   const scannerFrameBox = document.querySelector('.scanner-frame');
   const viewfinderViewportEl = document.querySelector('.viewfinder-viewport');
+
+  let touchHandled = false;
 
   function handleBoxDirectCapture(e) {
     if (cameraMediaStream) {
@@ -5322,18 +5508,28 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (scannerFrameBox) {
-    scannerFrameBox.addEventListener('click', handleBoxDirectCapture);
+    scannerFrameBox.addEventListener('touchstart', () => {
+      touchHandled = true;
+    }, { passive: true });
+
     scannerFrameBox.addEventListener('touchend', (e) => {
       if (cameraMediaStream) {
         e.preventDefault();
         captureAndScan();
+        setTimeout(() => { touchHandled = false; }, 400);
       }
     }, { passive: false });
+
+    scannerFrameBox.addEventListener('click', (e) => {
+      if (touchHandled) return;
+      handleBoxDirectCapture(e);
+    });
   }
 
   if (viewfinderViewportEl) {
     viewfinderViewportEl.addEventListener('click', (e) => {
-      if (e.target.closest('#cameraOffPlaceholder') || e.target.closest('button') || e.target.closest('label')) {
+      if (touchHandled) return;
+      if (e.target.closest('#cameraOffPlaceholder') || e.target.closest('button') || e.target.closest('label') || e.target.closest('.scanner-frame')) {
         return;
       }
       if (cameraMediaStream) {
