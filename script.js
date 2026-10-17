@@ -3393,6 +3393,12 @@ const SHAPE_AI_RULES = [
     defaultName: 'Penghapus / Spons Balok',
     weight: 82
   },
+  {
+    shape: 'balok',
+    regex: /\b(modem|router|switch|set-top box|decoder|power adapter|wall socket)\b/i,
+    defaultName: 'Modem / Router Kotak',
+    weight: 94
+  },
 
   // --- KUBUS (Kubus Persegi Sama Sisi 1:1) ---
   {
@@ -3421,6 +3427,18 @@ const SHAPE_AI_RULES = [
     regex: /\b(coffee mug|mug|cup|measuring cup|beaker|flask|cylinder|tube|pipe|spray can|aerosol|hair spray|roll|paper towel|toilet paper|candle|battery|drum|barrel|oil drum|bucket|pail|vase|cocktail shaker|coffeepot|teapot)\b/i,
     defaultName: 'Gelas / Wadah Silinder',
     weight: 88
+  },
+  {
+    shape: 'tabung',
+    regex: /\b(electric fan|blower|fan|wall fan|ceiling fan|ventilator)\b/i,
+    defaultName: 'Kipas Angin Bulat (Silinder)',
+    weight: 92
+  },
+  {
+    shape: 'tabung',
+    regex: /\b(wall clock|analog clock|digital clock|clock)\b/i,
+    defaultName: 'Jam Dinding Bulat (Silinder)',
+    weight: 92
   },
 
   // --- KERUCUT (Kerucut Lancip / Cone) ---
@@ -3490,6 +3508,57 @@ function initAIVisionModel() {
   }
 }
 
+// --- FULLSCREEN CAMERA CONTROLLER ---
+let isCameraFullscreen = false;
+
+function setCameraFullscreen(enabled) {
+  isCameraFullscreen = !!enabled;
+  const card = document.querySelector('.camera-viewfinder-card');
+  const toggleBtn = document.getElementById('toggleFullscreenCamBtn');
+
+  if (isCameraFullscreen) {
+    if (card) card.classList.add('is-fullscreen');
+    document.body.classList.add('camera-fullscreen-active');
+    if (toggleBtn) {
+      toggleBtn.innerHTML = '<i class="fa-solid fa-compress"></i> <span id="fsToggleLabel">Layar Biasa</span>';
+    }
+    // Attempt standard browser fullscreen on devices that support it
+    if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  } else {
+    if (card) card.classList.remove('is-fullscreen');
+    document.body.classList.remove('camera-fullscreen-active');
+    if (toggleBtn) {
+      toggleBtn.innerHTML = '<i class="fa-solid fa-expand"></i> <span id="fsToggleLabel">Layar Penuh</span>';
+    }
+    closeFsResultSheet();
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    }
+  }
+}
+
+function toggleCameraFullscreen() {
+  sfx.playPop();
+  setCameraFullscreen(!isCameraFullscreen);
+}
+
+function closeFsResultSheet() {
+  const sheet = document.getElementById('fsResultBottomSheet');
+  if (sheet) sheet.classList.add('hidden');
+}
+
+function resumeFsCamera() {
+  sfx.playPop();
+  closeFsResultSheet();
+}
+
+window.setCameraFullscreen = setCameraFullscreen;
+window.toggleCameraFullscreen = toggleCameraFullscreen;
+window.closeFsResultSheet = closeFsResultSheet;
+window.resumeFsCamera = resumeFsCamera;
+
 async function startCameraScanner() {
   sfx.playPop();
   const video = document.getElementById('cameraVideo');
@@ -3529,7 +3598,10 @@ async function startCameraScanner() {
     const viewport = document.querySelector('.viewfinder-viewport');
     if (viewport) viewport.classList.add('is-active');
     if (dot) dot.classList.add('active');
-    if (statusText) statusText.textContent = 'Kamera Aktif • Ketuk Kotak untuk Jepret Foto';
+    if (statusText) statusText.textContent = 'Kamera Aktif • Ketuk Layar / Shutter untuk Jepret Foto';
+
+    // Automatically enter immersive Fullscreen Camera Mode
+    setCameraFullscreen(true);
     if (hud) hud.classList.remove('hidden');
     if (placeholder) placeholder.classList.add('hidden');
     if (scanBtn) scanBtn.classList.remove('hidden');
@@ -3561,6 +3633,7 @@ function stopCameraScanner() {
 
   const viewport = document.querySelector('.viewfinder-viewport');
   if (viewport) viewport.classList.remove('is-active');
+  setCameraFullscreen(false);
 
   const dot = document.getElementById('camStatusDot');
   const statusText = document.getElementById('camStatusText');
@@ -5215,6 +5288,22 @@ document.addEventListener('DOMContentLoaded', () => {
   if (cycleFrameBtn) cycleFrameBtn.addEventListener('click', cycleFrameSize);
   const captureBtn = document.getElementById('captureScanBtn');
   if (captureBtn) captureBtn.addEventListener('click', captureAndScan);
+
+  const fsShutterBtn = document.getElementById('fsShutterCircleBtn');
+  if (fsShutterBtn) fsShutterBtn.addEventListener('click', captureAndScan);
+
+  const toggleFsBtn = document.getElementById('toggleFullscreenCamBtn');
+  if (toggleFsBtn) toggleFsBtn.addEventListener('click', toggleCameraFullscreen);
+
+  const closeCamToolBtn = document.getElementById('closeCamToolBtn');
+  if (closeCamToolBtn) closeCamToolBtn.addEventListener('click', stopCameraScanner);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isCameraFullscreen) {
+      stopCameraScanner();
+    }
+  });
+
   const uploadInput = document.getElementById('fileUploadInput');
   if (uploadInput) uploadInput.addEventListener('change', handleImageFileUpload);
 

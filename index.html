@@ -3998,6 +3998,353 @@ body {
 }
 
 
+
+/* ==========================================================================
+   FULLSCREEN CAMERA EXPERIENCE (IMMERSIVE MOBILE & DESKTOP)
+   ========================================================================== */
+
+body.camera-fullscreen-active {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
+.camera-viewfinder-card.is-fullscreen {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  z-index: 99999 !important;
+  background: #000000 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  box-shadow: none !important;
+}
+
+/* Fullscreen Viewport */
+.camera-viewfinder-card.is-fullscreen .viewfinder-viewport {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+  z-index: 1 !important;
+}
+
+.camera-viewfinder-card.is-fullscreen #cameraVideo {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+/* Fullscreen Top Header */
+.camera-viewfinder-card.is-fullscreen .viewfinder-header {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 25 !important;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.4) 65%, transparent 100%) !important;
+  padding: max(0.85rem, env(safe-area-inset-top, 0.85rem)) 1.25rem 0.85rem 1.25rem !important;
+  border-bottom: none !important;
+  margin-bottom: 0 !important;
+  color: #FFFFFF !important;
+}
+
+.camera-viewfinder-card.is-fullscreen .cam-status-indicator {
+  color: #FFFFFF !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Fullscreen Mode Bar */
+.camera-viewfinder-card.is-fullscreen .detection-mode-bar {
+  position: absolute !important;
+  top: max(62px, calc(env(safe-area-inset-top, 0px) + 52px)) !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 24 !important;
+  margin: 0 !important;
+  padding: 0.5rem 1rem !important;
+  background: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 0 !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+/* Fullscreen Scanner Reticle Frame */
+.camera-viewfinder-card.is-fullscreen .scanner-frame {
+  width: 84vw !important;
+  max-width: 440px !important;
+  height: 48vh !important;
+  max-height: 460px !important;
+}
+
+/* Fullscreen Bottom Controls */
+.camera-viewfinder-card.is-fullscreen .camera-controls-bar {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 30 !important;
+  background: linear-gradient(0deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.5) 60%, transparent 100%) !important;
+  padding: 1.25rem 1.5rem max(1.8rem, env(safe-area-inset-bottom, 1.8rem)) 1.5rem !important;
+  margin-top: 0 !important;
+  display: flex !important;
+  justify-content: space-around !important;
+  align-items: center !important;
+  gap: 1.5rem !important;
+}
+
+.camera-controls-bar .fs-shutter-circle-btn {
+  display: none;
+}
+
+.camera-viewfinder-card.is-fullscreen .fs-shutter-circle-btn {
+  display: flex !important;
+}
+
+.camera-viewfinder-card.is-fullscreen #captureScanBtn {
+  display: none !important;
+}
+
+/* Native Circular Shutter Button */
+.fs-shutter-circle-btn {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  border: 4px solid #FFFFFF;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.fs-shutter-circle-btn:hover {
+  transform: scale(1.05);
+}
+
+.fs-shutter-circle-btn:active {
+  transform: scale(0.92);
+}
+
+.shutter-circle-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10B981 0%, #06B6D4 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 1.6rem;
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.4);
+}
+
+/* Close Cam Tool Button Styling */
+.cam-tool-close-btn {
+  background: rgba(239, 68, 68, 0.25) !important;
+  color: #EF4444 !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+}
+
+.cam-tool-close-btn:hover {
+  background: rgba(239, 68, 68, 0.9) !important;
+  color: #FFFFFF !important;
+}
+
+/* Slide-Up Result Bottom Sheet in Fullscreen Mode */
+.fs-result-bottom-sheet {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  max-height: 82vh !important;
+  background: #FFFFFF !important;
+  color: #1E293B !important;
+  border-radius: 1.5rem 1.5rem 0 0 !important;
+  box-shadow: 0 -8px 35px rgba(0, 0, 0, 0.55) !important;
+  z-index: 50 !important;
+  padding: 1rem 1.5rem max(1.5rem, env(safe-area-inset-bottom, 1.5rem)) 1.5rem !important;
+  overflow-y: auto !important;
+  transform: translateY(0) !important;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.fs-result-bottom-sheet.hidden {
+  transform: translateY(105%) !important;
+  pointer-events: none !important;
+}
+
+.fs-sheet-drag-handle {
+  width: 44px;
+  height: 5px;
+  background: #CBD5E1;
+  border-radius: 999px;
+  margin: 0 auto 0.75rem auto;
+}
+
+.fs-sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+}
+
+.fs-sheet-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: #ECFDF5;
+  color: #047857;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid #A7F3D0;
+}
+
+.fs-sheet-close-btn {
+  background: #F1F5F9;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.fs-sheet-top-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.fs-sheet-thumb {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 2px solid #E2E8F0;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.fs-sheet-info {
+  flex: 1;
+}
+
+.fs-sheet-info h3 {
+  font-family: inherit;
+  font-size: 1.35rem;
+  margin: 0 0 0.25rem 0;
+  color: #0F172A;
+  font-weight: 800;
+}
+
+.fs-sheet-obj {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #0284C7;
+  margin-bottom: 0.45rem;
+}
+
+.fs-sheet-conf-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: #64748B;
+  font-weight: 600;
+}
+
+.fs-sheet-progress-bg {
+  width: 100%;
+  height: 7px;
+  background: #E2E8F0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.fs-sheet-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10B981, #06B6D4);
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.fs-sheet-props-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+}
+
+.fs-prop-pill {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.82rem;
+  color: #475569;
+}
+
+.fs-prop-pill strong {
+  display: block;
+  font-size: 1.15rem;
+  color: #0F172A;
+}
+
+.fs-sheet-desc {
+  font-size: 0.88rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 0.85rem;
+  background: #F8FAFC;
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+}
+
+.fs-sheet-candidates {
+  margin-bottom: 1rem;
+}
+
+.fs-cand-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #64748B;
+  margin-bottom: 0.4rem;
+}
+
+.fs-sheet-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+
   </style>
 </head>
 
@@ -4653,6 +5000,12 @@ body {
               <button id="switchCamFacingBtn" class="cam-tool-btn" title="Ganti Kamera Depan / Belakang">
                 <i class="fa-solid fa-camera-rotate"></i> <span>Putar Kamera</span>
               </button>
+              <button id="toggleFullscreenCamBtn" class="cam-tool-btn" title="Ubah Ukuran Layar">
+                <i class="fa-solid fa-expand"></i> <span id="fsToggleLabel">Layar Penuh</span>
+              </button>
+              <button id="closeCamToolBtn" class="cam-tool-btn cam-tool-close-btn" title="Tutup Kamera">
+                <i class="fa-solid fa-xmark"></i> <span>Tutup</span>
+              </button>
             </div>
           </div>
 
@@ -4707,6 +5060,9 @@ body {
             <button id="toggleCameraBtn" class="primary-btn btn-large">
               <i class="fa-solid fa-video"></i> <span>Buka Kamera</span>
             </button>
+            <button id="fsShutterCircleBtn" class="fs-shutter-circle-btn" title="Ketuk untuk Jepret Foto">
+              <div class="shutter-circle-inner"><i class="fa-solid fa-camera"></i></div>
+            </button>
             <button id="captureScanBtn" class="accent-btn btn-large hidden">
               <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Pindai & Deteksi Benda!</span>
             </button>
@@ -4714,6 +5070,45 @@ body {
               <i class="fa-solid fa-image"></i> <span>Pilih Foto Galeri</span>
               <input type="file" id="fileUploadInput" accept="image/*" class="hidden">
             </label>
+          </div>
+        
+          <!-- Fullscreen Slide-Up Result Sheet (Appears in Fullscreen Mode) -->
+          <div id="fsResultBottomSheet" class="fs-result-bottom-sheet hidden">
+            <div class="fs-sheet-drag-handle"></div>
+            <div class="fs-sheet-header">
+              <div class="fs-sheet-badge"><i class="fa-solid fa-circle-check"></i> Hasil Analisis AI</div>
+              <button type="button" class="fs-sheet-close-btn" onclick="closeFsResultSheet()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="fs-sheet-content">
+              <div class="fs-sheet-top-row">
+                <img id="fsSheetThumbImg" class="fs-sheet-thumb" alt="Thumbnail">
+                <div class="fs-sheet-info">
+                  <h3 id="fsSheetShapeTitle">BALOK 📦</h3>
+                  <div id="fsSheetObjLabel" class="fs-sheet-obj">Objek: Televisi / Layar Monitor</div>
+                  <div class="fs-sheet-conf-bar">
+                    <span id="fsSheetConfText">Tingkat Kecocokan: 96%</span>
+                    <div class="fs-sheet-progress-bg"><div id="fsSheetConfFill" class="fs-sheet-progress-fill" style="width: 96%"></div></div>
+                  </div>
+                </div>
+              </div>
+              <div class="fs-sheet-props-row">
+                <div class="fs-prop-pill">Sisi: <strong id="fsPropSisi">6</strong></div>
+                <div class="fs-prop-pill">Rusuk: <strong id="fsPropRusuk">12</strong></div>
+                <div class="fs-prop-pill">Sudut: <strong id="fsPropSudut">8</strong></div>
+              </div>
+              <p id="fsSheetDesc" class="fs-sheet-desc"></p>
+              
+              <div class="fs-sheet-candidates">
+                <span class="fs-cand-label"><i class="fa-solid fa-list-check"></i> Kandidat Lain:</span>
+                <div id="fsCandidateChips" class="cand-chips"></div>
+              </div>
+
+              <div class="fs-sheet-actions">
+                <button type="button" id="fsView3dBtn" class="primary-btn btn-large"><i class="fa-solid fa-cube"></i> Lihat Model 3D Benda Ini! ✨</button>
+                <button type="button" class="secondary-btn btn-large" onclick="resumeFsCamera()"><i class="fa-solid fa-camera"></i> Foto Benda Lain</button>
+                <button type="button" class="accent-btn btn-large" onclick="stopCameraScanner()"><i class="fa-solid fa-xmark"></i> Selesai & Tutup Kamera</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -8513,6 +8908,12 @@ const SHAPE_AI_RULES = [
     defaultName: 'Penghapus / Spons Balok',
     weight: 82
   },
+  {
+    shape: 'balok',
+    regex: /\b(modem|router|switch|set-top box|decoder|power adapter|wall socket)\b/i,
+    defaultName: 'Modem / Router Kotak',
+    weight: 94
+  },
 
   // --- KUBUS (Kubus Persegi Sama Sisi 1:1) ---
   {
@@ -8541,6 +8942,18 @@ const SHAPE_AI_RULES = [
     regex: /\b(coffee mug|mug|cup|measuring cup|beaker|flask|cylinder|tube|pipe|spray can|aerosol|hair spray|roll|paper towel|toilet paper|candle|battery|drum|barrel|oil drum|bucket|pail|vase|cocktail shaker|coffeepot|teapot)\b/i,
     defaultName: 'Gelas / Wadah Silinder',
     weight: 88
+  },
+  {
+    shape: 'tabung',
+    regex: /\b(electric fan|blower|fan|wall fan|ceiling fan|ventilator)\b/i,
+    defaultName: 'Kipas Angin Bulat (Silinder)',
+    weight: 92
+  },
+  {
+    shape: 'tabung',
+    regex: /\b(wall clock|analog clock|digital clock|clock)\b/i,
+    defaultName: 'Jam Dinding Bulat (Silinder)',
+    weight: 92
   },
 
   // --- KERUCUT (Kerucut Lancip / Cone) ---
@@ -8610,6 +9023,57 @@ function initAIVisionModel() {
   }
 }
 
+// --- FULLSCREEN CAMERA CONTROLLER ---
+let isCameraFullscreen = false;
+
+function setCameraFullscreen(enabled) {
+  isCameraFullscreen = !!enabled;
+  const card = document.querySelector('.camera-viewfinder-card');
+  const toggleBtn = document.getElementById('toggleFullscreenCamBtn');
+
+  if (isCameraFullscreen) {
+    if (card) card.classList.add('is-fullscreen');
+    document.body.classList.add('camera-fullscreen-active');
+    if (toggleBtn) {
+      toggleBtn.innerHTML = '<i class="fa-solid fa-compress"></i> <span id="fsToggleLabel">Layar Biasa</span>';
+    }
+    // Attempt standard browser fullscreen on devices that support it
+    if (document.documentElement.requestFullscreen && !document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  } else {
+    if (card) card.classList.remove('is-fullscreen');
+    document.body.classList.remove('camera-fullscreen-active');
+    if (toggleBtn) {
+      toggleBtn.innerHTML = '<i class="fa-solid fa-expand"></i> <span id="fsToggleLabel">Layar Penuh</span>';
+    }
+    closeFsResultSheet();
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    }
+  }
+}
+
+function toggleCameraFullscreen() {
+  sfx.playPop();
+  setCameraFullscreen(!isCameraFullscreen);
+}
+
+function closeFsResultSheet() {
+  const sheet = document.getElementById('fsResultBottomSheet');
+  if (sheet) sheet.classList.add('hidden');
+}
+
+function resumeFsCamera() {
+  sfx.playPop();
+  closeFsResultSheet();
+}
+
+window.setCameraFullscreen = setCameraFullscreen;
+window.toggleCameraFullscreen = toggleCameraFullscreen;
+window.closeFsResultSheet = closeFsResultSheet;
+window.resumeFsCamera = resumeFsCamera;
+
 async function startCameraScanner() {
   sfx.playPop();
   const video = document.getElementById('cameraVideo');
@@ -8649,7 +9113,10 @@ async function startCameraScanner() {
     const viewport = document.querySelector('.viewfinder-viewport');
     if (viewport) viewport.classList.add('is-active');
     if (dot) dot.classList.add('active');
-    if (statusText) statusText.textContent = 'Kamera Aktif • Ketuk Kotak untuk Jepret Foto';
+    if (statusText) statusText.textContent = 'Kamera Aktif • Ketuk Layar / Shutter untuk Jepret Foto';
+
+    // Automatically enter immersive Fullscreen Camera Mode
+    setCameraFullscreen(true);
     if (hud) hud.classList.remove('hidden');
     if (placeholder) placeholder.classList.add('hidden');
     if (scanBtn) scanBtn.classList.remove('hidden');
@@ -8681,6 +9148,7 @@ function stopCameraScanner() {
 
   const viewport = document.querySelector('.viewfinder-viewport');
   if (viewport) viewport.classList.remove('is-active');
+  setCameraFullscreen(false);
 
   const dot = document.getElementById('camStatusDot');
   const statusText = document.getElementById('camStatusText');
@@ -10335,6 +10803,22 @@ document.addEventListener('DOMContentLoaded', () => {
   if (cycleFrameBtn) cycleFrameBtn.addEventListener('click', cycleFrameSize);
   const captureBtn = document.getElementById('captureScanBtn');
   if (captureBtn) captureBtn.addEventListener('click', captureAndScan);
+
+  const fsShutterBtn = document.getElementById('fsShutterCircleBtn');
+  if (fsShutterBtn) fsShutterBtn.addEventListener('click', captureAndScan);
+
+  const toggleFsBtn = document.getElementById('toggleFullscreenCamBtn');
+  if (toggleFsBtn) toggleFsBtn.addEventListener('click', toggleCameraFullscreen);
+
+  const closeCamToolBtn = document.getElementById('closeCamToolBtn');
+  if (closeCamToolBtn) closeCamToolBtn.addEventListener('click', stopCameraScanner);
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isCameraFullscreen) {
+      stopCameraScanner();
+    }
+  });
+
   const uploadInput = document.getElementById('fileUploadInput');
   if (uploadInput) uploadInput.addEventListener('change', handleImageFileUpload);
 
