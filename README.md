@@ -35,13 +35,26 @@ Website interaktif berbasis animasi 3D dan teknologi web modern untuk membantu s
   * 🌟 **Interaktif Benda di Sekitar Kita (3D Real-World Objects):**
     Klik salah satu benda nyata (seperti Dadu bertitik angka, Rubik warna-warni, Kotak Kado berpita, Kaleng Susu bermerek, Cone Es Krim berskup stroberi, Bola Sepak, Tenda Berkemah, Piramida Mesir Kuno, dll) untuk melihat model 3D nyata tersebut langsung berputar di kanvas Three.js! Tersedia tombol *"Bentuk Polos"* untuk kembali ke bentuk geometri awal kapan saja.
 
-### 2. 🧩 Laboratorium Jaring-Jaring
-* Memvisualisasikan bagaimana bangun ruang 3D dibuka menjadi bidang datar 2D.
-* **11 Variasi Pola Kubus** (termasuk Pola 1-4-1, 2-3-1, 2-2-2 zig-zag, dan 3-3-0 tangga yang sering keluar di soal ujian SD).
-* Kode warna edukatif:
-  * 🟦 **Biru**: Alas (Bagian Bawah)
-  * 🟪 **Pink**: Tutup (Bagian Atas)
-  * 🟩 **Hijau**: Sisi Tegak / Selimut
+### 2. 🧩 3D Shape Builder: Petualangan Jaring-Jaring Bangun Ruang (Fase C SD)
+Fitur inovatif pembelajaran matematika interaktif Fase C (Kelas VI SD) berbasis animasi 3D dan Three.js:
+* **4 Model Bangun Ruang Utama & Pembuktian Geometris:**
+  1. **Kubus**: 6 persegi identik kongruen, lipatan sudut siku-siku $90^\circ$ dengan engsel rusuk bertingkat (*nested hinge*) sisi alas, depan, belakang, kiri, kanan, dan tutup atas.
+  2. **Balok**: 6 persegi panjang proporsional ($p \times l \times t$), lipatan sudut $90^\circ$ menutup tepat tanpa celah maupun tumpang tindih.
+  3. **Prisma Segitiga**: 2 segitiga sama sisi kongruen + 3 persegi panjang, rotasi engsel $60^\circ$ dan $90^\circ$, kedua tutup segitiga tegak menutup pas di ujung prisma.
+  4. **Limas Segi Empat**: 1 alas bujur sangkar + 4 segitiga sama kaki, rotasi engsel miring $\alpha = \arctan(H / (s/2)) \approx 61.39^\circ$, keempat ujung puncak (*apex*) bertemu presisi matematis di $(0, H, 0)$ dengan selisih mutlak $0.000000$!
+* **Kontrol Interaktif Lengkap:**
+  * **Slider Lipatan 0% – 100%**: 0% adalah bangun ruang 3D tertutup rapat; 100% terbentang rata menjadi jaring-jaring 2D pada bidang $Y=0$.
+  * **Tombol "Bentangkan Jaring-Jaring" & "Lipat Jadi Bangun Ruang"**: Animasi halus dengan kurva perlambatan (*cubic easing*) dan efek suara gerakan (*whoosh sound effect*).
+  * **Mode Animasi Otomatis (Breathing Mode)**: Bergerak melipat dan membentang secara bolak-balik tanpa henti dengan 3 pilihan kecepatan: *Lambat*, *Normal*, dan *Cepat*.
+  * **Eksplorasi Unsur Bangun Ruang**:
+    * 🏷️ *Label Nama Sisi*: Badge 3D (Alas, Depan, Belakang, Samping, Tutup Atas) yang terproyeksi dinamis mengikuti perputaran kamera.
+    * 📏 *Garis Rusuk Jelas*: Outline kontras penanda engsel lipatan rusuk.
+    * ⚪ *Titik Sudut Emas*: Bola koordinat persinggungan titik sudut bangun ruang.
+  * **Preset Sudut Pandang Kamera**: Pilihan cepat pandangan **3D Isometrik**, **Atas (2D Tegak Lurus)**, **Depan**, dan **Samping**.
+  * **Dua Opsi Akses**:
+    * Terintegrasi langsung di Tab **Laboratorium Jaring-Jaring** pada `index.html`.
+    * Versi mandiri (*standalone zero-dependency*) di `shape_builder_3d.html` dengan tombol layar penuh (*fullscreen*) ramah Smart TV / Proyektor Kelas.
+* **Pola Diagram 2D & Variasi**: Tetap mempertahankan generator 11 pola variasi jaring-jaring 2D kubus (1-4-1, 2-3-1, 2-2-2, 3-3-0) dengan kode warna alas dan tutup.
 
 ### 3. 🧮 Kalkulator & Simulasi Dimensi Cerdas
 * Slider interaktif untuk mengubah panjang, lebar, tinggi, dan jari-jari.
@@ -101,10 +114,11 @@ Bentuk bangun ruang kini dapat diganti-ganti secara langsung melalui tombol dime
 
 ```
 c:\Pribadi\Tugas\
-├── index.html     # Struktur halaman utama, tata letak, dan komponen UI
-├── styles.css     # Gaya visual ceria, responsif, tipografi Fredoka & Quicksand
-├── script.js      # Mesin 3D Three.js, generator SVG jaring-jaring, sintesis audio, dan kuis
-└── README.md      # Panduan dokumentasi proyek
+├── index.html            # Aplikasi web utama lengkap dengan navigasi tab terpadu
+├── shape_builder_3d.html # Modul mandiri 3D Shape Builder (siap jalan, ramah Smart TV & Whiteboard)
+├── styles.css            # Gaya visual ceria, responsif, tipografi Fredoka & Quicksand
+├── script.js             # Mesin 3D Three.js, animasi lipat jaring-jaring, Web Audio, kuis, AI scanner
+└── README.md             # Panduan dokumentasi proyek dan capaian pembelajaran
 ```
 
 ---

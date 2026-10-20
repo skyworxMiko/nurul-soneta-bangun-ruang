@@ -4023,6 +4023,613 @@ body {
   }
 }
 
+
+/* ========================================================
+   3D SHAPE BUILDER: PETUALANGAN JARING-JARING BANGUN RUANG
+   Fase C • Kelas VI SD
+   ======================================================== */
+
+.j3d-mode-tabs {
+  display: flex;
+  gap: 0.5rem;
+  background: #F1F5F9;
+  padding: 0.35rem;
+  border-radius: var(--radius-full);
+  margin-bottom: 1.25rem;
+  width: fit-content;
+  border: 1.5px solid var(--border-color);
+}
+
+.j3d-mode-btn {
+  border: none;
+  background: transparent;
+  padding: 0.55rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
+}
+
+.j3d-mode-btn:hover {
+  color: var(--primary);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.j3d-mode-btn.active {
+  background: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.j3d-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 1040px) {
+  .j3d-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.j3d-viewport-card {
+  background: #FFFFFF;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  height: 520px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .j3d-viewport-card {
+    height: 390px;
+  }
+}
+
+#j3dCanvasContainer {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  outline: none;
+  cursor: grab;
+}
+#j3dCanvasContainer:active {
+  cursor: grabbing;
+}
+
+.j3d-hud-top {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+.j3d-hud-top > * {
+  pointer-events: auto;
+}
+
+.j3d-hud-bottom {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  z-index: 10;
+}
+.j3d-hud-bottom > * {
+  pointer-events: auto;
+}
+
+.j3d-camera-bar {
+  display: flex;
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
+  padding: 0.25rem 0.35rem;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.j3d-cam-btn {
+  border: none;
+  background: transparent;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #475569;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.15s;
+}
+.j3d-cam-btn:hover {
+  background: #E2E8F0;
+  color: var(--text-main);
+}
+.j3d-cam-btn.active {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3);
+}
+
+.j3d-status-pill {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: var(--shadow-sm);
+}
+
+#j3dFaceLabelsOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.j3d-timeline-card {
+  background: #FFFFFF;
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.85rem;
+}
+
+.j3d-shapes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.65rem;
+}
+
+.j3d-shape-btn {
+  background: #F8FAFC;
+  border: 2px solid #E2E8F0;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 0.6rem;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.2s ease;
+}
+.j3d-shape-btn:hover {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+  transform: translateY(-2px);
+}
+.j3d-shape-btn.active {
+  background: #EEF2FF;
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.18);
+}
+.j3d-shape-btn .shape-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.j3d-shape-btn .shape-name {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.j3d-shape-btn.active .shape-name {
+  color: var(--primary);
+}
+.j3d-shape-btn .shape-sub {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.j3d-unsur-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  text-align: center;
+}
+
+.j3d-unsur-box {
+  background: #F8FAFC;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 0.65rem 0.35rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.j3d-unsur-box .unsur-num {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.j3d-toggle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* --- 3D Shape Builder Dynamic Elements & Controls --- */
+
+.face-3d-badge {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.74rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  white-space: nowrap;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s;
+  user-select: none;
+  z-index: 10;
+}
+.face-3d-badge:hover {
+  transform: translate(-50%, -50%) scale(1.12);
+  background: rgba(79, 70, 229, 0.95);
+}
+
+.quick-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1.5px solid var(--border-color);
+  color: #334155;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+.quick-icon-btn:hover {
+  background: #F1F5F9;
+  transform: scale(1.08);
+}
+.quick-icon-btn.active {
+  background: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent-hover);
+}
+
+.slider-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.slider-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.progress-badge {
+  background: #EEF2FF;
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 800;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  border: 1.5px solid #C7D2FE;
+  min-width: 54px;
+  text-align: center;
+}
+
+.slider-track-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+}
+
+.slider-endpoint-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+input[type=range].fold-range-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(to right, #4F46E5 0%, #F59E0B 50%, #10B981 100%);
+  outline: none;
+  cursor: pointer;
+  border: 1px solid #CBD5E1;
+}
+
+input[type=range].fold-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 4px solid var(--primary);
+  cursor: grab;
+  box-shadow: 0 3px 8px rgba(79, 70, 229, 0.45);
+  transition: transform 0.15s, border-color 0.15s;
+}
+input[type=range].fold-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.18);
+  border-color: var(--accent);
+}
+input[type=range].fold-range-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.25);
+}
+
+.main-fold-buttons-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 520px) {
+  .main-fold-buttons-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.big-action-btn {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-sm);
+}
+.big-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.big-action-btn:active {
+  transform: translateY(0);
+}
+
+.btn-bentangkan {
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: #FFFFFF;
+}
+.btn-bentangkan:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+}
+
+.btn-lipat {
+  background: linear-gradient(135deg, #4F46E5, #3730A3);
+  color: #FFFFFF;
+}
+.btn-lipat:hover {
+  background: linear-gradient(135deg, #4338CA, #312E81);
+}
+
+/* Unsur Toggles */
+.toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.75rem;
+  background: #F8FAFC;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+}
+.toggle-row:hover {
+  background: #F1F5F9;
+  border-color: #CBD5E1;
+}
+.toggle-row.checked {
+  background: #EEF2FF;
+  border-color: #C7D2FE;
+}
+
+.toggle-label-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.toggle-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+}
+.toggle-icon.blue { background: #DBEAFE; color: #1D4ED8; }
+.toggle-icon.emerald { background: #D1FAE5; color: #047857; }
+.toggle-icon.amber { background: #FEF3C7; color: #B45309; }
+
+.switch-ui {
+  width: 38px;
+  height: 22px;
+  background: #CBD5E1;
+  border-radius: 9999px;
+  position: relative;
+  transition: background 0.2s;
+}
+.switch-ui::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.toggle-row.checked .switch-ui {
+  background: var(--primary);
+}
+.toggle-row.checked .switch-ui::after {
+  transform: translateX(16px);
+}
+
+/* Auto Play Box */
+.auto-mode-box {
+  background: #FAF5FF;
+  border: 1.5px solid #E9D5FF;
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-top: 0.25rem;
+}
+.auto-mode-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #6B21A8;
+}
+.auto-btn-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.35rem;
+}
+.auto-speed-btn {
+  background: #FFFFFF;
+  border: 1.5px solid #D8B4FE;
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #6B21A8;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.auto-speed-btn:hover {
+  background: #F3E8FF;
+}
+.auto-speed-btn.active {
+  background: #9333EA;
+  color: #FFFFFF;
+  border-color: #7E22CE;
+}
+
+.shape-info-text {
+  font-size: 0.82rem;
+  color: #475569;
+  line-height: 1.5;
+  background: #F8FAFC;
+  padding: 0.65rem 0.75rem;
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--primary);
+  margin-top: 0.65rem;
+}
+
+.formula-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+}
+
+.formula-chip {
+  background: #EEF2FF;
+  border: 1px solid #C7D2FE;
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.65rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #3730A3;
+}
+.formula-chip code {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--primary);
+  background: #FFFFFF;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+}
+
   </style>
 </head>
 
@@ -4049,7 +4656,7 @@ body {
         <i class="fa-solid fa-cube"></i> <span>Eksplorasi 3D</span>
       </button>
       <button class="nav-btn" data-tab="jaring" onclick="switchTab('jaring')">
-        <i class="fa-solid fa-layer-group"></i> <span>Jaring-Jaring</span>
+        <i class="fa-solid fa-shapes"></i> <span>Jaring-Jaring 3D</span>
       </button>
       <button class="nav-btn" data-tab="kalkulator" onclick="switchTab('kalkulator')">
         <i class="fa-solid fa-calculator"></i> <span>Kalkulator & Rumus</span>
@@ -4502,70 +5109,315 @@ body {
       </div>
     </section>
 
-    <!-- TAB 2: JARING-JARING BANGUN RUANG -->
+    <!-- TAB 2: JARING-JARING BANGUN RUANG (3D SHAPE BUILDER) -->
     <section id="tab-jaring" class="tab-content">
       <div class="jaring-container">
-        <div class="section-hero">
-          <h2><i class="fa-solid fa-layer-group text-primary"></i> Laboratorium Jaring-Jaring</h2>
-          <p>Jika sebuah bangun ruang dibuka dan dibentangkan di atas bidang datar, pola itulah yang disebut
-            <strong>Jaring-Jaring</strong>!</p>
-        </div>
-
-        <div class="jaring-select-row">
-          <label for="jaringShapeSelect"><strong>Pilih Bangun Ruang:</strong></label>
-          <select id="jaringShapeSelect" class="custom-select">
-            <option value="kubus">Kubus (11 Variasi Pola!)</option>
-            <option value="balok">Balok</option>
-            <option value="tabung">Tabung</option>
-            <option value="kerucut">Kerucut</option>
-            <option value="limas">Limas Segiempat</option>
-            <option value="prisma">Prisma Segitiga</option>
-          </select>
-
-          <div id="cubePatternControls" class="cube-pills">
-            <span class="pills-label">Pola Kubus:</span>
-            <button class="sub-pill active" data-pattern="1">Pola 1 (1-4-1)</button>
-            <button class="sub-pill" data-pattern="2">Pola 2 (1-4-1 b)</button>
-            <button class="sub-pill" data-pattern="3">Pola 3 (2-3-1)</button>
-            <button class="sub-pill" data-pattern="4">Pola 4 (2-2-2)</button>
-            <button class="sub-pill" data-pattern="5">Pola 5 (3-3-0)</button>
+        
+        <!-- Hero Header -->
+        <div class="section-hero" style="background: linear-gradient(135deg, #EEF2FF, #E0E7FF); border: 2px solid #C7D2FE; margin-bottom: 1.25rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <span class="fase-badge" style="background: #FEF3C7; color: #B45309; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 9999px; font-size: 0.74rem; border: 1px solid #FDE68A;">
+                FASE C • KELAS VI SD
+              </span>
+              <h2 style="margin-top: 0.35rem; font-family: var(--font-heading); font-size: 1.45rem;">
+                <i class="fa-solid fa-shapes text-primary"></i> 3D Shape Builder: Petualangan Jaring-Jaring Bangun Ruang
+              </h2>
+              <p style="margin-top: 0.25rem; color: #475569;">
+                Visualisasi 3D interaktif bangun ruang yang dapat dibuka, dibentangkan, dilipat, dan dibentuk kembali secara nyata!
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <a href="shape_builder_3d.html" target="_blank" class="tool-btn primary" style="text-decoration: none; padding: 0.6rem 1.1rem; font-size: 0.85rem; border-radius: var(--radius-md); font-weight: 700;">
+                <i class="fa-solid fa-up-right-from-square"></i> Buka Fullscreen / Smart TV
+              </a>
+            </div>
           </div>
         </div>
 
-        <div class="jaring-display-grid">
-          <!-- 2D Canvas Interactive Diagram -->
-          <div class="card jaring-canvas-card">
-            <div class="jaring-canvas-header">
-              <span id="jaringTitle">Pola Jaring-Jaring Kubus (Model 1-4-1)</span>
-              <div class="legend-box">
-                <span class="legend-item"><span class="legend-color bg-alas"></span> Alas (Bawah)</span>
-                <span class="legend-item"><span class="legend-color bg-tutup"></span> Tutup (Atas)</span>
-                <span class="legend-item"><span class="legend-color bg-tegak"></span> Sisi Tegak / Selimut</span>
+        <!-- Mode Sub-Tabs: 3D Shape Builder vs Pola 2D Diagram -->
+        <div class="j3d-mode-tabs">
+          <button class="j3d-mode-btn active" id="btnMode3DBuilder" onclick="switchJaringSubMode('3d')">
+            <i class="fa-solid fa-cube"></i> <span>3D Shape Builder (Animasi Lipat 3D)</span>
+          </button>
+          <button class="j3d-mode-btn" id="btnMode2DDiagram" onclick="switchJaringSubMode('2d')">
+            <i class="fa-solid fa-table-cells"></i> <span>Pola Diagram 2D & Variasi</span>
+          </button>
+        </div>
+
+        <!-- SUB-VIEW 1: 3D SHAPE BUILDER (UTAMA) -->
+        <div id="jaring3DViewSection">
+          <div class="j3d-layout">
+            
+            <!-- Left: 3D Viewport & Timeline Slider -->
+            <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+              <div class="j3d-viewport-card">
+                <div id="j3dCanvasContainer"></div>
+                <div id="j3dFaceLabelsOverlay"></div>
+
+                <!-- Top HUD -->
+                <div class="j3d-hud-top">
+                  <div class="j3d-status-pill">
+                    <span class="status-dot" id="j3dStatusDot"></span>
+                    <span id="j3dStatusText">Mode: 3D Bangun Ruang Tertutup (0%)</span>
+                  </div>
+
+                  <div class="j3d-camera-bar">
+                    <button class="j3d-cam-btn active" data-preset="iso" onclick="setJaring3DCameraPreset('iso')" title="Sudut Pandang Isometrik 3D">
+                      <i class="fa-solid fa-cube"></i> 3D
+                    </button>
+                    <button class="j3d-cam-btn" data-preset="top" onclick="setJaring3DCameraPreset('top')" title="Sudut Pandang Atas (2D Datar)">
+                      <i class="fa-solid fa-arrow-down"></i> Atas
+                    </button>
+                    <button class="j3d-cam-btn" data-preset="front" onclick="setJaring3DCameraPreset('front')" title="Sudut Pandang Depan">
+                      <i class="fa-solid fa-eye"></i> Depan
+                    </button>
+                    <button class="j3d-cam-btn" data-preset="side" onclick="setJaring3DCameraPreset('side')" title="Sudut Pandang Samping">
+                      <i class="fa-solid fa-arrow-right"></i> Samping
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Bottom HUD -->
+                <div class="j3d-hud-bottom">
+                  <div class="interaction-hint">
+                    <i class="fa-solid fa-hand-pointer text-primary"></i>
+                    <span>Putar 3D dengan geser • Zoom scroll • Tarik slider lipatan</span>
+                  </div>
+
+                  <div style="display: flex; gap: 0.4rem;">
+                    <button id="btnJ3DToggleRotate" class="quick-icon-btn" title="Putar Otomatis 360°">
+                      <i class="fa-solid fa-rotate"></i>
+                    </button>
+                    <button id="btnJ3DResetView" class="quick-icon-btn" title="Reset Sudut Pandang">
+                      <i class="fa-solid fa-camera-rotate"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Folding Slider & Controls -->
+              <div class="j3d-timeline-card">
+                <div class="slider-header-row">
+                  <div class="slider-title">
+                    <i class="fa-solid fa-sliders text-primary"></i>
+                    <span>Derajat Lipatan Jaring-Jaring</span>
+                  </div>
+                  <div class="progress-badge" id="j3dSliderBadge">0%</div>
+                </div>
+
+                <div class="slider-track-wrap">
+                  <span class="slider-endpoint-label">
+                    <i class="fa-solid fa-box text-primary"></i> 3D Tertutup (0%)
+                  </span>
+                  <input type="range" id="j3dFoldSlider" class="fold-range-slider" min="0" max="100" value="0" step="0.5">
+                  <span class="slider-endpoint-label">
+                    <i class="fa-solid fa-table-cells text-success"></i> Terbuka Datar (100%)
+                  </span>
+                </div>
+
+                <!-- Big Action Buttons -->
+                <div class="main-fold-buttons-grid">
+                  <button id="btnJ3DBentangkan" class="big-action-btn btn-bentangkan">
+                    <i class="fa-solid fa-door-open"></i> Bentangkan Jaring-Jaring
+                  </button>
+                  <button id="btnJ3DLipat" class="big-action-btn btn-lipat">
+                    <i class="fa-solid fa-box-archive"></i> Lipat Jadi Bangun Ruang
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div class="jaring-svg-wrapper" id="jaringSvgWrapper">
-              <!-- Dynamically populated via script -->
+            <!-- Right: Control Panel (Shapes, Toggles, Unsur) -->
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              
+              <!-- Shape Selection -->
+              <div class="card-panel">
+                <div class="panel-header">
+                  <h2><i class="fa-solid fa-shapes text-primary"></i> Pilih Bangun Ruang</h2>
+                  <span class="panel-badge">Fase C SD</span>
+                </div>
+
+                <div class="j3d-shapes-grid">
+                  <button class="j3d-shape-btn active" data-shape="kubus" onclick="selectJaring3DShape('kubus')">
+                    <span class="shape-icon">🎲</span>
+                    <span class="shape-name">Kubus</span>
+                    <span class="shape-sub">6 Persegi Identik</span>
+                  </button>
+
+                  <button class="j3d-shape-btn" data-shape="balok" onclick="selectJaring3DShape('balok')">
+                    <span class="shape-icon">📦</span>
+                    <span class="shape-name">Balok</span>
+                    <span class="shape-sub">6 Persegi Panjang</span>
+                  </button>
+
+                  <button class="j3d-shape-btn" data-shape="prisma" onclick="selectJaring3DShape('prisma')">
+                    <span class="shape-icon">⛺</span>
+                    <span class="shape-name">Prisma Segitiga</span>
+                    <span class="shape-sub">2 Segitiga + 3 Persegi</span>
+                  </button>
+
+                  <button class="j3d-shape-btn" data-shape="limas" onclick="selectJaring3DShape('limas')">
+                    <span class="shape-icon">🔺</span>
+                    <span class="shape-name">Limas Segi Empat</span>
+                    <span class="shape-sub">1 Persegi + 4 Segitiga</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Unsur Toggles -->
+              <div class="card-panel">
+                <div class="panel-header">
+                  <h2><i class="fa-solid fa-microscope text-primary"></i> Eksplorasi Unsur</h2>
+                  <span class="panel-badge">Visual 3D</span>
+                </div>
+
+                <div class="j3d-toggle-list">
+                  <div class="toggle-row checked" id="j3dToggleLabels">
+                    <div class="toggle-label-wrap">
+                      <span class="toggle-icon blue"><i class="fa-solid fa-tag"></i></span>
+                      <span>Label Nama Sisi (Alas, Tutup, Sisi Tegak)</span>
+                    </div>
+                    <div class="switch-ui"></div>
+                  </div>
+
+                  <div class="toggle-row checked" id="j3dToggleEdges">
+                    <div class="toggle-label-wrap">
+                      <span class="toggle-icon emerald"><i class="fa-solid fa-slash"></i></span>
+                      <span>Garis Rusuk Jelas (Garis Engsel)</span>
+                    </div>
+                    <div class="switch-ui"></div>
+                  </div>
+
+                  <div class="toggle-row checked" id="j3dToggleVertices">
+                    <div class="toggle-label-wrap">
+                      <span class="toggle-icon amber"><i class="fa-solid fa-circle-dot"></i></span>
+                      <span>Titik Sudut (Titik Temu Koordinat)</span>
+                    </div>
+                    <div class="switch-ui"></div>
+                  </div>
+                </div>
+
+                <!-- Auto-Play Loop Mode -->
+                <div class="auto-mode-box">
+                  <div class="auto-mode-header">
+                    <span><i class="fa-solid fa-wand-magic-sparkles text-purple"></i> Mode Animasi Otomatis</span>
+                    <button id="btnJ3DAutoPlay" class="tool-btn" style="padding: 0.2rem 0.6rem; font-size: 0.74rem;">
+                      <i class="fa-solid fa-play"></i> Putar Otomatis
+                    </button>
+                  </div>
+                  <div class="auto-btn-row">
+                    <button class="auto-speed-btn" data-speed="0.006" onclick="setJaring3DSpeed(0.006, this)">Lambat</button>
+                    <button class="auto-speed-btn active" data-speed="0.012" onclick="setJaring3DSpeed(0.012, this)">Normal</button>
+                    <button class="auto-speed-btn" data-speed="0.022" onclick="setJaring3DSpeed(0.022, this)">Cepat</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Unsur Geometri Info -->
+              <div class="card-panel">
+                <div class="panel-header">
+                  <h2><i class="fa-solid fa-book-open text-primary"></i> Sifat & Unsur Geometri</h2>
+                  <span class="panel-badge" id="j3dInfoBadge">Kubus</span>
+                </div>
+
+                <div class="j3d-unsur-grid">
+                  <div class="j3d-unsur-box">
+                    <span class="unsur-num" id="j3dStatSisi">6</span>
+                    <span class="unsur-label">Sisi / Bidang</span>
+                    <span class="unsur-desc" id="j3dDescSisi">Bujur Sangkar</span>
+                  </div>
+                  <div class="j3d-unsur-box">
+                    <span class="unsur-num" id="j3dStatRusuk">12</span>
+                    <span class="unsur-label">Rusuk</span>
+                    <span class="unsur-desc" id="j3dDescRusuk">Panjang sama</span>
+                  </div>
+                  <div class="j3d-unsur-box">
+                    <span class="unsur-num" id="j3dStatSudut">8</span>
+                    <span class="unsur-label">Titik Sudut</span>
+                    <span class="unsur-desc" id="j3dDescSudut">Siku-siku</span>
+                  </div>
+                </div>
+
+                <div class="shape-info-text" id="j3dPedagogicalTip">
+                  <strong>Jaring-Jaring Kubus:</strong> Terdiri dari 6 buah persegi kongruen. Saat dilipat 90°, sisi-sisi tersebut akan menutup sempurna membentuk ruang kubus tanpa celah atau tumpang tindih!
+                </div>
+
+                <div class="formula-row">
+                  <div class="formula-chip">
+                    <span>Luas Permukaan (L):</span>
+                    <code id="j3dFormulaLuas">L = 6 &times; s&sup2;</code>
+                  </div>
+                  <div class="formula-chip">
+                    <span>Volume (V):</span>
+                    <code id="j3dFormulaVolume">V = s &times; s &times; s</code>
+                  </div>
+                </div>
+              </div>
+
             </div>
 
-            <div class="jaring-interaction-hint">
-              <i class="fa-solid fa-circle-info"></i> Arahkan kursor atau klik sisi untuk melihat nama sisi tersebut!
+          </div>
+        </div>
+
+        <!-- SUB-VIEW 2: 2D NETS GENERATOR (POLA DIAGRAM LENGKAP) -->
+        <div id="jaring2DViewSection" style="display: none;">
+          <div class="jaring-select-row">
+            <label for="jaringShapeSelect"><strong>Pilih Pola Bangun Ruang:</strong></label>
+            <select id="jaringShapeSelect" class="custom-select">
+              <option value="kubus">Kubus (11 Variasi Pola!)</option>
+              <option value="balok">Balok</option>
+              <option value="tabung">Tabung</option>
+              <option value="kerucut">Kerucut</option>
+              <option value="limas">Limas Segiempat</option>
+              <option value="prisma">Prisma Segitiga</option>
+            </select>
+
+            <div id="cubePatternControls" class="cube-pills">
+              <span class="pills-label">Pola Kubus:</span>
+              <button class="sub-pill active" data-pattern="1">Pola 1 (1-4-1)</button>
+              <button class="sub-pill" data-pattern="2">Pola 2 (1-4-1 b)</button>
+              <button class="sub-pill" data-pattern="3">Pola 3 (2-3-1)</button>
+              <button class="sub-pill" data-pattern="4">Pola 4 (2-2-2)</button>
+              <button class="sub-pill" data-pattern="5">Pola 5 (3-3-0)</button>
             </div>
           </div>
 
-          <!-- Explanation of Unfolding -->
-          <div class="card jaring-explanation-card">
-            <div class="card-title"><i class="fa-solid fa-scissors text-rose"></i> Cara Membuka & Melipat</div>
-            <div id="jaringDetailText" class="jaring-step-list">
-              <!-- Steps populated via script -->
+          <div class="jaring-display-grid">
+            <!-- 2D Canvas Interactive Diagram -->
+            <div class="card jaring-canvas-card">
+              <div class="jaring-canvas-header">
+                <span id="jaringTitle">Pola Jaring-Jaring Kubus (Model 1-4-1)</span>
+                <div class="legend-box">
+                  <span class="legend-item"><span class="legend-color bg-alas"></span> Alas (Bawah)</span>
+                  <span class="legend-item"><span class="legend-color bg-tutup"></span> Tutup (Atas)</span>
+                  <span class="legend-item"><span class="legend-color bg-tegak"></span> Sisi Tegak / Selimut</span>
+                </div>
+              </div>
+
+              <div class="jaring-svg-wrapper" id="jaringSvgWrapper">
+                <!-- Dynamically populated via script -->
+              </div>
+
+              <div class="jaring-interaction-hint">
+                <i class="fa-solid fa-circle-info"></i> Arahkan kursor atau klik sisi untuk melihat nama sisi tersebut!
+              </div>
             </div>
 
-            <div class="challenge-mini-card">
-              <div class="challenge-title">💡 Tips Ujian Sekolah Dasar</div>
-              <p id="jaringExamTip">
-                Ingat aturan penting: Dua bidang yang sejajar (seperti alas dan tutup) tidak boleh bersebelahan langsung
-                pada jaring-jaring!
-              </p>
+            <!-- Explanation of Unfolding -->
+            <div class="card jaring-explanation-card">
+              <div class="card-title"><i class="fa-solid fa-scissors text-rose"></i> Cara Membuka & Melipat</div>
+              <div id="jaringDetailText" class="jaring-step-list">
+                <!-- Steps populated via script -->
+              </div>
+
+              <div class="challenge-mini-card">
+                <div class="challenge-title">💡 Tips Ujian Sekolah Dasar</div>
+                <p id="jaringExamTip">
+                  Ingat aturan penting: Dua bidang yang sejajar (seperti alas dan tutup) tidak boleh bersebelahan langsung
+                  pada jaring-jaring!
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -6084,6 +6936,28 @@ class SoundEffects {
     }
   }
 
+  playWhoosh() {
+    triggerHaptic([30, 20]);
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+    try {
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(220, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(680, this.ctx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.18);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.2);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   playShutter() {
     triggerHaptic([30, 20, 45]);
     if (!this.enabled) return;
@@ -6437,8 +7311,12 @@ function initThreeEngine() {
   });
 
   if (window.ResizeObserver && container) {
+    let resizeTimer = null;
     const resizeObs = new ResizeObserver(() => {
-      onWindowResize();
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        onWindowResize();
+      }, 50);
     });
     resizeObs.observe(container);
   }
@@ -6447,6 +7325,13 @@ function initThreeEngine() {
   let clock = new THREE.Clock();
   function animate() {
     requestAnimationFrame(animate);
+
+    // Skip heavy WebGL render loop if user is not currently viewing Eksplorasi 3D tab
+    const eksTab = document.getElementById('tab-eksplorasi');
+    if (eksTab && !eksTab.classList.contains('active')) {
+      return;
+    }
+
     const elapsedTime = clock.getElapsedTime();
 
         // Animate 5D Cosmic Particle Field
@@ -6507,8 +7392,10 @@ function createGroundPlatform() {
 function onWindowResize() {
   const container = document.getElementById('canvasContainer');
   if (!container || !renderer || !camera) return;
-  const width = container.clientWidth || 600;
-  const height = container.clientHeight || 480;
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+  // If container is hidden (e.g. display: none), do not resize canvas or trigger reflows!
+  if (!width || !height) return;
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
@@ -7972,6 +8859,922 @@ function updateShapeDetails(key) {
 }
 
 
+// ========================================================
+// 3D SHAPE BUILDER: PETUALANGAN JARING-JARING BANGUN RUANG
+// Fase C • Kelas VI SD (Interaktif Tiga Dimensi)
+// ========================================================
+
+const J3D_INFO = {
+  kubus: {
+    title: 'Kubus',
+    sisi: '6 Persegi',
+    rusuk: '12 Rusuk',
+    sudut: '8 Titik Sudut',
+    tip: '<strong>Jaring-Jaring Kubus:</strong> Terdiri dari 6 buah persegi kongruen (sama besar). Ketika semua sisi tegak dilipat 90° ke atas dan sisi tutup dilipat menutup atas, kubus terbentuk sempurna tanpa celah!',
+    luas: 'L = 6 &times; s&sup2;',
+    vol: 'V = s &times; s &times; s'
+  },
+  balok: {
+    title: 'Balok',
+    sisi: '6 Persegi Panjang',
+    rusuk: '12 Rusuk',
+    sudut: '8 Titik Sudut',
+    tip: '<strong>Jaring-Jaring Balok:</strong> Memiliki 3 pasang persegi panjang berhadapan: alas-tutup (p&times;l), depan-belakang (p&times;t), dan kiri-kanan (l&times;t). Semua rusuk yang bersesuaian akan bertemu pas!',
+    luas: 'L = 2 &times; (pl + pt + lt)',
+    vol: 'V = p &times; l &times; t'
+  },
+  prisma: {
+    title: 'Prisma Segitiga',
+    sisi: '5 Sisi (2 Segitiga, 3 Persegi)',
+    rusuk: '9 Rusuk',
+    sudut: '6 Titik Sudut',
+    tip: '<strong>Jaring-Jaring Prisma Segitiga:</strong> Memiliki 2 bidang alas segitiga sejajar serta 3 sisi tegak persegi panjang. Saat sisi miring dilipat 60° dan kedua segitiga dilipat 90°, terbentuk atap prisma!',
+    luas: 'L = (2 &times; L_alas) + (Keliling &times; t)',
+    vol: 'V = Luas Alas &times; Tinggi'
+  },
+  limas: {
+    title: 'Limas Segi Empat',
+    sisi: '5 Sisi (1 Persegi, 4 Segitiga)',
+    rusuk: '8 Rusuk',
+    sudut: '5 Titik Sudut',
+    tip: '<strong>Jaring-Jaring Limas Segi Empat:</strong> Memiliki 1 alas persegi di tengah dan 4 segitiga selimut mengelilinginya (pola bintang). Keempat puncak segitiga akan menyatu tepat di 1 titik puncak!',
+    luas: 'L = Luas Alas + (4 &times; L_segitiga)',
+    vol: 'V = 1/3 &times; Luas Alas &times; Tinggi'
+  }
+};
+
+let j3dScene = null, j3dCamera = null, j3dRenderer = null, j3dControls = null;
+let j3dShapeRoot = null;
+let j3dHinges = [];
+let j3dFaceLabels = [];
+let j3dVerticesGroup = null;
+
+let j3dActiveShape = 'kubus';
+let j3dFoldProgress = 0.0;
+let j3dTargetFold = 0.0;
+let j3dIsAnimating = false;
+let j3dIsAutoRotating = false;
+let j3dIsLoopPlaying = false;
+let j3dLoopSpeed = 0.012;
+let j3dLoopDirection = 1;
+
+let j3dShowLabels = true;
+let j3dShowEdges = true;
+let j3dShowVertices = true;
+let j3dInitialized = false;
+
+function initJaring3DShapeBuilder() {
+  const container = document.getElementById('j3dCanvasContainer');
+  if (!container) return;
+
+  if (j3dInitialized) {
+    onJaring3DResize();
+    return;
+  }
+
+  const width = container.clientWidth || 700;
+  const height = container.clientHeight || 520;
+
+  j3dScene = new THREE.Scene();
+  j3dScene.background = new THREE.Color(0xF8FAFC);
+
+  j3dCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+  j3dCamera.position.set(4.5, 4.2, 5.8);
+
+  j3dRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+  j3dRenderer.setSize(width, height);
+  j3dRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  j3dRenderer.shadowMap.enabled = true;
+  j3dRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  container.appendChild(j3dRenderer.domElement);
+
+  j3dControls = new THREE.OrbitControls(j3dCamera, j3dRenderer.domElement);
+  j3dControls.enableDamping = true;
+  j3dControls.dampingFactor = 0.06;
+  j3dControls.minDistance = 2.5;
+  j3dControls.maxDistance = 16;
+  j3dControls.maxPolarAngle = Math.PI / 2 + 0.1;
+
+  // Studio Lighting
+  const ambLight = new THREE.AmbientLight(0xffffff, 0.72);
+  j3dScene.add(ambLight);
+
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.85);
+  dirLight.position.set(7, 12, 8);
+  dirLight.castShadow = true;
+  dirLight.shadow.mapSize.width = 1024;
+  dirLight.shadow.mapSize.height = 1024;
+  j3dScene.add(dirLight);
+
+  const fillLight = new THREE.DirectionalLight(0xC7D2FE, 0.4);
+  fillLight.position.set(-6, 4, -6);
+  j3dScene.add(fillLight);
+
+  // Soft Floor Platform
+  const pedestalGeo = new THREE.CylinderGeometry(4.8, 5.0, 0.15, 64);
+  const pedestalMat = new THREE.MeshStandardMaterial({ color: 0xF1F5F9, roughness: 0.95, metalness: 0.02 });
+  const pedestal = new THREE.Mesh(pedestalGeo, pedestalMat);
+  pedestal.position.y = -0.08;
+  pedestal.receiveShadow = true;
+  j3dScene.add(pedestal);
+
+  const grid = new THREE.GridHelper(8, 16, 0xCBD5E1, 0xE2E8F0);
+  grid.position.y = 0.001;
+  j3dScene.add(grid);
+
+  buildJaring3DShape(j3dActiveShape);
+  setupJaring3DEventListeners();
+
+  window.addEventListener('resize', onJaring3DResize);
+  j3dInitialized = true;
+
+  animateJaring3D();
+}
+
+function onJaring3DResize() {
+  const container = document.getElementById('j3dCanvasContainer');
+  if (!container || !j3dRenderer || !j3dCamera) return;
+  const width = container.clientWidth;
+  const height = container.clientHeight;
+  if (!width || !height) return;
+  j3dCamera.aspect = width / height;
+  j3dCamera.updateProjectionMatrix();
+  j3dRenderer.setSize(width, height);
+}
+
+function createJ3DFaceMat(hexColor) {
+  return new THREE.MeshStandardMaterial({
+    color: hexColor,
+    roughness: 0.35,
+    metalness: 0.08,
+    side: THREE.DoubleSide,
+    polygonOffset: true,
+    polygonOffsetFactor: 1,
+    polygonOffsetUnits: 1
+  });
+}
+
+function createJ3DEdges(geometry, color = 0x0F172A) {
+  const edges = new THREE.EdgesGeometry(geometry);
+  return new THREE.LineSegments(
+    edges,
+    new THREE.LineBasicMaterial({ color: color, linewidth: 2.5 })
+  );
+}
+
+let j3dVertexMarkers = [];
+
+function makeCustomTriGeo(p1, p2, p3) {
+  const geo = new THREE.BufferGeometry();
+  const vertices = new Float32Array([
+    p1[0], p1[1], p1[2],
+    p2[0], p2[1], p2[2],
+    p3[0], p3[1], p3[2]
+  ]);
+  geo.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+  geo.computeVertexNormals();
+  return geo;
+}
+
+function clearJ3DModel() {
+  if (j3dShapeRoot && j3dScene) {
+    j3dScene.remove(j3dShapeRoot);
+  }
+  j3dShapeRoot = new THREE.Group();
+  if (j3dScene) j3dScene.add(j3dShapeRoot);
+
+  j3dHinges = [];
+  j3dVertexMarkers = [];
+
+  const overlay = document.getElementById('j3dFaceLabelsOverlay');
+  if (overlay) overlay.innerHTML = '';
+  j3dFaceLabels = [];
+}
+
+function addVertexMarker(parent, x, y, z) {
+  const geo = new THREE.SphereGeometry(0.09, 16, 16);
+  const mat = new THREE.MeshStandardMaterial({
+    color: 0xFBBF24,
+    emissive: 0xB45309,
+    roughness: 0.25,
+    metalness: 0.85
+  });
+  const sphere = new THREE.Mesh(geo, mat);
+  sphere.position.set(x, y, z);
+  sphere.visible = j3dShowVertices;
+  parent.add(sphere);
+  j3dVertexMarkers.push(sphere);
+  return sphere;
+}
+
+function addJ3DFaceLabel(parentMesh, text, color, lx = 0, ly = 0, lz = 0) {
+  const overlay = document.getElementById('j3dFaceLabelsOverlay');
+  if (!overlay) return;
+  const badge = document.createElement('div');
+  badge.className = 'face-3d-badge';
+  badge.innerHTML = text;
+  badge.style.borderLeft = `4px solid ${color}`;
+  badge.addEventListener('click', () => {
+    if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+  });
+  overlay.appendChild(badge);
+
+  const anchor = new THREE.Object3D();
+  anchor.position.set(lx, ly, lz);
+  parentMesh.add(anchor);
+
+  j3dFaceLabels.push({ element: badge, anchor: anchor });
+}
+
+// 1. KUBUS
+function buildJ3DKubus() {
+  clearJ3DModel();
+  const s = 2.4, s2 = s / 2;
+
+  // Base
+  const baseGeo = new THREE.PlaneGeometry(s, s);
+  baseGeo.rotateX(-Math.PI / 2);
+  const baseMesh = new THREE.Mesh(baseGeo, createJ3DFaceMat(0x3B82F6));
+  baseMesh.add(createJ3DEdges(baseGeo));
+  j3dShapeRoot.add(baseMesh);
+  addJ3DFaceLabel(baseMesh, 'Alas (Bawah)', '#3B82F6', 0, 0, 0);
+
+  // 4 Bottom Vertices on Base
+  addVertexMarker(baseMesh, -s2, 0, -s2);
+  addVertexMarker(baseMesh,  s2, 0, -s2);
+  addVertexMarker(baseMesh,  s2, 0,  s2);
+  addVertexMarker(baseMesh, -s2, 0,  s2);
+
+  // Front -> Hinge at (0, 0, +s2), extends along +Z from 0 to +s
+  const frontHinge = new THREE.Group();
+  frontHinge.position.set(0, 0, s2);
+  const frontGeo = new THREE.PlaneGeometry(s, s);
+  frontGeo.rotateX(-Math.PI / 2);
+  frontGeo.translate(0, 0, s2);
+  const frontMesh = new THREE.Mesh(frontGeo, createJ3DFaceMat(0x10B981));
+  frontMesh.add(createJ3DEdges(frontGeo));
+  frontHinge.add(frontMesh);
+  j3dShapeRoot.add(frontHinge);
+  addJ3DFaceLabel(frontMesh, 'Sisi Depan', '#10B981', 0, 0, s2);
+  addVertexMarker(frontHinge, -s2, 0, s);
+  addVertexMarker(frontHinge,  s2, 0, s);
+  j3dHinges.push({ group: frontHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+  // Back -> Hinge at (0, 0, -s2), extends along -Z from 0 to -s
+  const backHinge = new THREE.Group();
+  backHinge.position.set(0, 0, -s2);
+  const backGeo = new THREE.PlaneGeometry(s, s);
+  backGeo.rotateX(-Math.PI / 2);
+  backGeo.translate(0, 0, -s2);
+  const backMesh = new THREE.Mesh(backGeo, createJ3DFaceMat(0x6366F1));
+  backMesh.add(createJ3DEdges(backGeo));
+  backHinge.add(backMesh);
+  j3dShapeRoot.add(backHinge);
+  addJ3DFaceLabel(backMesh, 'Sisi Belakang', '#6366F1', 0, 0, -s2);
+  addVertexMarker(backHinge, -s2, 0, -s);
+  addVertexMarker(backHinge,  s2, 0, -s);
+  j3dHinges.push({ group: backHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+  // Top -> Hinged to outer edge of Back (at z = -s in backHinge)
+  const topHinge = new THREE.Group();
+  topHinge.position.set(0, 0, -s);
+  const topGeo = new THREE.PlaneGeometry(s, s);
+  topGeo.rotateX(-Math.PI / 2);
+  topGeo.translate(0, 0, -s2);
+  const topMesh = new THREE.Mesh(topGeo, createJ3DFaceMat(0xEC4899));
+  topMesh.add(createJ3DEdges(topGeo));
+  topHinge.add(topMesh);
+  backHinge.add(topHinge);
+  addJ3DFaceLabel(topMesh, 'Tutup (Atas)', '#EC4899', 0, 0, -s2);
+  j3dHinges.push({ group: topHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+  // Left -> Hinge at (-s2, 0, 0), extends along -X from 0 to -s
+  const leftHinge = new THREE.Group();
+  leftHinge.position.set(-s2, 0, 0);
+  const leftGeo = new THREE.PlaneGeometry(s, s);
+  leftGeo.rotateX(-Math.PI / 2);
+  leftGeo.translate(-s2, 0, 0);
+  const leftMesh = new THREE.Mesh(leftGeo, createJ3DFaceMat(0xF59E0B));
+  leftMesh.add(createJ3DEdges(leftGeo));
+  leftHinge.add(leftMesh);
+  j3dShapeRoot.add(leftHinge);
+  addJ3DFaceLabel(leftMesh, 'Sisi Kiri', '#F59E0B', -s2, 0, 0);
+  j3dHinges.push({ group: leftHinge, axis: 'z', targetAngle: -Math.PI / 2 });
+
+  // Right -> Hinge at (+s2, 0, 0), extends along +X from 0 to +s
+  const rightHinge = new THREE.Group();
+  rightHinge.position.set(s2, 0, 0);
+  const rightGeo = new THREE.PlaneGeometry(s, s);
+  rightGeo.rotateX(-Math.PI / 2);
+  rightGeo.translate(s2, 0, 0);
+  const rightMesh = new THREE.Mesh(rightGeo, createJ3DFaceMat(0x06B6D4));
+  rightMesh.add(createJ3DEdges(rightGeo));
+  rightHinge.add(rightMesh);
+  j3dShapeRoot.add(rightHinge);
+  addJ3DFaceLabel(rightMesh, 'Sisi Kanan', '#06B6D4', s2, 0, 0);
+  j3dHinges.push({ group: rightHinge, axis: 'z', targetAngle: Math.PI / 2 });
+}
+
+// 2. BALOK
+function buildJ3DBalok() {
+  clearJ3DModel();
+  const p = 3.2, l = 2.0, t = 1.6;
+  const p2 = p / 2, l2 = l / 2, t2 = t / 2;
+
+  // Base
+  const baseGeo = new THREE.PlaneGeometry(p, l);
+  baseGeo.rotateX(-Math.PI / 2);
+  const baseMesh = new THREE.Mesh(baseGeo, createJ3DFaceMat(0x3B82F6));
+  baseMesh.add(createJ3DEdges(baseGeo));
+  j3dShapeRoot.add(baseMesh);
+  addJ3DFaceLabel(baseMesh, 'Alas (p &times; l)', '#3B82F6', 0, 0, 0);
+
+  // 4 Bottom Vertices on Base
+  addVertexMarker(baseMesh, -p2, 0, -l2);
+  addVertexMarker(baseMesh,  p2, 0, -l2);
+  addVertexMarker(baseMesh,  p2, 0,  l2);
+  addVertexMarker(baseMesh, -p2, 0,  l2);
+
+  // Front -> Hinge at (0, 0, +l2), extends along +Z from 0 to +t
+  const frontHinge = new THREE.Group();
+  frontHinge.position.set(0, 0, l2);
+  const frontGeo = new THREE.PlaneGeometry(p, t);
+  frontGeo.rotateX(-Math.PI / 2);
+  frontGeo.translate(0, 0, t2);
+  const frontMesh = new THREE.Mesh(frontGeo, createJ3DFaceMat(0x10B981));
+  frontMesh.add(createJ3DEdges(frontGeo));
+  frontHinge.add(frontMesh);
+  j3dShapeRoot.add(frontHinge);
+  addJ3DFaceLabel(frontMesh, 'Sisi Depan (p &times; t)', '#10B981', 0, 0, t2);
+  addVertexMarker(frontHinge, -p2, 0, t);
+  addVertexMarker(frontHinge,  p2, 0, t);
+  j3dHinges.push({ group: frontHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+  // Back -> Hinge at (0, 0, -l2), extends along -Z from 0 to -t
+  const backHinge = new THREE.Group();
+  backHinge.position.set(0, 0, -l2);
+  const backGeo = new THREE.PlaneGeometry(p, t);
+  backGeo.rotateX(-Math.PI / 2);
+  backGeo.translate(0, 0, -t2);
+  const backMesh = new THREE.Mesh(backGeo, createJ3DFaceMat(0x6366F1));
+  backMesh.add(createJ3DEdges(backGeo));
+  backHinge.add(backMesh);
+  j3dShapeRoot.add(backHinge);
+  addJ3DFaceLabel(backMesh, 'Sisi Belakang (p &times; t)', '#6366F1', 0, 0, -t2);
+  addVertexMarker(backHinge, -p2, 0, -t);
+  addVertexMarker(backHinge,  p2, 0, -t);
+  j3dHinges.push({ group: backHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+  // Top -> Hinged to outer edge of Back (at z = -t in backHinge)
+  const topHinge = new THREE.Group();
+  topHinge.position.set(0, 0, -t);
+  const topGeo = new THREE.PlaneGeometry(p, l);
+  topGeo.rotateX(-Math.PI / 2);
+  topGeo.translate(0, 0, -l2);
+  const topMesh = new THREE.Mesh(topGeo, createJ3DFaceMat(0xEC4899));
+  topMesh.add(createJ3DEdges(topGeo));
+  topHinge.add(topMesh);
+  backHinge.add(topHinge);
+  addJ3DFaceLabel(topMesh, 'Tutup (p &times; l)', '#EC4899', 0, 0, -l2);
+  j3dHinges.push({ group: topHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+  // Left -> Hinge at (-p2, 0, 0), extends along -X from 0 to -t
+  const leftHinge = new THREE.Group();
+  leftHinge.position.set(-p2, 0, 0);
+  const leftGeo = new THREE.PlaneGeometry(t, l);
+  leftGeo.rotateX(-Math.PI / 2);
+  leftGeo.translate(-t2, 0, 0);
+  const leftMesh = new THREE.Mesh(leftGeo, createJ3DFaceMat(0xF59E0B));
+  leftMesh.add(createJ3DEdges(leftGeo));
+  leftHinge.add(leftMesh);
+  j3dShapeRoot.add(leftHinge);
+  addJ3DFaceLabel(leftMesh, 'Sisi Kiri (l &times; t)', '#F59E0B', -t2, 0, 0);
+  j3dHinges.push({ group: leftHinge, axis: 'z', targetAngle: -Math.PI / 2 });
+
+  // Right -> Hinge at (+p2, 0, 0), extends along +X from 0 to +t
+  const rightHinge = new THREE.Group();
+  rightHinge.position.set(p2, 0, 0);
+  const rightGeo = new THREE.PlaneGeometry(t, l);
+  rightGeo.rotateX(-Math.PI / 2);
+  rightGeo.translate(t2, 0, 0);
+  const rightMesh = new THREE.Mesh(rightGeo, createJ3DFaceMat(0x06B6D4));
+  rightMesh.add(createJ3DEdges(rightGeo));
+  rightHinge.add(rightMesh);
+  j3dShapeRoot.add(rightHinge);
+  addJ3DFaceLabel(rightMesh, 'Sisi Kanan (l &times; t)', '#06B6D4', t2, 0, 0);
+  j3dHinges.push({ group: rightHinge, axis: 'z', targetAngle: Math.PI / 2 });
+}
+
+// 3. PRISMA SEGITIGA
+function buildJ3DPrisma() {
+  clearJ3DModel();
+  const a = 2.4, h = 3.0;
+  const hTri = (Math.sqrt(3) / 2) * a; // ~2.07846
+  const a2 = a / 2, h2 = h / 2;
+
+  // Base
+  const baseGeo = new THREE.PlaneGeometry(a, h);
+  baseGeo.rotateX(-Math.PI / 2);
+  const baseMesh = new THREE.Mesh(baseGeo, createJ3DFaceMat(0x3B82F6));
+  baseMesh.add(createJ3DEdges(baseGeo));
+  j3dShapeRoot.add(baseMesh);
+  addJ3DFaceLabel(baseMesh, 'Alas Bawah', '#3B82F6', 0, 0, 0);
+
+  // 4 Base Vertices
+  addVertexMarker(baseMesh, -a2, 0, -h2);
+  addVertexMarker(baseMesh,  a2, 0, -h2);
+  addVertexMarker(baseMesh,  a2, 0,  h2);
+  addVertexMarker(baseMesh, -a2, 0,  h2);
+
+  // Front Triangle -> Hinge at (0, 0, +h2)
+  // In flat state (100%), apex points OUTWARD in +Z: (0, 0, +hTri)
+  const frontHinge = new THREE.Group();
+  frontHinge.position.set(0, 0, h2);
+  const frontGeo = makeCustomTriGeo([-a2, 0, 0], [a2, 0, 0], [0, 0, hTri]);
+  const frontMesh = new THREE.Mesh(frontGeo, createJ3DFaceMat(0xF59E0B));
+  frontMesh.add(createJ3DEdges(frontGeo));
+  frontHinge.add(frontMesh);
+  j3dShapeRoot.add(frontHinge);
+  addJ3DFaceLabel(frontMesh, 'Segitiga Depan', '#F59E0B', 0, 0, hTri / 3);
+  addVertexMarker(frontHinge, 0, 0, hTri);
+  // Rotates -90 deg around X to stand vertical at z = +h2
+  j3dHinges.push({ group: frontHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+  // Back Triangle -> Hinge at (0, 0, -h2)
+  // In flat state (100%), apex points OUTWARD in -Z: (0, 0, -hTri)
+  const backHinge = new THREE.Group();
+  backHinge.position.set(0, 0, -h2);
+  const backGeo = makeCustomTriGeo([a2, 0, 0], [-a2, 0, 0], [0, 0, -hTri]);
+  const backMesh = new THREE.Mesh(backGeo, createJ3DFaceMat(0xF59E0B));
+  backMesh.add(createJ3DEdges(backGeo));
+  backHinge.add(backMesh);
+  j3dShapeRoot.add(backHinge);
+  addJ3DFaceLabel(backMesh, 'Segitiga Belakang', '#F59E0B', 0, 0, -hTri / 3);
+  addVertexMarker(backHinge, 0, 0, -hTri);
+  // Rotates +90 deg around X to stand vertical at z = -h2
+  j3dHinges.push({ group: backHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+  // Left Slanted Roof Face -> Hinge at (-a2, 0, 0)
+  // In flat state (100%), extends from 0 to -a in X
+  const leftHinge = new THREE.Group();
+  leftHinge.position.set(-a2, 0, 0);
+  const leftGeo = new THREE.PlaneGeometry(a, h);
+  leftGeo.rotateX(-Math.PI / 2);
+  leftGeo.translate(-a2, 0, 0);
+  const leftMesh = new THREE.Mesh(leftGeo, createJ3DFaceMat(0x10B981));
+  leftMesh.add(createJ3DEdges(leftGeo));
+  leftHinge.add(leftMesh);
+  j3dShapeRoot.add(leftHinge);
+  addJ3DFaceLabel(leftMesh, 'Sisi Miring Kiri', '#10B981', -a2, 0, 0);
+  // Rotates -120 deg around Z to meet the ridge at (0, hTri)
+  j3dHinges.push({ group: leftHinge, axis: 'z', targetAngle: -2 * Math.PI / 3 });
+
+  // Right Slanted Roof Face -> Hinge at (+a2, 0, 0)
+  // In flat state (100%), extends from 0 to +a in X
+  const rightHinge = new THREE.Group();
+  rightHinge.position.set(a2, 0, 0);
+  const rightGeo = new THREE.PlaneGeometry(a, h);
+  rightGeo.rotateX(-Math.PI / 2);
+  rightGeo.translate(a2, 0, 0);
+  const rightMesh = new THREE.Mesh(rightGeo, createJ3DFaceMat(0xEC4899));
+  rightMesh.add(createJ3DEdges(rightGeo));
+  rightHinge.add(rightMesh);
+  j3dShapeRoot.add(rightHinge);
+  addJ3DFaceLabel(rightMesh, 'Sisi Miring Kanan', '#EC4899', a2, 0, 0);
+  // Rotates +120 deg around Z to meet the ridge at (0, hTri)
+  j3dHinges.push({ group: rightHinge, axis: 'z', targetAngle: 2 * Math.PI / 3 });
+}
+
+// 4. LIMAS SEGI EMPAT
+function buildJ3DLimas() {
+  clearJ3DModel();
+  const s = 2.4, H = 2.2;
+  const s2 = s / 2;
+  const L = Math.sqrt(H * H + s2 * s2); // ~2.50599
+  const alpha = Math.atan2(H, s2);      // ~61.39 deg
+  const foldAngle = Math.PI - alpha;    // ~118.61 deg
+
+  // Base
+  const baseGeo = new THREE.PlaneGeometry(s, s);
+  baseGeo.rotateX(-Math.PI / 2);
+  const baseMesh = new THREE.Mesh(baseGeo, createJ3DFaceMat(0x3B82F6));
+  baseMesh.add(createJ3DEdges(baseGeo));
+  j3dShapeRoot.add(baseMesh);
+  addJ3DFaceLabel(baseMesh, 'Alas Persegi', '#3B82F6', 0, 0, 0);
+
+  // 4 Base Vertices
+  addVertexMarker(baseMesh, -s2, 0, -s2);
+  addVertexMarker(baseMesh,  s2, 0, -s2);
+  addVertexMarker(baseMesh,  s2, 0,  s2);
+  addVertexMarker(baseMesh, -s2, 0,  s2);
+
+  // South Triangle (Depan, +Z) -> Hinge at (0, 0, +s2)
+  // In flat state (100%), apex points OUTWARD in +Z: (0, 0, +L)
+  const southHinge = new THREE.Group();
+  southHinge.position.set(0, 0, s2);
+  const southGeo = makeCustomTriGeo([-s2, 0, 0], [s2, 0, 0], [0, 0, L]);
+  const southMesh = new THREE.Mesh(southGeo, createJ3DFaceMat(0x10B981));
+  southMesh.add(createJ3DEdges(southGeo));
+  southHinge.add(southMesh);
+  j3dShapeRoot.add(southHinge);
+  addJ3DFaceLabel(southMesh, 'Segitiga Depan', '#10B981', 0, 0, L / 3);
+  addVertexMarker(southHinge, 0, 0, L);
+  j3dHinges.push({ group: southHinge, axis: 'x', targetAngle: -foldAngle });
+
+  // North Triangle (Belakang, -Z) -> Hinge at (0, 0, -s2)
+  // In flat state (100%), apex points OUTWARD in -Z: (0, 0, -L)
+  const northHinge = new THREE.Group();
+  northHinge.position.set(0, 0, -s2);
+  const northGeo = makeCustomTriGeo([s2, 0, 0], [-s2, 0, 0], [0, 0, -L]);
+  const northMesh = new THREE.Mesh(northGeo, createJ3DFaceMat(0x6366F1));
+  northMesh.add(createJ3DEdges(northGeo));
+  northHinge.add(northMesh);
+  j3dShapeRoot.add(northHinge);
+  addJ3DFaceLabel(northMesh, 'Segitiga Belakang', '#6366F1', 0, 0, -L / 3);
+  addVertexMarker(northHinge, 0, 0, -L);
+  j3dHinges.push({ group: northHinge, axis: 'x', targetAngle: foldAngle });
+
+  // West Triangle (Kiri, -X) -> Hinge at (-s2, 0, 0)
+  // In flat state (100%), apex points OUTWARD in -X: (-L, 0, 0)
+  const westHinge = new THREE.Group();
+  westHinge.position.set(-s2, 0, 0);
+  const westGeo = makeCustomTriGeo([0, 0, s2], [0, 0, -s2], [-L, 0, 0]);
+  const westMesh = new THREE.Mesh(westGeo, createJ3DFaceMat(0xF59E0B));
+  westMesh.add(createJ3DEdges(westGeo));
+  westHinge.add(westMesh);
+  j3dShapeRoot.add(westHinge);
+  addJ3DFaceLabel(westMesh, 'Segitiga Kiri', '#F59E0B', -L / 3, 0, 0);
+  addVertexMarker(westHinge, -L, 0, 0);
+  j3dHinges.push({ group: westHinge, axis: 'z', targetAngle: -foldAngle });
+
+  // East Triangle (Kanan, +X) -> Hinge at (+s2, 0, 0)
+  // In flat state (100%), apex points OUTWARD in +X: (+L, 0, 0)
+  const eastHinge = new THREE.Group();
+  eastHinge.position.set(s2, 0, 0);
+  const eastGeo = makeCustomTriGeo([0, 0, -s2], [0, 0, s2], [L, 0, 0]);
+  const eastMesh = new THREE.Mesh(eastGeo, createJ3DFaceMat(0xEC4899));
+  eastMesh.add(createJ3DEdges(eastGeo));
+  eastHinge.add(eastMesh);
+  j3dShapeRoot.add(eastHinge);
+  addJ3DFaceLabel(eastMesh, 'Segitiga Kanan', '#EC4899', L / 3, 0, 0);
+  addVertexMarker(eastHinge, L, 0, 0);
+  j3dHinges.push({ group: eastHinge, axis: 'z', targetAngle: foldAngle });
+}
+
+function buildJaring3DShape(key) {
+  j3dActiveShape = key;
+  if (key === 'kubus') buildJ3DKubus();
+  else if (key === 'balok') buildJ3DBalok();
+  else if (key === 'prisma') buildJ3DPrisma();
+  else if (key === 'limas') buildJ3DLimas();
+
+  // Apply visibility states
+  if (j3dShapeRoot) {
+    j3dShapeRoot.traverse(child => {
+      if (child.isLineSegments) {
+        child.visible = j3dShowEdges;
+      }
+    });
+  }
+  j3dVertexMarkers.forEach(m => { m.visible = j3dShowVertices; });
+
+  setJaring3DFoldProgress(j3dFoldProgress);
+  updateJ3DInfoPanel(key);
+}
+
+function setJaring3DFoldProgress(val) {
+  j3dFoldProgress = Math.max(0, Math.min(1, val));
+  const foldAmount = 1.0 - j3dFoldProgress; // 1 = closed, 0 = flat
+
+  j3dHinges.forEach(ctrl => {
+    if (ctrl.axis === 'x') {
+      ctrl.group.rotation.x = foldAmount * ctrl.targetAngle;
+    } else if (ctrl.axis === 'z') {
+      ctrl.group.rotation.z = foldAmount * ctrl.targetAngle;
+    }
+  });
+
+  const pct = Math.round(j3dFoldProgress * 100);
+  const slider = document.getElementById('j3dFoldSlider');
+  if (slider) slider.value = pct;
+  const badge = document.getElementById('j3dSliderBadge');
+  if (badge) badge.textContent = pct + '%';
+
+  const statusDot = document.getElementById('j3dStatusDot');
+  const statusText = document.getElementById('j3dStatusText');
+  if (statusDot && statusText) {
+    if (pct === 0) {
+      statusDot.style.background = '#4F46E5';
+      statusText.textContent = 'Mode: 3D Bangun Ruang Tertutup (0%)';
+    } else if (pct === 100) {
+      statusDot.style.background = '#10B981';
+      statusText.textContent = 'Mode: Jaring-Jaring Datar 2D (100%)';
+    } else {
+      statusDot.style.background = '#F59E0B';
+      statusText.textContent = `Sedang Melipat / Membentang (${pct}%)`;
+    }
+  }
+}
+
+function updateJ3DInfoPanel(key) {
+  const info = J3D_INFO[key];
+  if (!info) return;
+
+  const badge = document.getElementById('j3dInfoBadge');
+  if (badge) badge.textContent = info.title;
+
+  const sisi = document.getElementById('j3dStatSisi');
+  const descSisi = document.getElementById('j3dDescSisi');
+  if (sisi && descSisi) {
+    sisi.textContent = info.sisi.split(' ')[0];
+    descSisi.textContent = info.sisi.substring(info.sisi.indexOf(' ') + 1);
+  }
+
+  const rusuk = document.getElementById('j3dStatRusuk');
+  const descRusuk = document.getElementById('j3dDescRusuk');
+  if (rusuk && descRusuk) {
+    rusuk.textContent = info.rusuk.split(' ')[0];
+    descRusuk.textContent = info.rusuk.substring(info.rusuk.indexOf(' ') + 1);
+  }
+
+  const sudut = document.getElementById('j3dStatSudut');
+  const descSudut = document.getElementById('j3dDescSudut');
+  if (sudut && descSudut) {
+    sudut.textContent = info.sudut.split(' ')[0];
+    descSudut.textContent = info.sudut.substring(info.sudut.indexOf(' ') + 1);
+  }
+
+  const tip = document.getElementById('j3dPedagogicalTip');
+  if (tip) tip.innerHTML = info.tip;
+
+  const luas = document.getElementById('j3dFormulaLuas');
+  if (luas) luas.innerHTML = info.luas;
+
+  const vol = document.getElementById('j3dFormulaVolume');
+  if (vol) vol.innerHTML = info.vol;
+}
+
+const j3dTempVec = new THREE.Vector3();
+function animateJaring3D() {
+  requestAnimationFrame(animateJaring3D);
+
+  // Skip rendering if not on Jaring tab or if 3D subview is hidden
+  const tabJaring = document.getElementById('tab-jaring');
+  const view3D = document.getElementById('jaring3DViewSection');
+  if (!tabJaring || !tabJaring.classList.contains('active') || (view3D && view3D.style.display === 'none')) {
+    return;
+  }
+
+  if (j3dIsAnimating) {
+    const diff = j3dTargetFold - j3dFoldProgress;
+    if (Math.abs(diff) < 0.005) {
+      setJaring3DFoldProgress(j3dTargetFold);
+      j3dIsAnimating = false;
+    } else {
+      setJaring3DFoldProgress(j3dFoldProgress + diff * 0.09);
+    }
+  }
+
+  if (j3dIsLoopPlaying) {
+    let next = j3dFoldProgress + j3dLoopDirection * j3dLoopSpeed;
+    if (next >= 1.0) {
+      next = 1.0;
+      j3dLoopDirection = -1;
+    } else if (next <= 0.0) {
+      next = 0.0;
+      j3dLoopDirection = 1;
+    }
+    setJaring3DFoldProgress(next);
+  }
+
+  if (j3dIsAutoRotating && j3dShapeRoot) {
+    j3dShapeRoot.rotation.y += 0.008;
+  }
+
+  if (j3dControls) j3dControls.update();
+  if (j3dRenderer && j3dScene && j3dCamera) j3dRenderer.render(j3dScene, j3dCamera);
+
+  // Project Face Labels to 2D
+  if (j3dShowLabels && j3dFaceLabels.length > 0 && j3dCamera) {
+    const container = document.getElementById('j3dCanvasContainer');
+    if (container) {
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      j3dFaceLabels.forEach(item => {
+        if (!item.anchor) return;
+        item.anchor.getWorldPosition(j3dTempVec);
+        j3dTempVec.project(j3dCamera);
+        if (j3dTempVec.z > 1) {
+          item.element.style.display = 'none';
+        } else {
+          const screenX = (j3dTempVec.x * 0.5 + 0.5) * width;
+          const screenY = (-(j3dTempVec.y * 0.5) + 0.5) * height;
+          item.element.style.display = 'block';
+          item.element.style.left = `${screenX}px`;
+          item.element.style.top = `${screenY}px`;
+        }
+      });
+    }
+  } else {
+    j3dFaceLabels.forEach(item => { item.element.style.display = 'none'; });
+  }
+}
+
+function setJaring3DCameraPreset(preset) {
+  if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+  document.querySelectorAll('.j3d-cam-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-preset') === preset);
+  });
+
+  if (!j3dControls || !j3dCamera) return;
+  j3dControls.reset();
+  if (preset === 'top') {
+    j3dCamera.position.set(0, 7.5, 0.001);
+    j3dControls.target.set(0, 0, 0);
+  } else if (preset === 'front') {
+    j3dCamera.position.set(0, 1.2, 6.5);
+    j3dControls.target.set(0, 0.6, 0);
+  } else if (preset === 'side') {
+    j3dCamera.position.set(6.5, 1.2, 0);
+    j3dControls.target.set(0, 0.6, 0);
+  } else { // 'iso'
+    j3dCamera.position.set(4.5, 4.2, 5.8);
+    j3dControls.target.set(0, 0.6, 0);
+  }
+  j3dControls.update();
+}
+
+function selectJaring3DShape(shapeKey) {
+  if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+  document.querySelectorAll('.j3d-shape-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-shape') === shapeKey);
+  });
+  if (j3dShapeRoot) j3dShapeRoot.rotation.y = 0;
+  buildJaring3DShape(shapeKey);
+}
+
+function setJaring3DSpeed(speed, btn) {
+  if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+  document.querySelectorAll('.auto-speed-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  j3dLoopSpeed = speed;
+}
+
+function switchJaringSubMode(mode) {
+  if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+  const btn3D = document.getElementById('btnMode3DBuilder');
+  const btn2D = document.getElementById('btnMode2DDiagram');
+  const view3D = document.getElementById('jaring3DViewSection');
+  const view2D = document.getElementById('jaring2DViewSection');
+
+  if (mode === '3d') {
+    if (btn3D) btn3D.classList.add('active');
+    if (btn2D) btn2D.classList.remove('active');
+    if (view3D) view3D.style.display = 'block';
+    if (view2D) view2D.style.display = 'none';
+    setTimeout(() => {
+      initJaring3DShapeBuilder();
+      onJaring3DResize();
+    }, 60);
+  } else {
+    if (btn3D) btn3D.classList.remove('active');
+    if (btn2D) btn2D.classList.add('active');
+    if (view3D) view3D.style.display = 'none';
+    if (view2D) view2D.style.display = 'block';
+    updateJaringDisplay();
+  }
+}
+
+let j3dEventsBound = false;
+function setupJaring3DEventListeners() {
+  if (j3dEventsBound) return;
+  j3dEventsBound = true;
+
+  // Manual Slider
+  const slider = document.getElementById('j3dFoldSlider');
+  if (slider) {
+    slider.addEventListener('input', (e) => {
+      j3dIsAnimating = false;
+      j3dIsLoopPlaying = false;
+      updateJ3DLoopPlayButtonUI();
+      const val = parseFloat(e.target.value) / 100.0;
+      setJaring3DFoldProgress(val);
+    });
+  }
+
+  // Big Action Buttons
+  const btnBentangkan = document.getElementById('btnJ3DBentangkan');
+  if (btnBentangkan) {
+    btnBentangkan.addEventListener('click', () => {
+      if (typeof sfx !== 'undefined' && sfx.playWhoosh) sfx.playWhoosh();
+      else if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+      j3dIsLoopPlaying = false;
+      updateJ3DLoopPlayButtonUI();
+      j3dTargetFold = 1.0;
+      j3dIsAnimating = true;
+    });
+  }
+
+  const btnLipat = document.getElementById('btnJ3DLipat');
+  if (btnLipat) {
+    btnLipat.addEventListener('click', () => {
+      if (typeof sfx !== 'undefined' && sfx.playWhoosh) sfx.playWhoosh();
+      else if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+      j3dIsLoopPlaying = false;
+      updateJ3DLoopPlayButtonUI();
+      j3dTargetFold = 0.0;
+      j3dIsAnimating = true;
+    });
+  }
+
+  // Turntable Rotate Toggle
+  const btnRotate = document.getElementById('btnJ3DToggleRotate');
+  if (btnRotate) {
+    btnRotate.addEventListener('click', () => {
+      if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+      j3dIsAutoRotating = !j3dIsAutoRotating;
+      btnRotate.classList.toggle('active', j3dIsAutoRotating);
+    });
+  }
+
+  // Reset View
+  const btnReset = document.getElementById('btnJ3DResetView');
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+      setJaring3DCameraPreset('iso');
+      if (j3dShapeRoot) j3dShapeRoot.rotation.y = 0;
+    });
+  }
+
+  // Unsur Toggles
+  const toggleLabels = document.getElementById('j3dToggleLabels');
+  if (toggleLabels) {
+    toggleLabels.addEventListener('click', () => {
+      if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+      j3dShowLabels = !j3dShowLabels;
+      toggleLabels.classList.toggle('checked', j3dShowLabels);
+    });
+  }
+
+  const toggleEdges = document.getElementById('j3dToggleEdges');
+  if (toggleEdges) {
+    toggleEdges.addEventListener('click', () => {
+      if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+      j3dShowEdges = !j3dShowEdges;
+      toggleEdges.classList.toggle('checked', j3dShowEdges);
+      if (j3dShapeRoot) {
+        j3dShapeRoot.traverse(child => {
+          if (child.isLineSegments) child.visible = j3dShowEdges;
+        });
+      }
+    });
+  }
+
+  const toggleVertices = document.getElementById('j3dToggleVertices');
+  if (toggleVertices) {
+    toggleVertices.addEventListener('click', () => {
+      if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+      j3dShowVertices = !j3dShowVertices;
+      toggleVertices.classList.toggle('checked', j3dShowVertices);
+      if (j3dVerticesGroup) {
+        j3dVerticesGroup.visible = j3dShowVertices;
+      }
+    });
+  }
+
+  // Auto Loop Play/Pause
+  const btnAutoPlay = document.getElementById('btnJ3DAutoPlay');
+  if (btnAutoPlay) {
+    btnAutoPlay.addEventListener('click', () => {
+      if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+      j3dIsLoopPlaying = !j3dIsLoopPlaying;
+      j3dIsAnimating = false;
+      updateJ3DLoopPlayButtonUI();
+    });
+  }
+}
+
+function updateJ3DLoopPlayButtonUI() {
+  const btnAutoPlay = document.getElementById('btnJ3DAutoPlay');
+  if (!btnAutoPlay) return;
+  if (j3dIsLoopPlaying) {
+    btnAutoPlay.innerHTML = '<i class="fa-solid fa-pause"></i> Jeda';
+    btnAutoPlay.classList.add('primary');
+  } else {
+    btnAutoPlay.innerHTML = '<i class="fa-solid fa-play"></i> Putar Otomatis';
+    btnAutoPlay.classList.remove('primary');
+  }
+}
+
+window.selectJaring3DShape = selectJaring3DShape;
+window.setJaring3DCameraPreset = setJaring3DCameraPreset;
+window.setJaring3DSpeed = setJaring3DSpeed;
+window.switchJaringSubMode = switchJaringSubMode;
+window.initJaring3DShapeBuilder = initJaring3DShapeBuilder;
+window.setupJaring3DEventListeners = setupJaring3DEventListeners;
+window.setJaring3DFoldProgress = setJaring3DFoldProgress;
+
 // --- JARING-JARING (2D NETS GENERATOR) ---
 let currentCubePattern = 1;
 
@@ -8687,7 +10490,7 @@ function initAIVisionModel() {
   // Built-in High-Speed Geometric Computer Vision is ALWAYS 100% ready immediately
   updateAiModelStatusUI('ready');
 
-  // 1. Initialize GitHub COCO-SSD Object Detector
+  // 1. Initialize GitHub COCO-SSD Object Detector gently in background
   if (typeof cocoSsd !== 'undefined' && !cocoDetectorModel && !isCocoModelLoading) {
     isCocoModelLoading = true;
     cocoSsd.load({ base: 'lite_mobilenet_v2' })
@@ -8696,27 +10499,23 @@ function initAIVisionModel() {
         isCocoModelLoading = false;
         console.log('GitHub COCO-SSD Object Detection Model Ready!');
         updateAiModelStatusUI('ready');
+
+        // Sequentially load MobileNet auxiliary classifier only after COCO-SSD is ready
+        if (typeof mobilenet !== 'undefined' && !aiVisionModel && !isAiModelLoading) {
+          isAiModelLoading = true;
+          mobilenet.load()
+            .then(m => {
+              aiVisionModel = m;
+              isAiModelLoading = false;
+              console.log('MobileNet AI Model Connected Successfully!');
+            })
+            .catch(() => {
+              isAiModelLoading = false;
+            });
+        }
       })
       .catch(() => {
         isCocoModelLoading = false;
-      });
-  }
-
-  // 2. Initialize MobileNet as auxiliary classifier
-  if (typeof mobilenet !== 'undefined' && !aiVisionModel && !isAiModelLoading) {
-    isAiModelLoading = true;
-    const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject(new Error('MobileNet CDN timeout')), 1500)
-    );
-
-    Promise.race([mobilenet.load(), timeoutPromise])
-      .then(model => {
-        aiVisionModel = model;
-        isAiModelLoading = false;
-        console.log('MobileNet AI Model Connected Successfully!');
-      })
-      .catch(err => {
-        isAiModelLoading = false;
       });
   }
 
@@ -10552,9 +12351,19 @@ function checkInitialTabFromHash() {
 }
 window.addEventListener('hashchange', checkInitialTabFromHash);
 
+let currentActiveTab = 'home';
+
 // --- TAB SWITCHER ---
 function switchTab(tabId) {
+  if (!tabId) return;
+  // If already active, do not execute duplicate DOM/reflow updates
+  if (currentActiveTab === tabId && document.getElementById(`tab-${tabId}`) && document.getElementById(`tab-${tabId}`).classList.contains('active')) {
+    return;
+  }
+  currentActiveTab = tabId;
+
   if (typeof sfx !== 'undefined' && sfx.playPop) sfx.playPop();
+
   // Update nav buttons
   document.querySelectorAll('.nav-btn').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
@@ -10565,18 +12374,30 @@ function switchTab(tabId) {
     section.classList.toggle('active', section.id === `tab-${tabId}`);
   });
 
-  // Resize Three.js if returning to 3D explorer
   // Stop camera if navigating away from camera tab
   if (typeof cameraMediaStream !== 'undefined' && cameraMediaStream && tabId !== 'kamera') {
     stopCameraScanner();
   }
 
   if (tabId === 'eksplorasi') {
-    setTimeout(onWindowResize, 50);
+    setTimeout(onWindowResize, 60);
   } else if (tabId === 'jaring') {
-    updateJaringDisplay();
+    const view3D = document.getElementById('jaring3DViewSection');
+    if (!view3D || view3D.style.display !== 'none') {
+      setTimeout(() => {
+        initJaring3DShapeBuilder();
+        if (typeof onJaring3DResize === 'function') onJaring3DResize();
+      }, 60);
+    } else {
+      updateJaringDisplay();
+    }
   } else if (tabId === 'kalkulator') {
     buildCalcSliders(currentCalcShape);
+  } else if (tabId === 'kamera') {
+    // Only warm up AI model when user actually visits the Kamera tab!
+    if (typeof initAIVisionModel === 'function') {
+      setTimeout(initAIVisionModel, 300);
+    }
   }
 }
 window.switchTab = switchTab;
@@ -10811,10 +12632,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Warm up AI model in background early on page load
-  setTimeout(() => {
-    initAIVisionModel();
-  }, 1200);
+
 
   // Pre-fill student identity if stored
   try {
@@ -10877,6 +12695,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial runs
   updateJaringDisplay();
   buildCalcSliders('kubus');
+  setupJaring3DEventListeners();
   checkInitialTabFromHash();
   initPresentationQrFeature();
 });
@@ -10885,6 +12704,14 @@ document.addEventListener('DOMContentLoaded', () => {
 window.switchTab = switchTab;
 window.applyPreset = applyPreset;
 window.startQuiz = startQuiz;
+
+window.selectJaring3DShape = selectJaring3DShape;
+window.setJaring3DCameraPreset = setJaring3DCameraPreset;
+window.setJaring3DSpeed = setJaring3DSpeed;
+window.switchJaringSubMode = switchJaringSubMode;
+window.initJaring3DShapeBuilder = initJaring3DShapeBuilder;
+window.setupJaring3DEventListeners = setupJaring3DEventListeners;
+window.setJaring3DFoldProgress = setJaring3DFoldProgress;
 
 window.deleteHistoryItem = deleteHistoryItem;
 window.clearAllQuizHistory = clearAllQuizHistory;

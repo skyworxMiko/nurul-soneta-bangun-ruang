@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Shape Builder: Petualangan Jaring-Jaring Bangun Ruang (Kelas VI SD Fase C)</title>
+  
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Three.js & OrbitControls from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --primary-hover: #4338CA;
+      --primary-light: #EEF2FF;
+      --accent: #F59E0B;
+      --accent-hover: #D97706;
+      --success: #10B981;
+      --danger: #EF4444;
+      --cyan: #06B6D4;
+      --pink: #EC4899;
+      --purple: #8B5CF6;
+      --dark: #0F172A;
+      --card-bg: #FFFFFF;
+      --body-bg: #F8FAFC;
+      --border-color: #E2E8F0;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+      --shadow-md: 0 4px 14px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+      --font-main: 'Plus Jakarta Sans', sans-serif;
+      --font-display: 'Fredoka', cursive, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background-color: var(--body-bg);
+      color: var(--dark);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* --- TOP HEADER --- */
+    header.app-header {
+      background: #FFFFFF;
+      border-bottom: 2px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-icon-box {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, var(--primary), var(--purple));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.35rem;
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+    }
+
+    .brand-texts h1 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .fase-badge {
+      font-family: var(--font-main);
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: #FEF3C7;
+      color: #B45309;
+      border: 1px solid #FDE68A;
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+    }
+
+    .brand-texts p {
+      font-size: 0.78rem;
+      color: #64748B;
+      font-weight: 500;
+    }
+
+    .header-tools {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tool-btn {
+      background: #F1F5F9;
+      border: 1px solid var(--border-color);
+      color: #475569;
+      padding: 0.5rem 0.85rem;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+
+    .tool-btn:hover {
+      background: #E2E8F0;
+      color: var(--dark);
+      transform: translateY(-1px);
+    }
+
+    .tool-btn.primary {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+    .tool-btn.primary:hover {
+      background: var(--primary-hover);
+    }
+
+    /* --- MAIN APP CONTAINER --- */
+    main.app-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 390px;
+      gap: 1.25rem;
+      padding: 1.25rem;
+      max-width: 1680px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    @media (max-width: 1040px) {
+      main.app-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* --- 3D VIEWPORT SECTION (LEFT) --- */
+    .viewport-column {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      position: relative;
+    }
+
+    .viewport-card {
+      background: #FFFFFF;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+      height: 560px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (max-width: 768px) {
+      .viewport-card {
+        height: 420px;
+      }
+    }
+
+    #threeCanvasContainer {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      outline: none;
+      cursor: grab;
+    }
+    #threeCanvasContainer:active {
+      cursor: grabbing;
+    }
+
+    /* Floating Top HUD on Canvas */
+    .viewport-top-hud {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      right: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .viewport-top-hud > * {
+      pointer-events: auto;
+    }
+
+    .status-pill {
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 0.35rem 0.85rem;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .camera-presets-bar {
+      display: flex;
+      gap: 0.35rem;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(8px);
+      padding: 0.25rem 0.35rem;
+      border-radius: var(--radius-full);
+      border: 1.5px solid var(--border-color);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .cam-btn {
+      border: none;
+      background: transparent;
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s;
+    }
+
+    .cam-btn:hover {
+      background: #E2E8F0;
+      color: var(--dark);
+    }
+
+    .cam-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.35);
+    }
+
+    /* Floating Bottom Action Toolbar */
+    .viewport-bottom-hud {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      right: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .viewport-bottom-hud > * {
+      pointer-events: auto;
+    }
+
+    .interaction-hint {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border-color);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #64748B;
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .bottom-quick-tools {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .quick-icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-color);
+      color: #334155;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+    .quick-icon-btn:hover {
+      background: #F1F5F9;
+      transform: scale(1.06);
+    }
+    .quick-icon-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent-hover);
+    }
+
+    /* 3D Dynamic Face Labels Layer */
+    #faceLabelsOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 5;
+    }
+
+    .face-3d-badge {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      padding: 0.22rem 0.6rem;
+      border-radius: var(--radius-full);
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #fff;
+      background: rgba(15, 23, 42, 0.78);
+      border: 1.5px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      white-space: nowrap;
+      pointer-events: auto;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.15s;
+    }
+    .face-3d-badge:hover {
+      transform: translate(-50%, -50%) scale(1.12);
+      background: rgba(79, 70, 229, 0.95);
+    }
+
+    /* Quick Timeline Card below canvas */
+    .timeline-card {
+      background: #FFFFFF;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .slider-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .slider-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .progress-badge {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 0.2rem 0.75rem;
+      border-radius: var(--radius-full);
+      border: 1px solid #C7D2FE;
+    }
+
+    .slider-track-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .slider-endpoint-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #64748B;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+    }
+
+    input[type=range].fold-range-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 10px;
+      border-radius: 5px;
+      background: linear-gradient(to right, #4F46E5 0%, #10B981 100%);
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type=range].fold-range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 4px solid var(--primary);
+      cursor: grab;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.45);
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    input[type=range].fold-range-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.18);
+      border-color: var(--accent);
+    }
+
+    input[type=range].fold-range-slider::-webkit-slider-thumb:active {
+      cursor: grabbing;
+      transform: scale(1.25);
+    }
+
+    .main-fold-buttons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .big-action-btn {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .big-action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .big-action-btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-bentangkan {
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: #fff;
+    }
+    .btn-bentangkan:hover {
+      background: linear-gradient(135deg, #059669, #047857);
+    }
+
+    .btn-lipat {
+      background: linear-gradient(135deg, #4F46E5, #3730A3);
+      color: #fff;
+    }
+    .btn-lipat:hover {
+      background: linear-gradient(135deg, #4338CA, #312E81);
+    }
+
+    /* --- SIDE CONTROL PANEL (RIGHT) --- */
+    .controls-column {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card-panel {
+      background: #FFFFFF;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.15rem;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1.5px solid var(--border-color);
+      padding-bottom: 0.65rem;
+    }
+
+    .panel-header h2 {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .panel-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 0.15rem 0.5rem;
+      border-radius: var(--radius-full);
+    }
+
+    /* Shape Selector Cards */
+    .shapes-grid-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+
+    .shape-card-btn {
+      background: #F8FAFC;
+      border: 2px solid #E2E8F0;
+      border-radius: var(--radius-md);
+      padding: 0.75rem 0.65rem;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s ease;
+    }
+
+    .shape-card-btn:hover {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
+
+    .shape-card-btn.active {
+      background: #EEF2FF;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.18);
+    }
+
+    .shape-card-icon {
+      font-size: 1.7rem;
+      line-height: 1;
+    }
+
+    .shape-card-name {
+      font-family: var(--font-display);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .shape-card-btn.active .shape-card-name {
+      color: var(--primary);
+    }
+
+    .shape-card-sub {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: #64748B;
+    }
+
+    /* Toggle Switches Group */
+    .toggles-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.65rem 0.85rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .toggle-row:hover {
+      background: #F1F5F9;
+    }
+
+    .toggle-label-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .toggle-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+    .toggle-icon.blue { background: #DBEAFE; color: #1D4ED8; }
+    .toggle-icon.emerald { background: #D1FAE5; color: #047857; }
+    .toggle-icon.amber { background: #FEF3C7; color: #B45309; }
+    .toggle-icon.purple { background: #EDE9FE; color: #6D28D9; }
+
+    /* Custom Checkbox Pill Switch */
+    .switch-ui {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      background: #CBD5E1;
+      border-radius: 12px;
+      transition: background 0.2s;
+    }
+    .switch-ui::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 20px;
+      height: 20px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+    .toggle-row.checked .switch-ui {
+      background: var(--primary);
+    }
+    .toggle-row.checked .switch-ui::after {
+      transform: translateX(20px);
+    }
+
+    /* Mode Auto-Play Bar */
+    .auto-mode-box {
+      background: #F8FAFC;
+      border: 1.5px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .auto-mode-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .auto-btn-row {
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .auto-speed-btn {
+      flex: 1;
+      padding: 0.35rem 0.5rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #64748B;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .auto-speed-btn:hover {
+      background: #F1F5F9;
+    }
+    .auto-speed-btn.active {
+      background: var(--purple);
+      color: #fff;
+      border-color: var(--purple);
+    }
+
+    /* Unsur-Unsur Bangun Ruang Card */
+    .unsur-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      text-align: center;
+    }
+
+    .unsur-stat-box {
+      background: #F8FAFC;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.65rem 0.35rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .unsur-val {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .unsur-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .unsur-desc {
+      font-size: 0.64rem;
+      color: #94A3B8;
+      font-weight: 600;
+    }
+
+    /* Formula & Sifat Card */
+    .shape-info-text {
+      font-size: 0.82rem;
+      line-height: 1.45;
+      color: #334155;
+      background: #F8FAFC;
+      padding: 0.65rem 0.85rem;
+      border-radius: var(--radius-md);
+      border-left: 3px solid var(--accent);
+    }
+
+    .formula-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      font-size: 0.78rem;
+    }
+
+    .formula-chip {
+      background: #F1F5F9;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+    }
+    .formula-chip code {
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 0.82rem;
+    }
+
+    /* Modal Help Dialog */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.25rem;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #FFFFFF;
+      border-radius: var(--radius-lg);
+      max-width: 540px;
+      width: 100%;
+      padding: 1.75rem;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(16px);
+      transition: transform 0.2s;
+    }
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .modal-header h3 {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--dark);
+    }
+
+    .modal-body {
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .instruction-step {
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+    }
+
+    .step-badge {
+      width: 26px;
+      height: 26px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .modal-footer {
+      margin-top: 1.25rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="app-header">
+    <div class="brand-group">
+      <div class="brand-icon-box">
+        <i class="fa-solid fa-shapes"></i>
+      </div>
+      <div class="brand-texts">
+        <h1>
+          3D Shape Builder: Petualangan Jaring-Jaring
+          <span class="fase-badge">Fase C • Kelas 6 SD</span>
+        </h1>
+        <p>Eksplorasi Jaring-Jaring Lipat 3D Interaktif • Matematika Bangun Ruang</p>
+      </div>
+    </div>
+
+    <div class="header-tools">
+      <button id="btnSoundToggle" class="tool-btn" title="Aktifkan / Matikan Suara">
+        <i class="fa-solid fa-volume-high"></i>
+        <span>Suara</span>
+      </button>
+      <button id="btnFullscreenToggle" class="tool-btn" title="Tampilan Layar Penuh (Smart TV / Proyektor)">
+        <i class="fa-solid fa-expand"></i>
+        <span>Layar Penuh</span>
+      </button>
+      <button id="btnHelpModal" class="tool-btn primary" title="Petunjuk Penggunaan">
+        <i class="fa-solid fa-circle-question"></i>
+        <span>Panduan</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="app-layout">
+
+    <!-- LEFT COLUMN: 3D INTERACTIVE VIEWPORT -->
+    <section class="viewport-column">
+      
+      <!-- 3D Canvas Box -->
+      <div class="viewport-card">
+        <div id="threeCanvasContainer"></div>
+
+        <!-- Dynamic 3D Face Labels Layer -->
+        <div id="faceLabelsOverlay"></div>
+
+        <!-- Top HUD (Status & Camera Presets) -->
+        <div class="viewport-top-hud">
+          <div class="status-pill">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Mode: 3D Bangun Ruang Tertutup (0%)</span>
+          </div>
+
+          <div class="camera-presets-bar">
+            <button class="cam-btn active" data-preset="iso" title="Sudut Pandang Isometrik 3D">
+              <i class="fa-solid fa-cube"></i> 3D
+            </button>
+            <button class="cam-btn" data-preset="top" title="Sudut Pandang Atas (Melihat Jaring-Jaring 2D Datar)">
+              <i class="fa-solid fa-arrow-down"></i> Atas
+            </button>
+            <button class="cam-btn" data-preset="front" title="Sudut Pandang Depan">
+              <i class="fa-solid fa-eye"></i> Depan
+            </button>
+            <button class="cam-btn" data-preset="side" title="Sudut Pandang Samping">
+              <i class="fa-solid fa-arrow-right"></i> Samping
+            </button>
+          </div>
+        </div>
+
+        <!-- Bottom HUD (Hints & Quick Tool Buttons) -->
+        <div class="viewport-bottom-hud">
+          <div class="interaction-hint">
+            <i class="fa-solid fa-hand-pointer text-primary"></i>
+            <span>Geser untuk memutar • Cubit/Scroll untuk Zoom • Tarik slider untuk melipat</span>
+          </div>
+
+          <div class="bottom-quick-tools">
+            <button id="btnToggleRotate" class="quick-icon-btn" title="Putar Otomatis 360°">
+              <i class="fa-solid fa-rotate"></i>
+            </button>
+            <button id="btnResetView" class="quick-icon-btn" title="Reset Sudut Pandang Kamera">
+              <i class="fa-solid fa-camera-rotate"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Folding Controls Timeline Card -->
+      <div class="timeline-card">
+        <div class="slider-header-row">
+          <div class="slider-title">
+            <i class="fa-solid fa-sliders text-primary"></i>
+            <span>Derajat Lipatan Jaring-Jaring (0% = Tertutup, 100% = Terbentang Datar)</span>
+          </div>
+          <div class="progress-badge" id="sliderBadge">0%</div>
+        </div>
+
+        <div class="slider-track-wrap">
+          <span class="slider-endpoint-label">
+            <i class="fa-solid fa-box text-primary"></i> 3D Tertutup (0%)
+          </span>
+          <input type="range" id="foldRangeSlider" class="fold-range-slider" min="0" max="100" value="0" step="0.5">
+          <span class="slider-endpoint-label">
+            <i class="fa-solid fa-table-cells text-success"></i> Terbuka Datar (100%)
+          </span>
+        </div>
+
+        <!-- Big Action Buttons -->
+        <div class="main-fold-buttons-grid">
+          <button id="btnBentangkan" class="big-action-btn btn-bentangkan">
+            <i class="fa-solid fa-door-open"></i> Bentangkan Jaring-Jaring
+          </button>
+          <button id="btnLipat" class="big-action-btn btn-lipat">
+            <i class="fa-solid fa-box-archive"></i> Lipat Jadi Bangun Ruang
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- RIGHT COLUMN: CONTROL PANELS & EXPLORATION -->
+    <aside class="controls-column">
+      
+      <!-- Panel 1: Pilih Bangun Ruang -->
+      <div class="card-panel">
+        <div class="panel-header">
+          <h2><i class="fa-solid fa-shapes text-primary"></i> Pilih Bangun Ruang</h2>
+          <span class="panel-badge">Fase C SD</span>
+        </div>
+
+        <div class="shapes-grid-selector">
+          <button class="shape-card-btn active" data-shape="kubus">
+            <span class="shape-card-icon">🎲</span>
+            <span class="shape-card-name">Kubus</span>
+            <span class="shape-card-sub">6 Persegi Identik</span>
+          </button>
+
+          <button class="shape-card-btn" data-shape="balok">
+            <span class="shape-card-icon">📦</span>
+            <span class="shape-card-name">Balok</span>
+            <span class="shape-card-sub">6 Persegi Panjang</span>
+          </button>
+
+          <button class="shape-card-btn" data-shape="prisma">
+            <span class="shape-card-icon">⛺</span>
+            <span class="shape-card-name">Prisma Segitiga</span>
+            <span class="shape-card-sub">2 Segitiga + 3 Persegi</span>
+          </button>
+
+          <button class="shape-card-btn" data-shape="limas">
+            <span class="shape-card-icon">🔺</span>
+            <span class="shape-card-name">Limas Segi Empat</span>
+            <span class="shape-card-sub">1 Persegi + 4 Segitiga</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel 2: Eksplorasi Unsur Bangun Ruang -->
+      <div class="card-panel">
+        <div class="panel-header">
+          <h2><i class="fa-solid fa-microscope text-primary"></i> Eksplorasi Unsur</h2>
+          <span class="panel-badge">Visual 3D</span>
+        </div>
+
+        <div class="toggles-list">
+          <div class="toggle-row checked" id="toggleFaceLabels">
+            <div class="toggle-label-wrap">
+              <span class="toggle-icon blue"><i class="fa-solid fa-tag"></i></span>
+              <span>Label Nama Sisi (Alas, Tutup, Sisi Tegak)</span>
+            </div>
+            <div class="switch-ui"></div>
+          </div>
+
+          <div class="toggle-row checked" id="toggleEdges">
+            <div class="toggle-label-wrap">
+              <span class="toggle-icon emerald"><i class="fa-solid fa-slash"></i></span>
+              <span>Garis Rusuk Jelas (Garis Engsel Lipat)</span>
+            </div>
+            <div class="switch-ui"></div>
+          </div>
+
+          <div class="toggle-row checked" id="toggleVertices">
+            <div class="toggle-label-wrap">
+              <span class="toggle-icon amber"><i class="fa-solid fa-circle-dot"></i></span>
+              <span>Titik Sudut (Titik Temu Koordinat)</span>
+            </div>
+            <div class="switch-ui"></div>
+          </div>
+        </div>
+
+        <!-- Mode Animasi Otomatis -->
+        <div class="auto-mode-box">
+          <div class="auto-mode-header">
+            <span><i class="fa-solid fa-wand-magic-sparkles text-purple"></i> Mode Animasi Otomatis</span>
+            <button id="btnAutoPlayToggle" class="tool-btn" style="padding: 0.2rem 0.6rem; font-size: 0.74rem;">
+              <i class="fa-solid fa-play"></i> Putar Otomatis
+            </button>
+          </div>
+          <div class="auto-btn-row">
+            <button class="auto-speed-btn" data-speed="0.006">Lambat</button>
+            <button class="auto-speed-btn active" data-speed="0.012">Normal</button>
+            <button class="auto-speed-btn" data-speed="0.022">Cepat</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Info & Sifat Matematika SD Kelas VI -->
+      <div class="card-panel">
+        <div class="panel-header">
+          <h2><i class="fa-solid fa-book-open text-primary"></i> Sifat & Unsur Geometri</h2>
+          <span class="panel-badge" id="infoShapeBadge">Kubus</span>
+        </div>
+
+        <div class="unsur-stats-grid">
+          <div class="unsur-stat-box">
+            <span class="unsur-val" id="statSisi">6</span>
+            <span class="unsur-label">Sisi / Bidang</span>
+            <span class="unsur-desc" id="descSisi">Bujur Sangkar</span>
+          </div>
+          <div class="unsur-stat-box">
+            <span class="unsur-val" id="statRusuk">12</span>
+            <span class="unsur-label">Rusuk</span>
+            <span class="unsur-desc" id="descRusuk">Panjang sama</span>
+          </div>
+          <div class="unsur-stat-box">
+            <span class="unsur-val" id="statSudut">8</span>
+            <span class="unsur-label">Titik Sudut</span>
+            <span class="unsur-desc" id="descSudut">Siku-siku</span>
+          </div>
+        </div>
+
+        <div class="shape-info-text" id="shapePedagogicalTip">
+          <strong>Jaring-Jaring Kubus:</strong> Terdiri dari 6 buah persegi identik yang saling terhubung pada rusuk engselnya. Saat dilipat 90°, sisi-sisi tersebut akan menutup sempurna membentuk ruang kubus tanpa celah atau tumpang tindih!
+        </div>
+
+        <div class="formula-row">
+          <div class="formula-chip">
+            <span>Luas Permukaan (L):</span>
+            <code id="formulaLuas">L = 6 &times; s&sup2;</code>
+          </div>
+          <div class="formula-chip">
+            <span>Volume (V):</span>
+            <code id="formulaVolume">V = s &times; s &times; s</code>
+          </div>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <!-- HELP / PANDUAN MODAL -->
+  <div class="modal-backdrop" id="helpModalBackdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-graduation-cap text-primary"></i> Panduan Siswa Kelas VI</h3>
+        <button id="btnCloseModal" class="tool-btn" style="padding: 0.3rem 0.6rem;">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="instruction-step">
+          <div class="step-badge">1</div>
+          <div><strong>Pilih Bangun Ruang:</strong> Klik salah satu kartu bangun ruang di sebelah kanan (Kubus, Balok, Prisma Segitiga, atau Limas Segi Empat).</div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-badge">2</div>
+          <div><strong>Bentangkan Jaring-Jaring:</strong> Klik tombol hijau <em>"Bentangkan Jaring-Jaring"</em> untuk melihat seluruh sisi terbuka rata menjadi gambar 2D pada bidang datar.</div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-badge">3</div>
+          <div><strong>Lipat Kembali Jadi 3D:</strong> Klik tombol ungu <em>"Lipat Jadi Bangun Ruang"</em> atau geser slider dari 100% kembali ke 0% untuk mengamati bagaimana setiap bidang berputar pada rusuk engselnya!</div>
+        </div>
+        <div class="instruction-step">
+          <div class="step-badge">4</div>
+          <div><strong>Ubah Sudut Pandang:</strong> Gunakan tombol <em>"Atas"</em> untuk melihat jaring-jaring 2D secara tegak lurus, atau geser layar menggunakan kursor/jari untuk memutar objek 360 derajat!</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnModalUnderstand" class="tool-btn primary">
+          <i class="fa-solid fa-check"></i> Saya Mengerti, Ayo Mulai!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // ========================================================
+    // 3D SHAPE BUILDER: PETUALANGAN JARING-JARING BANGUN RUANG
+    // Fase C • Kelas VI Sekolah Dasar
+    // ========================================================
+
+    // --- Web Audio SFX Engine (Zero external dependencies) ---
+    class AudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx && typeof (window.AudioContext || window.webkitAudioContext) !== 'undefined') {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContextClass();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playPop() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(480, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(820, this.ctx.currentTime + 0.08);
+          gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.08);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.08);
+        } catch (e) {}
+      }
+      playWhoosh() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(260, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(540, this.ctx.currentTime + 0.18);
+          gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.18);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.18);
+        } catch (e) {}
+      }
+    }
+    const sound = new AudioEngine();
+
+    // --- Data Informasi Bangun Ruang Kelas VI SD ---
+    const SHAPES_INFO = {
+      kubus: {
+        title: 'Kubus',
+        badge: '6 Persegi',
+        sisi: '6 Bidang Persegi',
+        rusuk: '12 Rusuk Sama Panjang',
+        sudut: '8 Titik Sudut',
+        tip: '<strong>Jaring-Jaring Kubus:</strong> Terdiri dari 6 buah persegi kongruen (sama dan sebangun). Ketika semua sisi tegak dilipat 90° ke atas dan sisi tutup dilipat menutup bagian atas, kubus terbentuk sempurna tanpa celah!',
+        luas: 'L = 6 &times; s&sup2;',
+        vol: 'V = s &times; s &times; s (s&sup3;)'
+      },
+      balok: {
+        title: 'Balok',
+        badge: '6 Persegi Panjang',
+        sisi: '6 Persegi Panjang (3 Pasang)',
+        rusuk: '12 Rusuk (4p, 4l, 4t)',
+        sudut: '8 Titik Sudut',
+        tip: '<strong>Jaring-Jaring Balok:</strong> Memiliki 3 pasang persegi panjang yang saling berhadapan dan berukuran sama: alas-tutup (p&times;l), depan-belakang (p&times;t), dan kiri-kanan (l&times;t). Semua rusuk yang bersesuaian akan bertemu pas!',
+        luas: 'L = 2 &times; (pl + pt + lt)',
+        vol: 'V = p &times; l &times; t'
+      },
+      prisma: {
+        title: 'Prisma Segitiga',
+        badge: '2 Segitiga + 3 Persegi',
+        sisi: '5 Sisi (2 Segitiga, 3 Persegi)',
+        rusuk: '9 Rusuk',
+        sudut: '6 Titik Sudut',
+        tip: '<strong>Jaring-Jaring Prisma Segitiga:</strong> Memiliki 2 bidang alas dan tutup berbentuk segitiga yang sejajar serta 3 sisi tegak berbentuk persegi panjang. Saat kedua sisi miring dilipat 60° dan kedua segitiga dilipat 90°, terbentuk atap tenda prisma!',
+        luas: 'L = (2 &times; L_alas) + (Keliling &times; t)',
+        vol: 'V = Luas Alas &times; Tinggi'
+      },
+      limas: {
+        title: 'Limas Segi Empat',
+        badge: '1 Persegi + 4 Segitiga',
+        sisi: '5 Sisi (1 Persegi, 4 Segitiga)',
+        rusuk: '8 Rusuk (4 alas, 4 rusuk tegak)',
+        sudut: '5 Titik Sudut (1 Puncak)',
+        tip: '<strong>Jaring-Jaring Limas Segi Empat:</strong> Memiliki 1 bidang alas persegi di tengah dan 4 segitiga selimut yang mengelilinginya (membentuk pola bunga/bintang). Keempat puncak segitiga akan menyatu tepat di 1 titik puncak!',
+        luas: 'L = Luas Alas + (4 &times; L_segitiga)',
+        vol: 'V = 1/3 &times; Luas Alas &times; Tinggi'
+      }
+    };
+
+    // --- State Variables ---
+    let activeShapeKey = 'kubus';
+    let foldProgress = 0.0; // 0.0 = fully closed 3D, 1.0 = fully flat 2D net
+    let targetFoldProgress = 0.0;
+    let isAutoAnimating = false;
+    let isAutoRotating = false;
+    let isLoopPlaying = false;
+    let loopSpeed = 0.012;
+    let loopDirection = 1;
+
+    let showFaceLabels = true;
+    let showEdges = true;
+    let showVertices = true;
+
+    // Three.js Core Objects
+    let scene, camera, renderer, controls;
+    let shapeRootGroup = null;
+    let hingeControllers = []; // Array of { group, axis, minAngle, maxAngle, nested }
+    let faceLabelElements = []; // HTML label markers tracking 3D mesh points
+    let vertexMarkersGroup = null;
+
+    // --- INITIALIZE THREE.JS ENGINE ---
+    function initThree() {
+      const container = document.getElementById('threeCanvasContainer');
+      const width = container.clientWidth || 800;
+      const height = container.clientHeight || 560;
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xF8FAFC);
+
+      camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
+      camera.position.set(4.5, 4.2, 5.8);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.06;
+      controls.minDistance = 2.5;
+      controls.maxDistance = 16;
+      controls.maxPolarAngle = Math.PI / 2 + 0.1; // allow looking slightly under
+
+      // Studio Lighting Setup
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.72);
+      scene.add(ambientLight);
+
+      const mainLight = new THREE.DirectionalLight(0xffffff, 0.85);
+      mainLight.position.set(7, 12, 8);
+      mainLight.castShadow = true;
+      mainLight.shadow.mapSize.width = 1024;
+      mainLight.shadow.mapSize.height = 1024;
+      mainLight.shadow.bias = -0.0005;
+      scene.add(mainLight);
+
+      const fillLight = new THREE.DirectionalLight(0xC7D2FE, 0.4);
+      fillLight.position.set(-6, 4, -6);
+      scene.add(fillLight);
+
+      // Soft Floor Grid Platform
+      createFloorGrid();
+
+      // Load Initial Shape Model (Kubus)
+      buildActiveShapeModel();
+
+      // Window resize handler
+      window.addEventListener('resize', onWindowResize);
+
+      // Start Animation Loop
+      animate();
+    }
+
+    function createFloorGrid() {
+      const pedestalGeo = new THREE.CylinderGeometry(4.8, 5.0, 0.15, 64);
+      const pedestalMat = new THREE.MeshStandardMaterial({
+        color: 0xF1F5F9,
+        roughness: 0.95,
+        metalness: 0.02
+      });
+      const pedestal = new THREE.Mesh(pedestalGeo, pedestalMat);
+      pedestal.position.y = -0.08;
+      pedestal.receiveShadow = true;
+      scene.add(pedestal);
+
+      const gridHelper = new THREE.GridHelper(8, 16, 0xCBD5E1, 0xE2E8F0);
+      gridHelper.position.y = 0.001;
+      scene.add(gridHelper);
+    }
+
+    function onWindowResize() {
+      const container = document.getElementById('threeCanvasContainer');
+      if (!container || !renderer || !camera) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      if (!width || !height) return;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }
+
+    // --- REUSABLE MATERIAL CREATION WITH EDGES ---
+    function createFaceMaterial(hexColor, name) {
+      return new THREE.MeshStandardMaterial({
+        color: hexColor,
+        roughness: 0.35,
+        metalness: 0.08,
+        side: THREE.DoubleSide,
+        polygonOffset: true,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1
+      });
+    }
+
+    function createThickEdgeLines(geometry, color = 0x0F172A) {
+      const edges = new THREE.EdgesGeometry(geometry);
+      const line = new THREE.LineSegments(
+        edges,
+        new THREE.LineBasicMaterial({ color: color, linewidth: 2.5 })
+      );
+      return line;
+    }
+
+    function createVertexSphere(x, y, z) {
+      const geo = new THREE.SphereGeometry(0.08, 16, 16);
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0xF59E0B,
+        emissive: 0xD97706,
+        emissiveIntensity: 0.6,
+        roughness: 0.2
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(x, y, z);
+      mesh.castShadow = true;
+      return mesh;
+    }
+
+    // --- 3D SHAPE BUILDER FACTORIES (Hierarchical Exact Folding) ---
+
+        let vertexMarkers = [];
+
+    function makeCustomTriGeo(p1, p2, p3) {
+      const geo = new THREE.BufferGeometry();
+      const vertices = new Float32Array([
+        p1[0], p1[1], p1[2],
+        p2[0], p2[1], p2[2],
+        p3[0], p3[1], p3[2]
+      ]);
+      geo.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+      geo.computeVertexNormals();
+      return geo;
+    }
+
+    function clearCurrentModel() {
+      if (shapeRootGroup) {
+        scene.remove(shapeRootGroup);
+      }
+      shapeRootGroup = new THREE.Group();
+      scene.add(shapeRootGroup);
+
+      hingeControllers = [];
+      vertexMarkers = [];
+
+      // Clear 2D face labels DOM
+      const overlay = document.getElementById('faceLabelsOverlay');
+      if (overlay) overlay.innerHTML = '';
+      faceLabelElements = [];
+    }
+
+    function addVertexMarker(parent, x, y, z) {
+      const geo = new THREE.SphereGeometry(0.09, 16, 16);
+      const mat = new THREE.MeshStandardMaterial({
+        color: 0xFBBF24,
+        emissive: 0xB45309,
+        roughness: 0.25,
+        metalness: 0.85
+      });
+      const sphere = new THREE.Mesh(geo, mat);
+      sphere.position.set(x, y, z);
+      sphere.visible = showVertices;
+      parent.add(sphere);
+      vertexMarkers.push(sphere);
+      return sphere;
+    }
+
+    function addFaceLabel(parentMesh, text, color, lx = 0, ly = 0, lz = 0) {
+      const overlay = document.getElementById('faceLabelsOverlay');
+      if (!overlay) return;
+      const badge = document.createElement('div');
+      badge.className = 'face-3d-badge';
+      badge.innerHTML = text;
+      badge.style.borderLeft = `4px solid ${color}`;
+      badge.addEventListener('click', () => {
+        sound.playPop();
+      });
+      overlay.appendChild(badge);
+
+      const anchor = new THREE.Object3D();
+      anchor.position.set(lx, ly, lz);
+      parentMesh.add(anchor);
+
+      faceLabelElements.push({ element: badge, anchor: anchor });
+    }
+
+    // 1. KUBUS
+    function buildKubus() {
+      clearCurrentModel();
+      const s = 2.4, s2 = s / 2;
+
+      // Base
+      const baseGeo = new THREE.PlaneGeometry(s, s);
+      baseGeo.rotateX(-Math.PI / 2);
+      const baseMesh = new THREE.Mesh(baseGeo, createFaceMaterial(0x3B82F6));
+      baseMesh.add(createEdgeLines(baseGeo));
+      shapeRootGroup.add(baseMesh);
+      addFaceLabel(baseMesh, 'Alas (Bawah)', '#3B82F6', 0, 0, 0);
+
+      // 4 Bottom Vertices on Base
+      addVertexMarker(baseMesh, -s2, 0, -s2);
+      addVertexMarker(baseMesh,  s2, 0, -s2);
+      addVertexMarker(baseMesh,  s2, 0,  s2);
+      addVertexMarker(baseMesh, -s2, 0,  s2);
+
+      // Front -> Hinge at (0, 0, +s2), extends along +Z from 0 to +s
+      const frontHinge = new THREE.Group();
+      frontHinge.position.set(0, 0, s2);
+      const frontGeo = new THREE.PlaneGeometry(s, s);
+      frontGeo.rotateX(-Math.PI / 2);
+      frontGeo.translate(0, 0, s2);
+      const frontMesh = new THREE.Mesh(frontGeo, createFaceMaterial(0x10B981));
+      frontMesh.add(createEdgeLines(frontGeo));
+      frontHinge.add(frontMesh);
+      shapeRootGroup.add(frontHinge);
+      addFaceLabel(frontMesh, 'Sisi Depan', '#10B981', 0, 0, s2);
+      addVertexMarker(frontHinge, -s2, 0, s);
+      addVertexMarker(frontHinge,  s2, 0, s);
+      hingeControllers.push({ group: frontHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+      // Back -> Hinge at (0, 0, -s2), extends along -Z from 0 to -s
+      const backHinge = new THREE.Group();
+      backHinge.position.set(0, 0, -s2);
+      const backGeo = new THREE.PlaneGeometry(s, s);
+      backGeo.rotateX(-Math.PI / 2);
+      backGeo.translate(0, 0, -s2);
+      const backMesh = new THREE.Mesh(backGeo, createFaceMaterial(0x6366F1));
+      backMesh.add(createEdgeLines(backGeo));
+      backHinge.add(backMesh);
+      shapeRootGroup.add(backHinge);
+      addFaceLabel(backMesh, 'Sisi Belakang', '#6366F1', 0, 0, -s2);
+      addVertexMarker(backHinge, -s2, 0, -s);
+      addVertexMarker(backHinge,  s2, 0, -s);
+      hingeControllers.push({ group: backHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+      // Top -> Hinged to outer edge of Back (at z = -s in backHinge)
+      const topHinge = new THREE.Group();
+      topHinge.position.set(0, 0, -s);
+      const topGeo = new THREE.PlaneGeometry(s, s);
+      topGeo.rotateX(-Math.PI / 2);
+      topGeo.translate(0, 0, -s2);
+      const topMesh = new THREE.Mesh(topGeo, createFaceMaterial(0xEC4899));
+      topMesh.add(createEdgeLines(topGeo));
+      topHinge.add(topMesh);
+      backHinge.add(topHinge);
+      addFaceLabel(topMesh, 'Tutup (Atas)', '#EC4899', 0, 0, -s2);
+      hingeControllers.push({ group: topHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+      // Left -> Hinge at (-s2, 0, 0), extends along -X from 0 to -s
+      const leftHinge = new THREE.Group();
+      leftHinge.position.set(-s2, 0, 0);
+      const leftGeo = new THREE.PlaneGeometry(s, s);
+      leftGeo.rotateX(-Math.PI / 2);
+      leftGeo.translate(-s2, 0, 0);
+      const leftMesh = new THREE.Mesh(leftGeo, createFaceMaterial(0xF59E0B));
+      leftMesh.add(createEdgeLines(leftGeo));
+      leftHinge.add(leftMesh);
+      shapeRootGroup.add(leftHinge);
+      addFaceLabel(leftMesh, 'Sisi Kiri', '#F59E0B', -s2, 0, 0);
+      hingeControllers.push({ group: leftHinge, axis: 'z', targetAngle: -Math.PI / 2 });
+
+      // Right -> Hinge at (+s2, 0, 0), extends along +X from 0 to +s
+      const rightHinge = new THREE.Group();
+      rightHinge.position.set(s2, 0, 0);
+      const rightGeo = new THREE.PlaneGeometry(s, s);
+      rightGeo.rotateX(-Math.PI / 2);
+      rightGeo.translate(s2, 0, 0);
+      const rightMesh = new THREE.Mesh(rightGeo, createFaceMaterial(0x06B6D4));
+      rightMesh.add(createEdgeLines(rightGeo));
+      rightHinge.add(rightMesh);
+      shapeRootGroup.add(rightHinge);
+      addFaceLabel(rightMesh, 'Sisi Kanan', '#06B6D4', s2, 0, 0);
+      hingeControllers.push({ group: rightHinge, axis: 'z', targetAngle: Math.PI / 2 });
+    }
+
+    // 2. BALOK
+    function buildBalok() {
+      clearCurrentModel();
+      const p = 3.2, l = 2.0, t = 1.6;
+      const p2 = p / 2, l2 = l / 2, t2 = t / 2;
+
+      // Base
+      const baseGeo = new THREE.PlaneGeometry(p, l);
+      baseGeo.rotateX(-Math.PI / 2);
+      const baseMesh = new THREE.Mesh(baseGeo, createFaceMaterial(0x3B82F6));
+      baseMesh.add(createEdgeLines(baseGeo));
+      shapeRootGroup.add(baseMesh);
+      addFaceLabel(baseMesh, 'Alas (p &times; l)', '#3B82F6', 0, 0, 0);
+
+      // 4 Bottom Vertices on Base
+      addVertexMarker(baseMesh, -p2, 0, -l2);
+      addVertexMarker(baseMesh,  p2, 0, -l2);
+      addVertexMarker(baseMesh,  p2, 0,  l2);
+      addVertexMarker(baseMesh, -p2, 0,  l2);
+
+      // Front -> Hinge at (0, 0, +l2), extends along +Z from 0 to +t
+      const frontHinge = new THREE.Group();
+      frontHinge.position.set(0, 0, l2);
+      const frontGeo = new THREE.PlaneGeometry(p, t);
+      frontGeo.rotateX(-Math.PI / 2);
+      frontGeo.translate(0, 0, t2);
+      const frontMesh = new THREE.Mesh(frontGeo, createFaceMaterial(0x10B981));
+      frontMesh.add(createEdgeLines(frontGeo));
+      frontHinge.add(frontMesh);
+      shapeRootGroup.add(frontHinge);
+      addFaceLabel(frontMesh, 'Sisi Depan (p &times; t)', '#10B981', 0, 0, t2);
+      addVertexMarker(frontHinge, -p2, 0, t);
+      addVertexMarker(frontHinge,  p2, 0, t);
+      hingeControllers.push({ group: frontHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+      // Back -> Hinge at (0, 0, -l2), extends along -Z from 0 to -t
+      const backHinge = new THREE.Group();
+      backHinge.position.set(0, 0, -l2);
+      const backGeo = new THREE.PlaneGeometry(p, t);
+      backGeo.rotateX(-Math.PI / 2);
+      backGeo.translate(0, 0, -t2);
+      const backMesh = new THREE.Mesh(backGeo, createFaceMaterial(0x6366F1));
+      backMesh.add(createEdgeLines(backGeo));
+      backHinge.add(backMesh);
+      shapeRootGroup.add(backHinge);
+      addFaceLabel(backMesh, 'Sisi Belakang (p &times; t)', '#6366F1', 0, 0, -t2);
+      addVertexMarker(backHinge, -p2, 0, -t);
+      addVertexMarker(backHinge,  p2, 0, -t);
+      hingeControllers.push({ group: backHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+      // Top -> Hinged to outer edge of Back (at z = -t in backHinge)
+      const topHinge = new THREE.Group();
+      topHinge.position.set(0, 0, -t);
+      const topGeo = new THREE.PlaneGeometry(p, l);
+      topGeo.rotateX(-Math.PI / 2);
+      topGeo.translate(0, 0, -l2);
+      const topMesh = new THREE.Mesh(topGeo, createFaceMaterial(0xEC4899));
+      topMesh.add(createEdgeLines(topGeo));
+      topHinge.add(topMesh);
+      backHinge.add(topHinge);
+      addFaceLabel(topMesh, 'Tutup (p &times; l)', '#EC4899', 0, 0, -l2);
+      hingeControllers.push({ group: topHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+      // Left -> Hinge at (-p2, 0, 0), extends along -X from 0 to -t
+      const leftHinge = new THREE.Group();
+      leftHinge.position.set(-p2, 0, 0);
+      const leftGeo = new THREE.PlaneGeometry(t, l);
+      leftGeo.rotateX(-Math.PI / 2);
+      leftGeo.translate(-t2, 0, 0);
+      const leftMesh = new THREE.Mesh(leftGeo, createFaceMaterial(0xF59E0B));
+      leftMesh.add(createEdgeLines(leftGeo));
+      leftHinge.add(leftMesh);
+      shapeRootGroup.add(leftHinge);
+      addFaceLabel(leftMesh, 'Sisi Kiri (l &times; t)', '#F59E0B', -t2, 0, 0);
+      hingeControllers.push({ group: leftHinge, axis: 'z', targetAngle: -Math.PI / 2 });
+
+      // Right -> Hinge at (+p2, 0, 0), extends along +X from 0 to +t
+      const rightHinge = new THREE.Group();
+      rightHinge.position.set(p2, 0, 0);
+      const rightGeo = new THREE.PlaneGeometry(t, l);
+      rightGeo.rotateX(-Math.PI / 2);
+      rightGeo.translate(t2, 0, 0);
+      const rightMesh = new THREE.Mesh(rightGeo, createFaceMaterial(0x06B6D4));
+      rightMesh.add(createEdgeLines(rightGeo));
+      rightHinge.add(rightMesh);
+      shapeRootGroup.add(rightHinge);
+      addFaceLabel(rightMesh, 'Sisi Kanan (l &times; t)', '#06B6D4', t2, 0, 0);
+      hingeControllers.push({ group: rightHinge, axis: 'z', targetAngle: Math.PI / 2 });
+    }
+
+    // 3. PRISMA SEGITIGA
+    function buildPrisma() {
+      clearCurrentModel();
+      const a = 2.4, h = 3.0;
+      const hTri = (Math.sqrt(3) / 2) * a;
+      const a2 = a / 2, h2 = h / 2;
+
+      // Base
+      const baseGeo = new THREE.PlaneGeometry(a, h);
+      baseGeo.rotateX(-Math.PI / 2);
+      const baseMesh = new THREE.Mesh(baseGeo, createFaceMaterial(0x3B82F6));
+      baseMesh.add(createEdgeLines(baseGeo));
+      shapeRootGroup.add(baseMesh);
+      addFaceLabel(baseMesh, 'Alas Bawah', '#3B82F6', 0, 0, 0);
+
+      // 4 Base Vertices
+      addVertexMarker(baseMesh, -a2, 0, -h2);
+      addVertexMarker(baseMesh,  a2, 0, -h2);
+      addVertexMarker(baseMesh,  a2, 0,  h2);
+      addVertexMarker(baseMesh, -a2, 0,  h2);
+
+      // Front Triangle -> Hinge at (0, 0, +h2)
+      // In flat state (100%), apex points OUTWARD in +Z: (0, 0, +hTri)
+      const frontHinge = new THREE.Group();
+      frontHinge.position.set(0, 0, h2);
+      const frontGeo = makeCustomTriGeo([-a2, 0, 0], [a2, 0, 0], [0, 0, hTri]);
+      const frontMesh = new THREE.Mesh(frontGeo, createFaceMaterial(0xF59E0B));
+      frontMesh.add(createEdgeLines(frontGeo));
+      frontHinge.add(frontMesh);
+      shapeRootGroup.add(frontHinge);
+      addFaceLabel(frontMesh, 'Segitiga Depan', '#F59E0B', 0, 0, hTri / 3);
+      addVertexMarker(frontHinge, 0, 0, hTri);
+      // Rotates -90 deg around X to stand vertical at z = +h2
+      hingeControllers.push({ group: frontHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+      // Back Triangle -> Hinge at (0, 0, -h2)
+      // In flat state (100%), apex points OUTWARD in -Z: (0, 0, -hTri)
+      const backHinge = new THREE.Group();
+      backHinge.position.set(0, 0, -h2);
+      const backGeo = makeCustomTriGeo([a2, 0, 0], [-a2, 0, 0], [0, 0, -hTri]);
+      const backMesh = new THREE.Mesh(backGeo, createFaceMaterial(0xF59E0B));
+      backMesh.add(createEdgeLines(backGeo));
+      backHinge.add(backMesh);
+      shapeRootGroup.add(backHinge);
+      addFaceLabel(backMesh, 'Segitiga Belakang', '#F59E0B', 0, 0, -hTri / 3);
+      addVertexMarker(backHinge, 0, 0, -hTri);
+      // Rotates +90 deg around X to stand vertical at z = -h2
+      hingeControllers.push({ group: backHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+      // Left Slanted Roof Face -> Hinge at (-a2, 0, 0)
+      // In flat state (100%), extends from 0 to -a in X
+      const leftHinge = new THREE.Group();
+      leftHinge.position.set(-a2, 0, 0);
+      const leftGeo = new THREE.PlaneGeometry(a, h);
+      leftGeo.rotateX(-Math.PI / 2);
+      leftGeo.translate(-a2, 0, 0);
+      const leftMesh = new THREE.Mesh(leftGeo, createFaceMaterial(0x10B981));
+      leftMesh.add(createEdgeLines(leftGeo));
+      leftHinge.add(leftMesh);
+      shapeRootGroup.add(leftHinge);
+      addFaceLabel(leftMesh, 'Sisi Miring Kiri', '#10B981', -a2, 0, 0);
+      // Rotates -120 deg around Z to meet the ridge at (0, hTri)
+      hingeControllers.push({ group: leftHinge, axis: 'z', targetAngle: -2 * Math.PI / 3 });
+
+      // Right Slanted Roof Face -> Hinge at (+a2, 0, 0)
+      // In flat state (100%), extends from 0 to +a in X
+      const rightHinge = new THREE.Group();
+      rightHinge.position.set(a2, 0, 0);
+      const rightGeo = new THREE.PlaneGeometry(a, h);
+      rightGeo.rotateX(-Math.PI / 2);
+      rightGeo.translate(a2, 0, 0);
+      const rightMesh = new THREE.Mesh(rightGeo, createFaceMaterial(0xEC4899));
+      rightMesh.add(createEdgeLines(rightGeo));
+      rightHinge.add(rightMesh);
+      shapeRootGroup.add(rightHinge);
+      addFaceLabel(rightMesh, 'Sisi Miring Kanan', '#EC4899', a2, 0, 0);
+      // Rotates +120 deg around Z to meet the ridge at (0, hTri)
+      hingeControllers.push({ group: rightHinge, axis: 'z', targetAngle: 2 * Math.PI / 3 });
+    }
+
+    // 4. LIMAS SEGI EMPAT
+    function buildLimas() {
+      clearCurrentModel();
+      const s = 2.4, H = 2.2;
+      const s2 = s / 2;
+      const L = Math.sqrt(H * H + s2 * s2); // ~2.50599
+      const alpha = Math.atan2(H, s2);      // ~61.39 deg
+      const foldAngle = Math.PI - alpha;    // ~118.61 deg
+
+      // Base
+      const baseGeo = new THREE.PlaneGeometry(s, s);
+      baseGeo.rotateX(-Math.PI / 2);
+      const baseMesh = new THREE.Mesh(baseGeo, createFaceMaterial(0x3B82F6));
+      baseMesh.add(createEdgeLines(baseGeo));
+      shapeRootGroup.add(baseMesh);
+      addFaceLabel(baseMesh, 'Alas Persegi', '#3B82F6', 0, 0, 0);
+
+      // 4 Base Vertices
+      addVertexMarker(baseMesh, -s2, 0, -s2);
+      addVertexMarker(baseMesh,  s2, 0, -s2);
+      addVertexMarker(baseMesh,  s2, 0,  s2);
+      addVertexMarker(baseMesh, -s2, 0,  s2);
+
+      // South Triangle (Depan, +Z) -> Hinge at (0, 0, +s2)
+      // In flat state (100%), apex points OUTWARD in +Z: (0, 0, +L)
+      const southHinge = new THREE.Group();
+      southHinge.position.set(0, 0, s2);
+      const southGeo = makeCustomTriGeo([-s2, 0, 0], [s2, 0, 0], [0, 0, L]);
+      const southMesh = new THREE.Mesh(southGeo, createFaceMaterial(0x10B981));
+      southMesh.add(createEdgeLines(southGeo));
+      southHinge.add(southMesh);
+      shapeRootGroup.add(southHinge);
+      addFaceLabel(southMesh, 'Segitiga Depan', '#10B981', 0, 0, L / 3);
+      addVertexMarker(southHinge, 0, 0, L);
+      hingeControllers.push({ group: southHinge, axis: 'x', targetAngle: -foldAngle });
+
+      // North Triangle (Belakang, -Z) -> Hinge at (0, 0, -s2)
+      // In flat state (100%), apex points OUTWARD in -Z: (0, 0, -L)
+      const northHinge = new THREE.Group();
+      northHinge.position.set(0, 0, -s2);
+      const northGeo = makeCustomTriGeo([s2, 0, 0], [-s2, 0, 0], [0, 0, -L]);
+      const northMesh = new THREE.Mesh(northGeo, createFaceMaterial(0x6366F1));
+      northMesh.add(createEdgeLines(northGeo));
+      northHinge.add(northMesh);
+      shapeRootGroup.add(northHinge);
+      addFaceLabel(northMesh, 'Segitiga Belakang', '#6366F1', 0, 0, -L / 3);
+      addVertexMarker(northHinge, 0, 0, -L);
+      hingeControllers.push({ group: northHinge, axis: 'x', targetAngle: foldAngle });
+
+      // West Triangle (Kiri, -X) -> Hinge at (-s2, 0, 0)
+      // In flat state (100%), apex points OUTWARD in -X: (-L, 0, 0)
+      const westHinge = new THREE.Group();
+      westHinge.position.set(-s2, 0, 0);
+      const westGeo = makeCustomTriGeo([0, 0, s2], [0, 0, -s2], [-L, 0, 0]);
+      const westMesh = new THREE.Mesh(westGeo, createFaceMaterial(0xF59E0B));
+      westMesh.add(createEdgeLines(westGeo));
+      westHinge.add(westMesh);
+      shapeRootGroup.add(westHinge);
+      addFaceLabel(westMesh, 'Segitiga Kiri', '#F59E0B', -L / 3, 0, 0);
+      addVertexMarker(westHinge, -L, 0, 0);
+      hingeControllers.push({ group: westHinge, axis: 'z', targetAngle: -foldAngle });
+
+      // East Triangle (Kanan, +X) -> Hinge at (+s2, 0, 0)
+      // In flat state (100%), apex points OUTWARD in +X: (+L, 0, 0)
+      const eastHinge = new THREE.Group();
+      eastHinge.position.set(s2, 0, 0);
+      const eastGeo = makeCustomTriGeo([0, 0, -s2], [0, 0, s2], [L, 0, 0]);
+      const eastMesh = new THREE.Mesh(eastGeo, createFaceMaterial(0xEC4899));
+      eastMesh.add(createEdgeLines(eastGeo));
+      eastHinge.add(eastMesh);
+      shapeRootGroup.add(eastHinge);
+      addFaceLabel(eastMesh, 'Segitiga Kanan', '#EC4899', L / 3, 0, 0);
+      addVertexMarker(eastHinge, L, 0, 0);
+      hingeControllers.push({ group: eastHinge, axis: 'z', targetAngle: foldAngle });
+    }
+
+    function buildActiveShapeModel() {
+      if (activeShapeKey === 'kubus') buildKubus();
+      else if (activeShapeKey === 'balok') buildBalok();
+      else if (activeShapeKey === 'prisma') buildPrisma();
+      else if (activeShapeKey === 'limas') buildLimas();
+
+      if (shapeRootGroup) {
+        shapeRootGroup.traverse(child => {
+          if (child.isLineSegments) {
+            child.visible = showEdges;
+          }
+        });
+      }
+      vertexMarkers.forEach(m => { m.visible = showVertices; });
+
+      setFoldProgress(foldProgress);
+      updateInfoPanel(activeShapeKey);
+    }
+
+    // --- ANIMATION LOOP ---
+    const tempVec = new THREE.Vector3();
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // Smooth interpolation for auto-unfold / auto-fold
+      if (isAutoAnimating) {
+        const diff = targetFoldProgress - foldProgress;
+        if (Math.abs(diff) < 0.005) {
+          setFoldProgress(targetFoldProgress);
+          isAutoAnimating = false;
+        } else {
+          setFoldProgress(foldProgress + diff * 0.09);
+        }
+      }
+
+      // Loop breathing mode (Mode Otomatis)
+      if (isLoopPlaying) {
+        let next = foldProgress + loopDirection * loopSpeed;
+        if (next >= 1.0) {
+          next = 1.0;
+          loopDirection = -1;
+        } else if (next <= 0.0) {
+          next = 0.0;
+          loopDirection = 1;
+        }
+        setFoldProgress(next);
+      }
+
+      // Turntable Auto-rotate
+      if (isAutoRotating && shapeRootGroup) {
+        shapeRootGroup.rotation.y += 0.008;
+      }
+
+      controls.update();
+      renderer.render(scene, camera);
+
+      // Project 3D Face Labels to Screen Coordinates
+      if (showFaceLabels && faceLabelElements.length > 0) {
+        const container = document.getElementById('threeCanvasContainer');
+        const width = container.clientWidth;
+        const height = container.clientHeight;
+
+        faceLabelElements.forEach(item => {
+          if (!item.anchor) return;
+          item.anchor.getWorldPosition(tempVec);
+          tempVec.project(camera);
+
+          // Check if behind camera
+          if (tempVec.z > 1) {
+            item.element.style.display = 'none';
+          } else {
+            const screenX = (tempVec.x * 0.5 + 0.5) * width;
+            const screenY = (-(tempVec.y * 0.5) + 0.5) * height;
+            item.element.style.display = 'block';
+            item.element.style.left = `${screenX}px`;
+            item.element.style.top = `${screenY}px`;
+          }
+        });
+      } else {
+        faceLabelElements.forEach(item => { item.element.style.display = 'none'; });
+      }
+    }
+
+    // --- CAMERA VIEW PRESETS ---
+    function setCameraPreset(preset) {
+      sound.playPop();
+      document.querySelectorAll('.cam-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-preset') === preset);
+      });
+
+      controls.reset();
+      if (preset === 'top') {
+        // Looking down perpendicularly on Y=0 (Best for 2D net inspection)
+        camera.position.set(0, 7.5, 0.001);
+        controls.target.set(0, 0, 0);
+      } else if (preset === 'front') {
+        camera.position.set(0, 1.2, 6.5);
+        controls.target.set(0, 0.6, 0);
+      } else if (preset === 'side') {
+        camera.position.set(6.5, 1.2, 0);
+        controls.target.set(0, 0.6, 0);
+      } else { // 'iso'
+        camera.position.set(4.5, 4.2, 5.8);
+        controls.target.set(0, 0.6, 0);
+      }
+      controls.update();
+    }
+
+    // --- SETUP EVENT LISTENERS & DOM HOOKS ---
+    document.addEventListener('DOMContentLoaded', () => {
+      initThree();
+
+      // Shape Selection Cards
+      document.querySelectorAll('.shape-card-btn').forEach(card => {
+        card.addEventListener('click', () => {
+          sound.playPop();
+          document.querySelectorAll('.shape-card-btn').forEach(c => c.classList.remove('active'));
+          card.classList.add('active');
+          activeShapeKey = card.getAttribute('data-shape');
+
+          // Reset turntable orientation
+          if (shapeRootGroup) shapeRootGroup.rotation.y = 0;
+
+          buildActiveShapeModel();
+        });
+      });
+
+      // Manual Slider Dragging
+      const slider = document.getElementById('foldRangeSlider');
+      slider.addEventListener('input', (e) => {
+        isAutoAnimating = false;
+        isLoopPlaying = false;
+        updateLoopPlayButtonUI();
+        const val = parseFloat(e.target.value) / 100.0;
+        setFoldProgress(val);
+      });
+
+      // Big Action Buttons
+      const btnBentangkan = document.getElementById('btnBentangkan');
+      btnBentangkan.addEventListener('click', () => {
+        sound.playWhoosh();
+        isLoopPlaying = false;
+        updateLoopPlayButtonUI();
+        targetFoldProgress = 1.0;
+        isAutoAnimating = true;
+      });
+
+      const btnLipat = document.getElementById('btnLipat');
+      btnLipat.addEventListener('click', () => {
+        sound.playWhoosh();
+        isLoopPlaying = false;
+        updateLoopPlayButtonUI();
+        targetFoldProgress = 0.0;
+        isAutoAnimating = true;
+      });
+
+      // Camera Preset Buttons
+      document.querySelectorAll('.cam-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const preset = btn.getAttribute('data-preset');
+          setCameraPreset(preset);
+        });
+      });
+
+      // Turntable Auto Rotate Toggle
+      const btnRotate = document.getElementById('btnToggleRotate');
+      btnRotate.addEventListener('click', () => {
+        sound.playPop();
+        isAutoRotating = !isAutoRotating;
+        btnRotate.classList.toggle('active', isAutoRotating);
+      });
+
+      // Reset View Button
+      const btnReset = document.getElementById('btnResetView');
+      btnReset.addEventListener('click', () => {
+        sound.playPop();
+        setCameraPreset('iso');
+        if (shapeRootGroup) shapeRootGroup.rotation.y = 0;
+      });
+
+      // Toggles for Unsur Bangun Ruang
+      const toggleLabels = document.getElementById('toggleFaceLabels');
+      toggleLabels.addEventListener('click', () => {
+        sound.playPop();
+        showFaceLabels = !showFaceLabels;
+        toggleLabels.classList.toggle('checked', showFaceLabels);
+      });
+
+      const toggleEdgesBtn = document.getElementById('toggleEdges');
+      toggleEdgesBtn.addEventListener('click', () => {
+        sound.playPop();
+        showEdges = !showEdges;
+        toggleEdgesBtn.classList.toggle('checked', showEdges);
+        // Traverse shape and toggle lines
+        if (shapeRootGroup) {
+          shapeRootGroup.traverse(child => {
+            if (child.isLineSegments) {
+              child.visible = showEdges;
+            }
+          });
+        }
+      });
+
+      const toggleVerticesBtn = document.getElementById('toggleVertices');
+      toggleVerticesBtn.addEventListener('click', () => {
+        sound.playPop();
+        showVertices = !showVertices;
+        toggleVerticesBtn.classList.toggle('checked', showVertices);
+        vertexMarkers.forEach(m => { m.visible = showVertices; });
+      });
+
+      // Auto Loop Mode Play/Pause
+      const btnLoop = document.getElementById('btnAutoPlayToggle');
+      function updateLoopPlayButtonUI() {
+        if (isLoopPlaying) {
+          btnLoop.innerHTML = '<i class="fa-solid fa-pause"></i> Jeda';
+          btnLoop.classList.add('primary');
+        } else {
+          btnLoop.innerHTML = '<i class="fa-solid fa-play"></i> Putar Otomatis';
+          btnLoop.classList.remove('primary');
+        }
+      }
+      btnLoop.addEventListener('click', () => {
+        sound.playPop();
+        isLoopPlaying = !isLoopPlaying;
+        isAutoAnimating = false;
+        updateLoopPlayButtonUI();
+      });
+
+      // Speed selectors
+      document.querySelectorAll('.auto-speed-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          sound.playPop();
+          document.querySelectorAll('.auto-speed-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          loopSpeed = parseFloat(btn.getAttribute('data-speed'));
+        });
+      });
+
+      // Sound Toggle
+      const btnSound = document.getElementById('btnSoundToggle');
+      btnSound.addEventListener('click', () => {
+        sound.enabled = !sound.enabled;
+        btnSound.innerHTML = sound.enabled
+          ? '<i class="fa-solid fa-volume-high"></i> <span>Suara</span>'
+          : '<i class="fa-solid fa-volume-xmark"></i> <span>Bisu</span>';
+        if (sound.enabled) sound.playPop();
+      });
+
+      // Fullscreen Toggle
+      const btnFull = document.getElementById('btnFullscreenToggle');
+      btnFull.addEventListener('click', () => {
+        sound.playPop();
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+          btnFull.innerHTML = '<i class="fa-solid fa-compress"></i> <span>Keluar</span>';
+        } else {
+          if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+          btnFull.innerHTML = '<i class="fa-solid fa-expand"></i> <span>Layar Penuh</span>';
+        }
+      });
+
+      // Help Modal
+      const modal = document.getElementById('helpModalBackdrop');
+      const openModalBtn = document.getElementById('btnHelpModal');
+      const closeModalBtn = document.getElementById('btnCloseModal');
+      const understandBtn = document.getElementById('btnModalUnderstand');
+
+      function openModal() {
+        sound.playPop();
+        modal.classList.add('open');
+      }
+      function closeModal() {
+        sound.playPop();
+        modal.classList.remove('open');
+      }
+
+      openModalBtn.addEventListener('click', openModal);
+      closeModalBtn.addEventListener('click', closeModal);
+      understandBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+    });
+  </script>
+</body>
+</html>
