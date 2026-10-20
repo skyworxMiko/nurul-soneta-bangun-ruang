@@ -1043,10 +1043,46 @@
             <span class="shape-card-sub">2 Segitiga + 3 Persegi</span>
           </button>
 
+          <button class="shape-card-btn" data-shape="limas_segitiga">
+            <span class="shape-card-icon">🔻</span>
+            <span class="shape-card-name">Limas Segitiga</span>
+            <span class="shape-card-sub">4 Segitiga Sama Sisi</span>
+          </button>
+
           <button class="shape-card-btn" data-shape="limas">
             <span class="shape-card-icon">🔺</span>
             <span class="shape-card-name">Limas Segi Empat</span>
             <span class="shape-card-sub">1 Persegi + 4 Segitiga</span>
+          </button>
+
+          <button class="shape-card-btn" data-shape="prisma_lima">
+            <span class="shape-card-icon">🏛️</span>
+            <span class="shape-card-name">Prisma Segi Lima</span>
+            <span class="shape-card-sub">2 Segi Lima + 5 Persegi</span>
+          </button>
+
+          <button class="shape-card-btn" data-shape="limas_lima">
+            <span class="shape-card-icon">💎</span>
+            <span class="shape-card-name">Limas Segi Lima</span>
+            <span class="shape-card-sub">1 Segi Lima + 5 Segitiga</span>
+          </button>
+
+          <button class="shape-card-btn" data-shape="prisma_enam">
+            <span class="shape-card-icon">🛑</span>
+            <span class="shape-card-name">Prisma Segi Enam</span>
+            <span class="shape-card-sub">2 Segi Enam + 6 Persegi</span>
+          </button>
+
+          <button class="shape-card-btn" data-shape="limas_enam">
+            <span class="shape-card-icon">🎪</span>
+            <span class="shape-card-name">Limas Segi Enam</span>
+            <span class="shape-card-sub">1 Segi Enam + 6 Segitiga</span>
+          </button>
+
+          <button class="shape-card-btn" data-shape="tabung">
+            <span class="shape-card-icon">🛢️</span>
+            <span class="shape-card-name">Tabung (Silinder)</span>
+            <span class="shape-card-sub">2 Lingkaran + Selimut</span>
           </button>
         </div>
       </div>
@@ -1243,61 +1279,106 @@
     const SHAPES_INFO = {
       kubus: {
         title: 'Kubus',
-        badge: '6 Persegi',
-        sisi: '6 Bidang Persegi',
+        emoji: '🎲',
+        sisi: '6 Persegi Identik',
         rusuk: '12 Rusuk Sama Panjang',
         sudut: '8 Titik Sudut',
-        tip: '<strong>Jaring-Jaring Kubus:</strong> Terdiri dari 6 buah persegi kongruen (sama dan sebangun). Ketika semua sisi tegak dilipat 90° ke atas dan sisi tutup dilipat menutup bagian atas, kubus terbentuk sempurna tanpa celah!',
+        tip: '<strong>Jaring-Jaring Kubus:</strong> Terdiri dari 6 bujur sangkar (persegi) yang kongruen. Saat semua sisi tegak dilipat 90° ke atas dan tutup dilipat menutup atas, terbentuk kubus 3D sempurna tanpa celah!',
         luas: 'L = 6 &times; s&sup2;',
-        vol: 'V = s &times; s &times; s (s&sup3;)'
+        vol: 'V = s &times; s &times; s'
       },
       balok: {
         title: 'Balok',
-        badge: '6 Persegi Panjang',
-        sisi: '6 Persegi Panjang (3 Pasang)',
-        rusuk: '12 Rusuk (4p, 4l, 4t)',
+        emoji: '📦',
+        sisi: '6 Persegi Panjang',
+        rusuk: '12 Rusuk (3 Pasang Sejajar)',
         sudut: '8 Titik Sudut',
-        tip: '<strong>Jaring-Jaring Balok:</strong> Memiliki 3 pasang persegi panjang yang saling berhadapan dan berukuran sama: alas-tutup (p&times;l), depan-belakang (p&times;t), dan kiri-kanan (l&times;t). Semua rusuk yang bersesuaian akan bertemu pas!',
+        tip: '<strong>Jaring-Jaring Balok:</strong> Memiliki 3 pasang persegi panjang berhadapan: alas-tutup (p&times;l), depan-belakang (p&times;t), dan kiri-kanan (l&times;t). Semua rusuk yang bersesuaian akan bertemu pas membentuk balok utuh!',
         luas: 'L = 2 &times; (pl + pt + lt)',
         vol: 'V = p &times; l &times; t'
       },
       prisma: {
         title: 'Prisma Segitiga',
-        badge: '2 Segitiga + 3 Persegi',
+        emoji: '⛺',
         sisi: '5 Sisi (2 Segitiga, 3 Persegi)',
         rusuk: '9 Rusuk',
         sudut: '6 Titik Sudut',
-        tip: '<strong>Jaring-Jaring Prisma Segitiga:</strong> Memiliki 2 bidang alas dan tutup berbentuk segitiga yang sejajar serta 3 sisi tegak berbentuk persegi panjang. Saat kedua sisi miring dilipat 60° dan kedua segitiga dilipat 90°, terbentuk atap tenda prisma!',
+        tip: '<strong>Jaring-Jaring Prisma Segitiga:</strong> Memiliki 2 bidang alas segitiga sejajar serta 3 sisi tegak persegi panjang. Saat kedua sisi miring dilipat 120° dan kedua segitiga dilipat 90°, terbentuk atap prisma tanpa celah!',
         luas: 'L = (2 &times; L_alas) + (Keliling &times; t)',
         vol: 'V = Luas Alas &times; Tinggi'
       },
+      limas_segitiga: {
+        title: 'Limas Segitiga (Tetrahedron)',
+        emoji: '🔻',
+        sisi: '4 Segitiga Sama Sisi',
+        rusuk: '6 Rusuk',
+        sudut: '4 Titik Sudut',
+        tip: '<strong>Jaring-Jaring Limas Segitiga:</strong> Terdiri dari 4 buah segitiga sama sisi yang kongruen. Ketika ketiga segitiga selimut dilipat ke atas sebesar 109.47°, ketiga puncaknya bertemu tepat membentuk 1 titik puncak!',
+        luas: 'L = 4 &times; L_segitiga',
+        vol: 'V = 1/3 &times; Luas Alas &times; Tinggi'
+      },
       limas: {
         title: 'Limas Segi Empat',
-        badge: '1 Persegi + 4 Segitiga',
+        emoji: '🔺',
         sisi: '5 Sisi (1 Persegi, 4 Segitiga)',
-        rusuk: '8 Rusuk (4 alas, 4 rusuk tegak)',
-        sudut: '5 Titik Sudut (1 Puncak)',
-        tip: '<strong>Jaring-Jaring Limas Segi Empat:</strong> Memiliki 1 bidang alas persegi di tengah dan 4 segitiga selimut yang mengelilinginya (membentuk pola bunga/bintang). Keempat puncak segitiga akan menyatu tepat di 1 titik puncak!',
+        rusuk: '8 Rusuk',
+        sudut: '5 Titik Sudut',
+        tip: '<strong>Jaring-Jaring Limas Segi Empat:</strong> Memiliki 1 alas persegi di tengah dan 4 segitiga selimut mengelilinginya (pola bintang). Keempat puncak segitiga menyatu tepat di 1 titik puncak pada sumbu tengah!',
         luas: 'L = Luas Alas + (4 &times; L_segitiga)',
         vol: 'V = 1/3 &times; Luas Alas &times; Tinggi'
+      },
+      prisma_lima: {
+        title: 'Prisma Segi Lima',
+        emoji: '🏛️',
+        sisi: '7 Sisi (2 Segi Lima, 5 Persegi)',
+        rusuk: '15 Rusuk',
+        sudut: '10 Titik Sudut',
+        tip: '<strong>Jaring-Jaring Prisma Segi Lima:</strong> Terdiri dari 2 buah segi lima beraturan sebagai alas dan tutup, serta 5 buah persegi panjang sisi tegak. Saat semua sisi dilipat 90° ke atas, semua rusuk bertemu rapat!',
+        luas: 'L = (2 &times; L_alas) + (5 &times; s &times; t)',
+        vol: 'V = Luas Alas &times; Tinggi'
+      },
+      limas_lima: {
+        title: 'Limas Segi Lima',
+        emoji: '💎',
+        sisi: '6 Sisi (1 Segi Lima, 5 Segitiga)',
+        rusuk: '10 Rusuk',
+        sudut: '6 Titik Sudut',
+        tip: '<strong>Jaring-Jaring Limas Segi Lima:</strong> Terdiri dari 1 alas segi lima beraturan di tengah dan 5 segitiga sama kaki di sekelilingnya. Kelima puncak segitiga menyatu presisi di 1 titik puncak!',
+        luas: 'L = Luas Alas + (5 &times; L_segitiga)',
+        vol: 'V = 1/3 &times; Luas Alas &times; Tinggi'
+      },
+      prisma_enam: {
+        title: 'Prisma Segi Enam',
+        emoji: '🛑',
+        sisi: '8 Sisi (2 Segi Enam, 6 Persegi)',
+        rusuk: '18 Rusuk',
+        sudut: '12 Titik Sudut',
+        tip: '<strong>Jaring-Jaring Prisma Segi Enam:</strong> Terdiri dari 2 segi enam beraturan sebagai alas dan tutup, serta 6 persegi panjang sisi tegak. Bentuk heksagonal ini kerap ditemui pada sarang lebah dan pensil!',
+        luas: 'L = (2 &times; L_alas) + (6 &times; s &times; t)',
+        vol: 'V = Luas Alas &times; Tinggi'
+      },
+      limas_enam: {
+        title: 'Limas Segi Enam',
+        emoji: '🎪',
+        sisi: '7 Sisi (1 Segi Enam, 6 Segitiga)',
+        rusuk: '12 Rusuk',
+        sudut: '7 Titik Sudut',
+        tip: '<strong>Jaring-Jaring Limas Segi Enam:</strong> Terdiri dari 1 alas segi enam beraturan dan 6 segitiga sama kaki. Saat dilipat, keenam puncak segitiga bertemu tepat pada satu titik puncak!',
+        luas: 'L = Luas Alas + (6 &times; L_segitiga)',
+        vol: 'V = 1/3 &times; Luas Alas &times; Tinggi'
+      },
+      tabung: {
+        title: 'Tabung (Silinder)',
+        emoji: '🛢️',
+        sisi: '3 Sisi (2 Lingkaran, 1 Selimut)',
+        rusuk: '2 Rusuk Lengkung',
+        sudut: '0 Titik Sudut',
+        tip: '<strong>Jaring-Jaring Tabung:</strong> Terdiri dari 2 lingkaran identik (alas dan tutup) serta 1 persegi panjang selimut tabung. Ketika selimut melengkung dan kedua lingkaran menutup, terbentuk tabung sempurna!',
+        luas: 'L = 2 &times; &pi; &times; r &times; (r + t)',
+        vol: 'V = &pi; &times; r&sup2; &times; t'
       }
     };
 
-    // --- State Variables ---
-    let activeShapeKey = 'kubus';
-    let foldProgress = 0.0; // 0.0 = fully closed 3D, 1.0 = fully flat 2D net
-    let targetFoldProgress = 0.0;
-    let isAutoAnimating = false;
-    let isAutoRotating = false;
-    let isLoopPlaying = false;
-    let loopSpeed = 0.012;
-    let loopDirection = 1;
-
-    let showFaceLabels = true;
-    let showEdges = true;
-    let showVertices = true;
-
-    // Three.js Core Objects
     let scene, camera, renderer, controls;
     let shapeRootGroup = null;
     let hingeControllers = []; // Array of { group, axis, minAngle, maxAngle, nested }
@@ -1401,6 +1482,7 @@
     }
 
     function createThickEdgeLines(geometry, color = 0x0F172A) {
+
       const edges = new THREE.EdgesGeometry(geometry);
       const line = new THREE.LineSegments(
         edges,
@@ -1408,6 +1490,7 @@
       );
       return line;
     }
+    const createEdgeLines = createThickEdgeLines;
 
     function createVertexSphere(x, y, z) {
       const geo = new THREE.SphereGeometry(0.08, 16, 16);
@@ -1426,6 +1509,8 @@
     // --- 3D SHAPE BUILDER FACTORIES (Hierarchical Exact Folding) ---
 
         let vertexMarkers = [];
+
+        
 
     function makeCustomTriGeo(p1, p2, p3) {
       const geo = new THREE.BufferGeometry();
@@ -1825,11 +1910,425 @@
       hingeControllers.push({ group: eastHinge, axis: 'z', targetAngle: foldAngle });
     }
 
+    
+    // 5. LIMAS SEGITIGA (TETRAHEDRON REGULER)
+    function buildLimasSegitiga() {
+      clearCurrentModel();
+      const a = 2.6;
+      const hTri = (Math.sqrt(3) / 2) * a;
+      const r = hTri / 3;
+      const R = (2 * hTri) / 3;
+      const dihedral = Math.acos(1 / 3);
+      const foldAngle = Math.PI - dihedral;
+
+      // Alas Segitiga
+      const baseGeo = makeCustomTriGeo([0, 0, -R], [a / 2, 0, r], [-a / 2, 0, r]);
+      const baseMesh = new THREE.Mesh(baseGeo, createFaceMaterial(0x3B82F6));
+      baseMesh.add(createThickEdgeLines(baseGeo));
+      shapeRootGroup.add(baseMesh);
+      addFaceLabel(baseMesh, 'Alas Segitiga', '#3B82F6', 0, 0, 0);
+
+      addVertexMarker(baseMesh, 0, 0, -R);
+      addVertexMarker(baseMesh, a / 2, 0, r);
+      addVertexMarker(baseMesh, -a / 2, 0, r);
+
+      // Sisi Depan
+      const southAnchor = new THREE.Group();
+      southAnchor.position.set(0, 0, r);
+      shapeRootGroup.add(southAnchor);
+      const southHinge = new THREE.Group();
+      southAnchor.add(southHinge);
+
+      const southGeo = makeCustomTriGeo([-a / 2, 0, 0], [a / 2, 0, 0], [0, 0, hTri]);
+      const southMesh = new THREE.Mesh(southGeo, createFaceMaterial(0x10B981));
+      southMesh.add(createThickEdgeLines(southGeo));
+      southHinge.add(southMesh);
+      addFaceLabel(southMesh, 'Sisi Depan', '#10B981', 0, 0, hTri / 3);
+      addVertexMarker(southHinge, 0, 0, hTri);
+      hingesList.push({ group: southHinge, axis: 'x', targetAngle: -foldAngle });
+
+      // Sisi Kanan
+      const neAnchor = new THREE.Group();
+      neAnchor.position.set(r * Math.sin((2 * Math.PI) / 3), 0, r * Math.cos((2 * Math.PI) / 3));
+      neAnchor.rotation.y = (2 * Math.PI) / 3;
+      shapeRootGroup.add(neAnchor);
+      const neHinge = new THREE.Group();
+      neAnchor.add(neHinge);
+
+      const neGeo = makeCustomTriGeo([-a / 2, 0, 0], [a / 2, 0, 0], [0, 0, hTri]);
+      const neMesh = new THREE.Mesh(neGeo, createFaceMaterial(0xEC4899));
+      neMesh.add(createThickEdgeLines(neGeo));
+      neHinge.add(neMesh);
+      addFaceLabel(neMesh, 'Sisi Kanan', '#EC4899', 0, 0, hTri / 3);
+      hingesList.push({ group: neHinge, axis: 'x', targetAngle: -foldAngle });
+
+      // Sisi Kiri
+      const nwAnchor = new THREE.Group();
+      nwAnchor.position.set(r * Math.sin(-(2 * Math.PI) / 3), 0, r * Math.cos(-(2 * Math.PI) / 3));
+      nwAnchor.rotation.y = -(2 * Math.PI) / 3;
+      shapeRootGroup.add(nwAnchor);
+      const nwHinge = new THREE.Group();
+      nwAnchor.add(nwHinge);
+
+      const nwGeo = makeCustomTriGeo([-a / 2, 0, 0], [a / 2, 0, 0], [0, 0, hTri]);
+      const nwMesh = new THREE.Mesh(nwGeo, createFaceMaterial(0xF59E0B));
+      nwMesh.add(createThickEdgeLines(nwGeo));
+      nwHinge.add(nwMesh);
+      addFaceLabel(nwMesh, 'Sisi Kiri', '#F59E0B', 0, 0, hTri / 3);
+      hingesList.push({ group: nwHinge, axis: 'x', targetAngle: -foldAngle });
+    }
+
+    // 6. PRISMA SEGI LIMA
+    function buildPrismaLima() {
+      clearCurrentModel();
+      const sides = 5, s = 1.4, h = 2.4;
+      const beta = (2 * Math.PI) / sides;
+      const r = s / (2 * Math.tan(beta / 2));
+
+      const baseGeo = makeNGonGeometry(sides, s, false);
+      const baseMesh = new THREE.Mesh(baseGeo, createFaceMaterial(0x3B82F6));
+      baseMesh.add(createThickEdgeLines(baseGeo));
+      shapeRootGroup.add(baseMesh);
+      addFaceLabel(baseMesh, 'Alas Segi Lima', '#3B82F6', 0, 0, 0);
+
+      for (let k = 0; k < sides; k++) {
+        const x = r * Math.sin(k * beta) - (s / 2) * Math.cos(k * beta);
+        const z = r * Math.cos(k * beta) + (s / 2) * Math.sin(k * beta);
+        addVertexMarker(baseMesh, x, 0, z);
+      }
+
+      const colors = [0x10B981, 0x6366F1, 0xEC4899, 0xF59E0B, 0x06B6D4];
+      const hexColors = ['#10B981', '#6366F1', '#EC4899', '#F59E0B', '#06B6D4'];
+
+      for (let k = 0; k < sides; k++) {
+        const phi = k * beta;
+
+        const anchor = new THREE.Group();
+        anchor.position.set(r * Math.sin(phi), 0, r * Math.cos(phi));
+        anchor.rotation.y = phi;
+        shapeRootGroup.add(anchor);
+
+        const hinge = new THREE.Group();
+        anchor.add(hinge);
+
+        const wallGeo = new THREE.PlaneGeometry(s, h);
+        wallGeo.rotateX(-Math.PI / 2);
+        wallGeo.translate(0, 0, h / 2);
+        const wallMesh = new THREE.Mesh(wallGeo, createFaceMaterial(colors[k % colors.length]));
+        wallMesh.add(createThickEdgeLines(wallGeo));
+        hinge.add(wallMesh);
+        addFaceLabel(wallMesh, 'Dinding ' + (k + 1), hexColors[k % hexColors.length], 0, 0, h / 2);
+
+        hingesList.push({ group: hinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+        if (k === 0) {
+          const topHinge = new THREE.Group();
+          topHinge.position.set(0, 0, h);
+          const topGeo = makeNGonGeometry(sides, s, true);
+          const topMesh = new THREE.Mesh(topGeo, createFaceMaterial(0x8B5CF6));
+          topMesh.add(createThickEdgeLines(topGeo));
+          topHinge.add(topMesh);
+          hinge.add(topHinge);
+          addFaceLabel(topMesh, 'Tutup Segi Lima', '#8B5CF6', 0, 0, r);
+          hingesList.push({ group: topHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+          for (let j = 0; j < sides; j++) {
+            const tx = r * Math.sin(j * beta) - (s / 2) * Math.cos(j * beta);
+            const tz = r - (r * Math.cos(j * beta) + (s / 2) * Math.sin(j * beta));
+            addVertexMarker(topHinge, tx, 0, tz);
+          }
+        }
+      }
+    }
+
+    // 7. LIMAS SEGI LIMA
+    function buildLimasLima() {
+      clearCurrentModel();
+      const sides = 5, s = 1.5, H = 2.2;
+      const beta = (2 * Math.PI) / sides;
+      const r = s / (2 * Math.tan(beta / 2));
+      const L = Math.hypot(H, r);
+      const alpha = Math.atan2(H, r);
+      const foldAngle = Math.PI - alpha;
+
+      const baseGeo = makeNGonGeometry(sides, s, false);
+      const baseMesh = new THREE.Mesh(baseGeo, createFaceMaterial(0x3B82F6));
+      baseMesh.add(createThickEdgeLines(baseGeo));
+      shapeRootGroup.add(baseMesh);
+      addFaceLabel(baseMesh, 'Alas Segi Lima', '#3B82F6', 0, 0, 0);
+
+      for (let k = 0; k < sides; k++) {
+        const x = r * Math.sin(k * beta) - (s / 2) * Math.cos(k * beta);
+        const z = r * Math.cos(k * beta) + (s / 2) * Math.sin(k * beta);
+        addVertexMarker(baseMesh, x, 0, z);
+      }
+
+      const colors = [0x10B981, 0x6366F1, 0xEC4899, 0xF59E0B, 0x06B6D4];
+      const hexColors = ['#10B981', '#6366F1', '#EC4899', '#F59E0B', '#06B6D4'];
+
+      for (let k = 0; k < sides; k++) {
+        const phi = k * beta;
+
+        const anchor = new THREE.Group();
+        anchor.position.set(r * Math.sin(phi), 0, r * Math.cos(phi));
+        anchor.rotation.y = phi;
+        shapeRootGroup.add(anchor);
+
+        const hinge = new THREE.Group();
+        anchor.add(hinge);
+
+        const triGeo = makeCustomTriGeo([-s / 2, 0, 0], [s / 2, 0, 0], [0, 0, L]);
+        const triMesh = new THREE.Mesh(triGeo, createFaceMaterial(colors[k % colors.length]));
+        triMesh.add(createThickEdgeLines(triGeo));
+        hinge.add(triMesh);
+        addFaceLabel(triMesh, 'Segitiga ' + (k + 1), hexColors[k % hexColors.length], 0, 0, L / 3);
+
+        if (k === 0) {
+          addVertexMarker(hinge, 0, 0, L);
+        }
+
+        hingesList.push({ group: hinge, axis: 'x', targetAngle: -foldAngle });
+      }
+    }
+
+    // 8. PRISMA SEGI ENAM
+    function buildPrismaEnam() {
+      clearCurrentModel();
+      const sides = 6, s = 1.3, h = 2.4;
+      const beta = (2 * Math.PI) / sides;
+      const r = (s * Math.sqrt(3)) / 2;
+
+      const baseGeo = makeNGonGeometry(sides, s, false);
+      const baseMesh = new THREE.Mesh(baseGeo, createFaceMaterial(0x3B82F6));
+      baseMesh.add(createThickEdgeLines(baseGeo));
+      shapeRootGroup.add(baseMesh);
+      addFaceLabel(baseMesh, 'Alas Segi Enam', '#3B82F6', 0, 0, 0);
+
+      for (let k = 0; k < sides; k++) {
+        const x = r * Math.sin(k * beta) - (s / 2) * Math.cos(k * beta);
+        const z = r * Math.cos(k * beta) + (s / 2) * Math.sin(k * beta);
+        addVertexMarker(baseMesh, x, 0, z);
+      }
+
+      const colors = [0x10B981, 0x6366F1, 0xEC4899, 0xF59E0B, 0x06B6D4, 0x8B5CF6];
+      const hexColors = ['#10B981', '#6366F1', '#EC4899', '#F59E0B', '#06B6D4', '#8B5CF6'];
+
+      for (let k = 0; k < sides; k++) {
+        const phi = k * beta;
+
+        const anchor = new THREE.Group();
+        anchor.position.set(r * Math.sin(phi), 0, r * Math.cos(phi));
+        anchor.rotation.y = phi;
+        shapeRootGroup.add(anchor);
+
+        const hinge = new THREE.Group();
+        anchor.add(hinge);
+
+        const wallGeo = new THREE.PlaneGeometry(s, h);
+        wallGeo.rotateX(-Math.PI / 2);
+        wallGeo.translate(0, 0, h / 2);
+        const wallMesh = new THREE.Mesh(wallGeo, createFaceMaterial(colors[k % colors.length]));
+        wallMesh.add(createThickEdgeLines(wallGeo));
+        hinge.add(wallMesh);
+        addFaceLabel(wallMesh, 'Dinding ' + (k + 1), hexColors[k % hexColors.length], 0, 0, h / 2);
+
+        hingesList.push({ group: hinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+        if (k === 0) {
+          const topHinge = new THREE.Group();
+          topHinge.position.set(0, 0, h);
+          const topGeo = makeNGonGeometry(sides, s, true);
+          const topMesh = new THREE.Mesh(topGeo, createFaceMaterial(0xEC4899));
+          topMesh.add(createThickEdgeLines(topGeo));
+          topHinge.add(topMesh);
+          hinge.add(topHinge);
+          addFaceLabel(topMesh, 'Tutup Segi Enam', '#EC4899', 0, 0, r);
+          hingesList.push({ group: topHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+          for (let j = 0; j < sides; j++) {
+            const tx = r * Math.sin(j * beta) - (s / 2) * Math.cos(j * beta);
+            const tz = r - (r * Math.cos(j * beta) + (s / 2) * Math.sin(j * beta));
+            addVertexMarker(topHinge, tx, 0, tz);
+          }
+        }
+      }
+    }
+
+    // 9. LIMAS SEGI ENAM
+    function buildLimasEnam() {
+      clearCurrentModel();
+      const sides = 6, s = 1.3, H = 2.4;
+      const beta = (2 * Math.PI) / sides;
+      const r = (s * Math.sqrt(3)) / 2;
+      const L = Math.hypot(H, r);
+      const alpha = Math.atan2(H, r);
+      const foldAngle = Math.PI - alpha;
+
+      const baseGeo = makeNGonGeometry(sides, s, false);
+      const baseMesh = new THREE.Mesh(baseGeo, createFaceMaterial(0x3B82F6));
+      baseMesh.add(createThickEdgeLines(baseGeo));
+      shapeRootGroup.add(baseMesh);
+      addFaceLabel(baseMesh, 'Alas Segi Enam', '#3B82F6', 0, 0, 0);
+
+      for (let k = 0; k < sides; k++) {
+        const x = r * Math.sin(k * beta) - (s / 2) * Math.cos(k * beta);
+        const z = r * Math.cos(k * beta) + (s / 2) * Math.sin(k * beta);
+        addVertexMarker(baseMesh, x, 0, z);
+      }
+
+      const colors = [0x10B981, 0x6366F1, 0xEC4899, 0xF59E0B, 0x06B6D4, 0x8B5CF6];
+      const hexColors = ['#10B981', '#6366F1', '#EC4899', '#F59E0B', '#06B6D4', '#8B5CF6'];
+
+      for (let k = 0; k < sides; k++) {
+        const phi = k * beta;
+
+        const anchor = new THREE.Group();
+        anchor.position.set(r * Math.sin(phi), 0, r * Math.cos(phi));
+        anchor.rotation.y = phi;
+        shapeRootGroup.add(anchor);
+
+        const hinge = new THREE.Group();
+        anchor.add(hinge);
+
+        const triGeo = makeCustomTriGeo([-s / 2, 0, 0], [s / 2, 0, 0], [0, 0, L]);
+        const triMesh = new THREE.Mesh(triGeo, createFaceMaterial(colors[k % colors.length]));
+        triMesh.add(createThickEdgeLines(triGeo));
+        hinge.add(triMesh);
+        addFaceLabel(triMesh, 'Segitiga ' + (k + 1), hexColors[k % hexColors.length], 0, 0, L / 3);
+
+        if (k === 0) {
+          addVertexMarker(hinge, 0, 0, L);
+        }
+
+        hingesList.push({ group: hinge, axis: 'x', targetAngle: -foldAngle });
+      }
+    }
+
+    // 10. TABUNG (SILINDER)
+    function buildTabung() {
+      clearCurrentModel();
+      const R = 1.0, H = 2.4;
+      const M = 16;
+      const dTheta = (2 * Math.PI) / M;
+      const w = 2 * R * Math.sin(dTheta / 2);
+      const r = R * Math.cos(dTheta / 2);
+
+      const p0Geo = new THREE.PlaneGeometry(w, H);
+      p0Geo.rotateX(-Math.PI / 2);
+      const p0Mesh = new THREE.Mesh(p0Geo, createFaceMaterial(0x10B981));
+      p0Mesh.add(createThickEdgeLines(p0Geo));
+      shapeRootGroup.add(p0Mesh);
+      addFaceLabel(p0Mesh, 'Selimut Tabung', '#10B981', 0, 0, 0);
+
+      const bottomHinge = new THREE.Group();
+      bottomHinge.position.set(0, 0, -H / 2);
+      const bottomGeo = new THREE.CircleGeometry(R, 32);
+      bottomGeo.rotateX(-Math.PI / 2);
+      bottomGeo.translate(0, 0, -r);
+      const bottomMesh = new THREE.Mesh(bottomGeo, createFaceMaterial(0x3B82F6));
+      bottomMesh.add(createThickEdgeLines(bottomGeo));
+      bottomHinge.add(bottomMesh);
+      shapeRootGroup.add(bottomHinge);
+      addFaceLabel(bottomMesh, 'Alas (Lingkaran)', '#3B82F6', 0, 0, -r);
+      hingesList.push({ group: bottomHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+      const topHinge = new THREE.Group();
+      topHinge.position.set(0, 0, H / 2);
+      const topGeo = new THREE.CircleGeometry(R, 32);
+      topGeo.rotateX(-Math.PI / 2);
+      topGeo.translate(0, 0, r);
+      const topMesh = new THREE.Mesh(topGeo, createFaceMaterial(0xEC4899));
+      topMesh.add(createThickEdgeLines(topGeo));
+      topHinge.add(topMesh);
+      shapeRootGroup.add(topHinge);
+      addFaceLabel(topMesh, 'Tutup (Lingkaran)', '#EC4899', 0, 0, r);
+      hingesList.push({ group: topHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+      let prevRight = p0Mesh;
+      for (let i = 1; i <= M / 2; i++) {
+        const hinge = new THREE.Group();
+        hinge.position.set(i === 1 ? w / 2 : w, 0, 0);
+
+        const geo = new THREE.PlaneGeometry(w, H);
+        geo.rotateX(-Math.PI / 2);
+        geo.translate(w / 2, 0, 0);
+        const col = i % 2 === 0 ? 0x10B981 : 0x059669;
+        const mesh = new THREE.Mesh(geo, createFaceMaterial(col));
+        mesh.add(createThickEdgeLines(geo));
+        hinge.add(mesh);
+        prevRight.add(hinge);
+
+        hingesList.push({ group: hinge, axis: 'z', targetAngle: dTheta });
+        prevRight = hinge;
+      }
+
+      let prevLeft = p0Mesh;
+      for (let i = 1; i < M / 2; i++) {
+        const hinge = new THREE.Group();
+        hinge.position.set(i === 1 ? -w / 2 : -w, 0, 0);
+
+        const geo = new THREE.PlaneGeometry(w, H);
+        geo.rotateX(-Math.PI / 2);
+        geo.translate(-w / 2, 0, 0);
+        const col = i % 2 === 0 ? 0x10B981 : 0x059669;
+        const mesh = new THREE.Mesh(geo, createFaceMaterial(col));
+        mesh.add(createThickEdgeLines(geo));
+        hinge.add(mesh);
+        prevLeft.add(hinge);
+
+        hingesList.push({ group: hinge, axis: 'z', targetAngle: -dTheta });
+        prevLeft = hinge;
+      }
+    }
+
+    // --- FOLD PROGRESS CONTROLLER (0.0 = Closed, 1.0 = Flat 2D) ---
+    function setFoldProgress(val) {
+      foldProgress = Math.max(0, Math.min(1, val));
+      const foldAmount = 1.0 - foldProgress; // 1 = closed (0%), 0 = flat (100%)
+
+      hingesList.forEach(ctrl => {
+        if (ctrl.axis === 'x') {
+          ctrl.group.rotation.x = foldAmount * ctrl.targetAngle;
+        } else if (ctrl.axis === 'z') {
+          ctrl.group.rotation.z = foldAmount * ctrl.targetAngle;
+        } else if (ctrl.axis === 'y') {
+          ctrl.group.rotation.y = foldAmount * ctrl.targetAngle;
+        }
+      });
+
+      const pct = Math.round(foldProgress * 100);
+      const slider = document.getElementById('foldRangeSlider');
+      if (slider) slider.value = pct;
+      const badge = document.getElementById('sliderPctBadge');
+      if (badge) badge.textContent = pct + '%';
+
+      const statusDot = document.getElementById('statusDot');
+      const statusText = document.getElementById('statusText');
+      if (statusDot && statusText) {
+        if (pct === 0) {
+          statusDot.style.background = '#4F46E5';
+          statusText.textContent = 'Mode: 3D Bangun Ruang Tertutup (0%)';
+        } else if (pct === 100) {
+          statusDot.style.background = '#10B981';
+          statusText.textContent = 'Mode: Jaring-Jaring Datar 2D (100%)';
+        } else {
+          statusDot.style.background = '#F59E0B';
+          statusText.textContent = `Sedang Melipat / Membentang (${pct}%)`;
+        }
+      }
+    }
+
     function buildActiveShapeModel() {
       if (activeShapeKey === 'kubus') buildKubus();
       else if (activeShapeKey === 'balok') buildBalok();
       else if (activeShapeKey === 'prisma') buildPrisma();
       else if (activeShapeKey === 'limas') buildLimas();
+      else if (activeShapeKey === 'limas_segitiga') buildLimasSegitiga();
+      else if (activeShapeKey === 'prisma_lima') buildPrismaLima();
+      else if (activeShapeKey === 'limas_lima') buildLimasLima();
+      else if (activeShapeKey === 'prisma_enam') buildPrismaEnam();
+      else if (activeShapeKey === 'limas_enam') buildLimasEnam();
+      else if (activeShapeKey === 'tabung') buildTabung();
 
       if (shapeRootGroup) {
         shapeRootGroup.traverse(child => {

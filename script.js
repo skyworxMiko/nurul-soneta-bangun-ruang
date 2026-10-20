@@ -2868,39 +2868,103 @@ function updateShapeDetails(key) {
 const J3D_INFO = {
   kubus: {
     title: 'Kubus',
-    sisi: '6 Persegi',
-    rusuk: '12 Rusuk',
+    emoji: '🎲',
+    sisi: '6 Persegi Identik',
+    rusuk: '12 Rusuk Sama Panjang',
     sudut: '8 Titik Sudut',
-    tip: '<strong>Jaring-Jaring Kubus:</strong> Terdiri dari 6 buah persegi kongruen (sama besar). Ketika semua sisi tegak dilipat 90° ke atas dan sisi tutup dilipat menutup atas, kubus terbentuk sempurna tanpa celah!',
+    tip: '<strong>Jaring-Jaring Kubus:</strong> Terdiri dari 6 buah bujur sangkar (persegi) yang kongruen. Saat semua sisi tegak dilipat 90° ke atas dan tutup dilipat menutup atas, terbentuk kubus 3D sempurna tanpa celah!',
     luas: 'L = 6 &times; s&sup2;',
     vol: 'V = s &times; s &times; s'
   },
   balok: {
     title: 'Balok',
+    emoji: '📦',
     sisi: '6 Persegi Panjang',
-    rusuk: '12 Rusuk',
+    rusuk: '12 Rusuk (3 Pasang Sejajar)',
     sudut: '8 Titik Sudut',
-    tip: '<strong>Jaring-Jaring Balok:</strong> Memiliki 3 pasang persegi panjang berhadapan: alas-tutup (p&times;l), depan-belakang (p&times;t), dan kiri-kanan (l&times;t). Semua rusuk yang bersesuaian akan bertemu pas!',
+    tip: '<strong>Jaring-Jaring Balok:</strong> Memiliki 3 pasang persegi panjang berhadapan: alas-tutup (p&times;l), depan-belakang (p&times;t), dan kiri-kanan (l&times;t). Semua rusuk yang bersesuaian akan bertemu pas membentuk balok utuh!',
     luas: 'L = 2 &times; (pl + pt + lt)',
     vol: 'V = p &times; l &times; t'
   },
   prisma: {
     title: 'Prisma Segitiga',
+    emoji: '⛺',
     sisi: '5 Sisi (2 Segitiga, 3 Persegi)',
     rusuk: '9 Rusuk',
     sudut: '6 Titik Sudut',
-    tip: '<strong>Jaring-Jaring Prisma Segitiga:</strong> Memiliki 2 bidang alas segitiga sejajar serta 3 sisi tegak persegi panjang. Saat sisi miring dilipat 60° dan kedua segitiga dilipat 90°, terbentuk atap prisma!',
+    tip: '<strong>Jaring-Jaring Prisma Segitiga:</strong> Memiliki 2 bidang alas segitiga sejajar serta 3 sisi tegak persegi panjang. Saat kedua sisi miring dilipat 120° dan kedua segitiga dilipat 90°, terbentuk atap prisma tanpa celah!',
     luas: 'L = (2 &times; L_alas) + (Keliling &times; t)',
     vol: 'V = Luas Alas &times; Tinggi'
   },
+  limas_segitiga: {
+    title: 'Limas Segitiga (Tetrahedron)',
+    emoji: '🔻',
+    sisi: '4 Segitiga Sama Sisi',
+    rusuk: '6 Rusuk',
+    sudut: '4 Titik Sudut',
+    tip: '<strong>Jaring-Jaring Limas Segitiga:</strong> Terdiri dari 4 buah segitiga sama sisi yang kongruen. Ketika ketiga segitiga selimut dilipat ke atas sebesar 109.47°, ketiga puncaknya bertemu tepat membentuk 1 titik puncak!',
+    luas: 'L = 4 &times; L_segitiga',
+    vol: 'V = 1/3 &times; Luas Alas &times; Tinggi'
+  },
   limas: {
     title: 'Limas Segi Empat',
+    emoji: '🔺',
     sisi: '5 Sisi (1 Persegi, 4 Segitiga)',
     rusuk: '8 Rusuk',
     sudut: '5 Titik Sudut',
-    tip: '<strong>Jaring-Jaring Limas Segi Empat:</strong> Memiliki 1 alas persegi di tengah dan 4 segitiga selimut mengelilinginya (pola bintang). Keempat puncak segitiga akan menyatu tepat di 1 titik puncak!',
+    tip: '<strong>Jaring-Jaring Limas Segi Empat:</strong> Memiliki 1 alas persegi di tengah dan 4 segitiga selimut mengelilinginya (pola bintang). Keempat puncak segitiga menyatu tepat di 1 titik puncak pada sumbu tengah!',
     luas: 'L = Luas Alas + (4 &times; L_segitiga)',
     vol: 'V = 1/3 &times; Luas Alas &times; Tinggi'
+  },
+  prisma_lima: {
+    title: 'Prisma Segi Lima',
+    emoji: '🏛️',
+    sisi: '7 Sisi (2 Segi Lima, 5 Persegi)',
+    rusuk: '15 Rusuk',
+    sudut: '10 Titik Sudut',
+    tip: '<strong>Jaring-Jaring Prisma Segi Lima:</strong> Terdiri dari 2 buah segi lima beraturan sebagai alas dan tutup, serta 5 buah persegi panjang sisi tegak. Saat semua sisi dilipat 90° ke atas, semua rusuk bertemu rapat!',
+    luas: 'L = (2 &times; L_alas) + (5 &times; s &times; t)',
+    vol: 'V = Luas Alas &times; Tinggi'
+  },
+  limas_lima: {
+    title: 'Limas Segi Lima',
+    emoji: '💎',
+    sisi: '6 Sisi (1 Segi Lima, 5 Segitiga)',
+    rusuk: '10 Rusuk',
+    sudut: '6 Titik Sudut',
+    tip: '<strong>Jaring-Jaring Limas Segi Lima:</strong> Terdiri dari 1 alas segi lima beraturan di tengah dan 5 segitiga sama kaki di sekelilingnya. Kelima puncak segitiga menyatu presisi di 1 titik puncak!',
+    luas: 'L = Luas Alas + (5 &times; L_segitiga)',
+    vol: 'V = 1/3 &times; Luas Alas &times; Tinggi'
+  },
+  prisma_enam: {
+    title: 'Prisma Segi Enam',
+    emoji: '🛑',
+    sisi: '8 Sisi (2 Segi Enam, 6 Persegi)',
+    rusuk: '18 Rusuk',
+    sudut: '12 Titik Sudut',
+    tip: '<strong>Jaring-Jaring Prisma Segi Enam:</strong> Terdiri dari 2 segi enam beraturan sebagai alas dan tutup, serta 6 persegi panjang sisi tegak. Bentuk heksagonal ini kerap ditemui pada sarang lebah dan pensil!',
+    luas: 'L = (2 &times; L_alas) + (6 &times; s &times; t)',
+    vol: 'V = Luas Alas &times; Tinggi'
+  },
+  limas_enam: {
+    title: 'Limas Segi Enam',
+    emoji: '🎪',
+    sisi: '7 Sisi (1 Segi Enam, 6 Segitiga)',
+    rusuk: '12 Rusuk',
+    sudut: '7 Titik Sudut',
+    tip: '<strong>Jaring-Jaring Limas Segi Enam:</strong> Terdiri dari 1 alas segi enam beraturan dan 6 segitiga sama kaki. Saat dilipat, keenam puncak segitiga bertemu tepat pada satu titik puncak!',
+    luas: 'L = Luas Alas + (6 &times; L_segitiga)',
+    vol: 'V = 1/3 &times; Luas Alas &times; Tinggi'
+  },
+  tabung: {
+    title: 'Tabung (Silinder)',
+    emoji: '🛢️',
+    sisi: '3 Sisi (2 Lingkaran, 1 Selimut)',
+    rusuk: '2 Rusuk Lengkung',
+    sudut: '0 Titik Sudut',
+    tip: '<strong>Jaring-Jaring Tabung:</strong> Terdiri dari 2 lingkaran identik (alas dan tutup) serta 1 persegi panjang selimut tabung. Ketika selimut melengkung dan kedua lingkaran menutup, terbentuk tabung sempurna!',
+    luas: 'L = 2 &times; &pi; &times; r &times; (r + t)',
+    vol: 'V = &pi; &times; r&sup2; &times; t'
   }
 };
 
@@ -3024,6 +3088,8 @@ function createJ3DEdges(geometry, color = 0x0F172A) {
 }
 
 let j3dVertexMarkers = [];
+
+
 
 function makeCustomTriGeo(p1, p2, p3) {
   const geo = new THREE.BufferGeometry();
@@ -3422,12 +3488,460 @@ function buildJ3DLimas() {
   j3dHinges.push({ group: eastHinge, axis: 'z', targetAngle: foldAngle });
 }
 
+
+// ========================================================
+// REGULAR N-GON GEOMETRY GENERATOR (100% MATHEMATICAL)
+// ========================================================
+function makeNGonGeometry(N, s, isTopCover = false) {
+  const beta = (2 * Math.PI) / N;
+  const r = s / (2 * Math.tan(beta / 2));
+  
+  // Vertices of base polygon on Y=0
+  // Edge 0 is at Z = +r, spanning X in [-s/2, s/2]
+  const verts = [];
+  for (let k = 0; k < N; k++) {
+    const x = r * Math.sin(k * beta) - (s / 2) * Math.cos(k * beta);
+    const z = r * Math.cos(k * beta) + (s / 2) * Math.sin(k * beta);
+    verts.push(new THREE.Vector3(x, 0, z));
+  }
+  
+  const geo = new THREE.BufferGeometry();
+  const positions = [];
+  
+  if (!isTopCover) {
+    // Base polygon centered at (0, 0, 0)
+    for (let k = 0; k < N; k++) {
+      const v1 = verts[k];
+      const v2 = verts[(k + 1) % N];
+      positions.push(0, 0, 0);
+      positions.push(v1.x, 0, v1.z);
+      positions.push(v2.x, 0, v2.z);
+    }
+  } else {
+    // Top cover attached to Edge 0 top hinge (local Z = 0)
+    // Tk = (Vk.x, 0, r - Vk.z)
+    // Edge 0 sits at local Z = 0; polygon extends into +Z (Z in [0, r + R])
+    const topCenter = new THREE.Vector3(0, 0, r);
+    const topVerts = verts.map(v => new THREE.Vector3(v.x, 0, r - v.z));
+    for (let k = 0; k < N; k++) {
+      const t1 = topVerts[k];
+      const t2 = topVerts[(k + 1) % N];
+      positions.push(topCenter.x, 0, topCenter.z);
+      positions.push(t2.x, 0, t2.z);
+      positions.push(t1.x, 0, t1.z);
+    }
+  }
+  
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geo.computeVertexNormals();
+  return geo;
+}
+
+// 5. LIMAS SEGITIGA (TETRAHEDRON REGULER)
+function buildJ3DLimasSegitiga() {
+  clearJ3DModel();
+  const a = 2.6;
+  const hTri = (Math.sqrt(3) / 2) * a;
+  const r = hTri / 3;
+  const R = (2 * hTri) / 3;
+  const dihedral = Math.acos(1 / 3);
+  const foldAngle = Math.PI - dihedral; // ~109.471 deg
+
+  // Alas Segitiga Sama Sisi
+  const baseGeo = makeCustomTriGeo([0, 0, -R], [a / 2, 0, r], [-a / 2, 0, r]);
+  const baseMesh = new THREE.Mesh(baseGeo, createJ3DFaceMat(0x3B82F6));
+  baseMesh.add(createJ3DEdges(baseGeo));
+  j3dShapeRoot.add(baseMesh);
+  addJ3DFaceLabel(baseMesh, 'Alas Segitiga', '#3B82F6', 0, 0, 0);
+
+  // 3 Titik Sudut Alas
+  addVertexMarker(baseMesh, 0, 0, -R);
+  addVertexMarker(baseMesh, a / 2, 0, r);
+  addVertexMarker(baseMesh, -a / 2, 0, r);
+
+  // Sisi Depan (South Edge: z = +r, phi = 0)
+  const southAnchor = new THREE.Group();
+  southAnchor.position.set(0, 0, r);
+  j3dShapeRoot.add(southAnchor);
+  const southHinge = new THREE.Group();
+  southAnchor.add(southHinge);
+
+  const southGeo = makeCustomTriGeo([-a / 2, 0, 0], [a / 2, 0, 0], [0, 0, hTri]);
+  const southMesh = new THREE.Mesh(southGeo, createJ3DFaceMat(0x10B981));
+  southMesh.add(createJ3DEdges(southGeo));
+  southHinge.add(southMesh);
+  addJ3DFaceLabel(southMesh, 'Sisi Depan', '#10B981', 0, 0, hTri / 3);
+  // 1 Titik Sudut Puncak (bergerak bersama sisi depan)
+  addVertexMarker(southHinge, 0, 0, hTri);
+  j3dHinges.push({ group: southHinge, axis: 'x', targetAngle: -foldAngle });
+
+  // Sisi Kanan (Northeast Edge: rotY = +120°)
+  const neAnchor = new THREE.Group();
+  neAnchor.position.set(r * Math.sin((2 * Math.PI) / 3), 0, r * Math.cos((2 * Math.PI) / 3));
+  neAnchor.rotation.y = (2 * Math.PI) / 3;
+  j3dShapeRoot.add(neAnchor);
+  const neHinge = new THREE.Group();
+  neAnchor.add(neHinge);
+
+  const neGeo = makeCustomTriGeo([-a / 2, 0, 0], [a / 2, 0, 0], [0, 0, hTri]);
+  const neMesh = new THREE.Mesh(neGeo, createJ3DFaceMat(0xEC4899));
+  neMesh.add(createJ3DEdges(neGeo));
+  neHinge.add(neMesh);
+  addJ3DFaceLabel(neMesh, 'Sisi Kanan', '#EC4899', 0, 0, hTri / 3);
+  j3dHinges.push({ group: neHinge, axis: 'x', targetAngle: -foldAngle });
+
+  // Sisi Kiri (Northwest Edge: rotY = -120°)
+  const nwAnchor = new THREE.Group();
+  nwAnchor.position.set(r * Math.sin(-(2 * Math.PI) / 3), 0, r * Math.cos(-(2 * Math.PI) / 3));
+  nwAnchor.rotation.y = -(2 * Math.PI) / 3;
+  j3dShapeRoot.add(nwAnchor);
+  const nwHinge = new THREE.Group();
+  nwAnchor.add(nwHinge);
+
+  const nwGeo = makeCustomTriGeo([-a / 2, 0, 0], [a / 2, 0, 0], [0, 0, hTri]);
+  const nwMesh = new THREE.Mesh(nwGeo, createJ3DFaceMat(0xF59E0B));
+  nwMesh.add(createJ3DEdges(nwGeo));
+  nwHinge.add(nwMesh);
+  addJ3DFaceLabel(nwMesh, 'Sisi Kiri', '#F59E0B', 0, 0, hTri / 3);
+  j3dHinges.push({ group: nwHinge, axis: 'x', targetAngle: -foldAngle });
+}
+
+// 6. PRISMA SEGI LIMA
+function buildJ3DPrismaLima() {
+  clearJ3DModel();
+  const sides = 5, s = 1.4, h = 2.4;
+  const beta = (2 * Math.PI) / sides;
+  const r = s / (2 * Math.tan(beta / 2));
+
+  // Alas Segi Lima
+  const baseGeo = makeNGonGeometry(sides, s, false);
+  const baseMesh = new THREE.Mesh(baseGeo, createJ3DFaceMat(0x3B82F6));
+  baseMesh.add(createJ3DEdges(baseGeo));
+  j3dShapeRoot.add(baseMesh);
+  addJ3DFaceLabel(baseMesh, 'Alas Segi Lima', '#3B82F6', 0, 0, 0);
+
+  // 5 Titik Sudut Alas
+  for (let k = 0; k < sides; k++) {
+    const x = r * Math.sin(k * beta) - (s / 2) * Math.cos(k * beta);
+    const z = r * Math.cos(k * beta) + (s / 2) * Math.sin(k * beta);
+    addVertexMarker(baseMesh, x, 0, z);
+  }
+
+  const colors = [0x10B981, 0x6366F1, 0xEC4899, 0xF59E0B, 0x06B6D4];
+  const hexColors = ['#10B981', '#6366F1', '#EC4899', '#F59E0B', '#06B6D4'];
+
+  for (let k = 0; k < sides; k++) {
+    const phi = k * beta;
+
+    // Anchor: posisi dan orientasi engsel rusuk pada lantai
+    const anchor = new THREE.Group();
+    anchor.position.set(r * Math.sin(phi), 0, r * Math.cos(phi));
+    anchor.rotation.y = phi;
+    j3dShapeRoot.add(anchor);
+
+    // Hinge: anak dari anchor, hanya berotasi pada sumbu X lokal (tanpa twist Euler)
+    const hinge = new THREE.Group();
+    anchor.add(hinge);
+
+    const wallGeo = new THREE.PlaneGeometry(s, h);
+    wallGeo.rotateX(-Math.PI / 2);
+    wallGeo.translate(0, 0, h / 2);
+    const wallMesh = new THREE.Mesh(wallGeo, createJ3DFaceMat(colors[k % colors.length]));
+    wallMesh.add(createJ3DEdges(wallGeo));
+    hinge.add(wallMesh);
+    addJ3DFaceLabel(wallMesh, 'Dinding ' + (k + 1), hexColors[k % hexColors.length], 0, 0, h / 2);
+
+    j3dHinges.push({ group: hinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+    // Tutup Segi Lima pada Dinding 1 (k = 0, phi = 0)
+    if (k === 0) {
+      const topHinge = new THREE.Group();
+      topHinge.position.set(0, 0, h);
+      const topGeo = makeNGonGeometry(sides, s, true);
+      const topMesh = new THREE.Mesh(topGeo, createJ3DFaceMat(0x8B5CF6));
+      topMesh.add(createJ3DEdges(topGeo));
+      topHinge.add(topMesh);
+      hinge.add(topHinge);
+      addJ3DFaceLabel(topMesh, 'Tutup Segi Lima', '#8B5CF6', 0, 0, r);
+      j3dHinges.push({ group: topHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+      // 5 Titik Sudut Tutup (bergerak bersama tutup)
+      for (let j = 0; j < sides; j++) {
+        const tx = r * Math.sin(j * beta) - (s / 2) * Math.cos(j * beta);
+        const tz = r - (r * Math.cos(j * beta) + (s / 2) * Math.sin(j * beta));
+        addVertexMarker(topHinge, tx, 0, tz);
+      }
+    }
+  }
+}
+
+// 7. LIMAS SEGI LIMA
+function buildJ3DLimasLima() {
+  clearJ3DModel();
+  const sides = 5, s = 1.5, H = 2.2;
+  const beta = (2 * Math.PI) / sides;
+  const r = s / (2 * Math.tan(beta / 2));
+  const L = Math.hypot(H, r);
+  const alpha = Math.atan2(H, r);
+  const foldAngle = Math.PI - alpha;
+
+  // Alas Segi Lima
+  const baseGeo = makeNGonGeometry(sides, s, false);
+  const baseMesh = new THREE.Mesh(baseGeo, createJ3DFaceMat(0x3B82F6));
+  baseMesh.add(createJ3DEdges(baseGeo));
+  j3dShapeRoot.add(baseMesh);
+  addJ3DFaceLabel(baseMesh, 'Alas Segi Lima', '#3B82F6', 0, 0, 0);
+
+  // 5 Titik Sudut Alas
+  for (let k = 0; k < sides; k++) {
+    const x = r * Math.sin(k * beta) - (s / 2) * Math.cos(k * beta);
+    const z = r * Math.cos(k * beta) + (s / 2) * Math.sin(k * beta);
+    addVertexMarker(baseMesh, x, 0, z);
+  }
+
+  const colors = [0x10B981, 0x6366F1, 0xEC4899, 0xF59E0B, 0x06B6D4];
+  const hexColors = ['#10B981', '#6366F1', '#EC4899', '#F59E0B', '#06B6D4'];
+
+  for (let k = 0; k < sides; k++) {
+    const phi = k * beta;
+
+    const anchor = new THREE.Group();
+    anchor.position.set(r * Math.sin(phi), 0, r * Math.cos(phi));
+    anchor.rotation.y = phi;
+    j3dShapeRoot.add(anchor);
+
+    const hinge = new THREE.Group();
+    anchor.add(hinge);
+
+    const triGeo = makeCustomTriGeo([-s / 2, 0, 0], [s / 2, 0, 0], [0, 0, L]);
+    const triMesh = new THREE.Mesh(triGeo, createJ3DFaceMat(colors[k % colors.length]));
+    triMesh.add(createJ3DEdges(triGeo));
+    hinge.add(triMesh);
+    addJ3DFaceLabel(triMesh, 'Segitiga ' + (k + 1), hexColors[k % hexColors.length], 0, 0, L / 3);
+
+    // 1 Titik Sudut Puncak pada sisi 1
+    if (k === 0) {
+      addVertexMarker(hinge, 0, 0, L);
+    }
+
+    j3dHinges.push({ group: hinge, axis: 'x', targetAngle: -foldAngle });
+  }
+}
+
+// 8. PRISMA SEGI ENAM
+function buildJ3DPrismaEnam() {
+  clearJ3DModel();
+  const sides = 6, s = 1.3, h = 2.4;
+  const beta = (2 * Math.PI) / sides;
+  const r = (s * Math.sqrt(3)) / 2;
+
+  // Alas Segi Enam
+  const baseGeo = makeNGonGeometry(sides, s, false);
+  const baseMesh = new THREE.Mesh(baseGeo, createJ3DFaceMat(0x3B82F6));
+  baseMesh.add(createJ3DEdges(baseGeo));
+  j3dShapeRoot.add(baseMesh);
+  addJ3DFaceLabel(baseMesh, 'Alas Segi Enam', '#3B82F6', 0, 0, 0);
+
+  // 6 Titik Sudut Alas
+  for (let k = 0; k < sides; k++) {
+    const x = r * Math.sin(k * beta) - (s / 2) * Math.cos(k * beta);
+    const z = r * Math.cos(k * beta) + (s / 2) * Math.sin(k * beta);
+    addVertexMarker(baseMesh, x, 0, z);
+  }
+
+  const colors = [0x10B981, 0x6366F1, 0xEC4899, 0xF59E0B, 0x06B6D4, 0x8B5CF6];
+  const hexColors = ['#10B981', '#6366F1', '#EC4899', '#F59E0B', '#06B6D4', '#8B5CF6'];
+
+  for (let k = 0; k < sides; k++) {
+    const phi = k * beta;
+
+    const anchor = new THREE.Group();
+    anchor.position.set(r * Math.sin(phi), 0, r * Math.cos(phi));
+    anchor.rotation.y = phi;
+    j3dShapeRoot.add(anchor);
+
+    const hinge = new THREE.Group();
+    anchor.add(hinge);
+
+    const wallGeo = new THREE.PlaneGeometry(s, h);
+    wallGeo.rotateX(-Math.PI / 2);
+    wallGeo.translate(0, 0, h / 2);
+    const wallMesh = new THREE.Mesh(wallGeo, createJ3DFaceMat(colors[k % colors.length]));
+    wallMesh.add(createJ3DEdges(wallGeo));
+    hinge.add(wallMesh);
+    addJ3DFaceLabel(wallMesh, 'Dinding ' + (k + 1), hexColors[k % hexColors.length], 0, 0, h / 2);
+
+    j3dHinges.push({ group: hinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+    // Tutup Segi Enam pada Dinding 1
+    if (k === 0) {
+      const topHinge = new THREE.Group();
+      topHinge.position.set(0, 0, h);
+      const topGeo = makeNGonGeometry(sides, s, true);
+      const topMesh = new THREE.Mesh(topGeo, createJ3DFaceMat(0xEC4899));
+      topMesh.add(createJ3DEdges(topGeo));
+      topHinge.add(topMesh);
+      hinge.add(topHinge);
+      addJ3DFaceLabel(topMesh, 'Tutup Segi Enam', '#EC4899', 0, 0, r);
+      j3dHinges.push({ group: topHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+      // 6 Titik Sudut Tutup
+      for (let j = 0; j < sides; j++) {
+        const tx = r * Math.sin(j * beta) - (s / 2) * Math.cos(j * beta);
+        const tz = r - (r * Math.cos(j * beta) + (s / 2) * Math.sin(j * beta));
+        addVertexMarker(topHinge, tx, 0, tz);
+      }
+    }
+  }
+}
+
+// 9. LIMAS SEGI ENAM
+function buildJ3DLimasEnam() {
+  clearJ3DModel();
+  const sides = 6, s = 1.3, H = 2.4;
+  const beta = (2 * Math.PI) / sides;
+  const r = (s * Math.sqrt(3)) / 2;
+  const L = Math.hypot(H, r);
+  const alpha = Math.atan2(H, r);
+  const foldAngle = Math.PI - alpha;
+
+  // Alas Segi Enam
+  const baseGeo = makeNGonGeometry(sides, s, false);
+  const baseMesh = new THREE.Mesh(baseGeo, createJ3DFaceMat(0x3B82F6));
+  baseMesh.add(createJ3DEdges(baseGeo));
+  j3dShapeRoot.add(baseMesh);
+  addJ3DFaceLabel(baseMesh, 'Alas Segi Enam', '#3B82F6', 0, 0, 0);
+
+  // 6 Titik Sudut Alas
+  for (let k = 0; k < sides; k++) {
+    const x = r * Math.sin(k * beta) - (s / 2) * Math.cos(k * beta);
+    const z = r * Math.cos(k * beta) + (s / 2) * Math.sin(k * beta);
+    addVertexMarker(baseMesh, x, 0, z);
+  }
+
+  const colors = [0x10B981, 0x6366F1, 0xEC4899, 0xF59E0B, 0x06B6D4, 0x8B5CF6];
+  const hexColors = ['#10B981', '#6366F1', '#EC4899', '#F59E0B', '#06B6D4', '#8B5CF6'];
+
+  for (let k = 0; k < sides; k++) {
+    const phi = k * beta;
+
+    const anchor = new THREE.Group();
+    anchor.position.set(r * Math.sin(phi), 0, r * Math.cos(phi));
+    anchor.rotation.y = phi;
+    j3dShapeRoot.add(anchor);
+
+    const hinge = new THREE.Group();
+    anchor.add(hinge);
+
+    const triGeo = makeCustomTriGeo([-s / 2, 0, 0], [s / 2, 0, 0], [0, 0, L]);
+    const triMesh = new THREE.Mesh(triGeo, createJ3DFaceMat(colors[k % colors.length]));
+    triMesh.add(createJ3DEdges(triGeo));
+    hinge.add(triMesh);
+    addJ3DFaceLabel(triMesh, 'Segitiga ' + (k + 1), hexColors[k % hexColors.length], 0, 0, L / 3);
+
+    // 1 Titik Sudut Puncak pada sisi 1
+    if (k === 0) {
+      addVertexMarker(hinge, 0, 0, L);
+    }
+
+    j3dHinges.push({ group: hinge, axis: 'x', targetAngle: -foldAngle });
+  }
+}
+
+// 10. TABUNG (SILINDER)
+function buildJ3DTabung() {
+  clearJ3DModel();
+  const R = 1.0, H = 2.4;
+  const M = 16;
+  const dTheta = (2 * Math.PI) / M;
+  const w = 2 * R * Math.sin(dTheta / 2);
+  const r = R * Math.cos(dTheta / 2);
+
+  // Panel 0 (Tengah) pada lantai: rentang x di [-w/2, w/2], z di [-H/2, H/2]
+  const p0Geo = new THREE.PlaneGeometry(w, H);
+  p0Geo.rotateX(-Math.PI / 2);
+  const p0Mesh = new THREE.Mesh(p0Geo, createJ3DFaceMat(0x10B981));
+  p0Mesh.add(createJ3DEdges(p0Geo));
+  j3dShapeRoot.add(p0Mesh);
+  addJ3DFaceLabel(p0Mesh, 'Selimut Tabung', '#10B981', 0, 0, 0);
+
+  // Lingkaran Alas (Bawah) terhubung pada z = -H/2
+  const bottomHinge = new THREE.Group();
+  bottomHinge.position.set(0, 0, -H / 2);
+  const bottomGeo = new THREE.CircleGeometry(R, 32);
+  bottomGeo.rotateX(-Math.PI / 2);
+  bottomGeo.translate(0, 0, -r);
+  const bottomMesh = new THREE.Mesh(bottomGeo, createJ3DFaceMat(0x3B82F6));
+  bottomMesh.add(createJ3DEdges(bottomGeo));
+  bottomHinge.add(bottomMesh);
+  j3dShapeRoot.add(bottomHinge);
+  addJ3DFaceLabel(bottomMesh, 'Alas (Lingkaran)', '#3B82F6', 0, 0, -r);
+  j3dHinges.push({ group: bottomHinge, axis: 'x', targetAngle: Math.PI / 2 });
+
+  // Lingkaran Tutup (Atas) terhubung pada z = +H/2
+  const topHinge = new THREE.Group();
+  topHinge.position.set(0, 0, H / 2);
+  const topGeo = new THREE.CircleGeometry(R, 32);
+  topGeo.rotateX(-Math.PI / 2);
+  topGeo.translate(0, 0, r);
+  const topMesh = new THREE.Mesh(topGeo, createJ3DFaceMat(0xEC4899));
+  topMesh.add(createJ3DEdges(topGeo));
+  topHinge.add(topMesh);
+  j3dShapeRoot.add(topHinge);
+  addJ3DFaceLabel(topMesh, 'Tutup (Lingkaran)', '#EC4899', 0, 0, r);
+  j3dHinges.push({ group: topHinge, axis: 'x', targetAngle: -Math.PI / 2 });
+
+  // Sayap Kanan (8 panel melengkung ke atas)
+  let prevRight = p0Mesh;
+  for (let i = 1; i <= M / 2; i++) {
+    const hinge = new THREE.Group();
+    hinge.position.set(i === 1 ? w / 2 : w, 0, 0);
+
+    const geo = new THREE.PlaneGeometry(w, H);
+    geo.rotateX(-Math.PI / 2);
+    geo.translate(w / 2, 0, 0);
+    const col = i % 2 === 0 ? 0x10B981 : 0x059669;
+    const mesh = new THREE.Mesh(geo, createJ3DFaceMat(col));
+    mesh.add(createJ3DEdges(geo));
+    hinge.add(mesh);
+    prevRight.add(hinge);
+
+    j3dHinges.push({ group: hinge, axis: 'z', targetAngle: dTheta });
+    prevRight = hinge;
+  }
+
+  // Sayap Kiri (7 panel melengkung ke atas)
+  let prevLeft = p0Mesh;
+  for (let i = 1; i < M / 2; i++) {
+    const hinge = new THREE.Group();
+    hinge.position.set(i === 1 ? -w / 2 : -w, 0, 0);
+
+    const geo = new THREE.PlaneGeometry(w, H);
+    geo.rotateX(-Math.PI / 2);
+    geo.translate(-w / 2, 0, 0);
+    const col = i % 2 === 0 ? 0x10B981 : 0x059669;
+    const mesh = new THREE.Mesh(geo, createJ3DFaceMat(col));
+    mesh.add(createJ3DEdges(geo));
+    hinge.add(mesh);
+    prevLeft.add(hinge);
+
+    j3dHinges.push({ group: hinge, axis: 'z', targetAngle: -dTheta });
+    prevLeft = hinge;
+  }
+}
+
 function buildJaring3DShape(key) {
   j3dActiveShape = key;
   if (key === 'kubus') buildJ3DKubus();
   else if (key === 'balok') buildJ3DBalok();
   else if (key === 'prisma') buildJ3DPrisma();
   else if (key === 'limas') buildJ3DLimas();
+  else if (key === 'limas_segitiga') buildJ3DLimasSegitiga();
+  else if (key === 'prisma_lima') buildJ3DPrismaLima();
+  else if (key === 'limas_lima') buildJ3DLimasLima();
+  else if (key === 'prisma_enam') buildJ3DPrismaEnam();
+  else if (key === 'limas_enam') buildJ3DLimasEnam();
+  else if (key === 'tabung') buildJ3DTabung();
 
   // Apply visibility states
   if (j3dShapeRoot) {
@@ -3452,6 +3966,8 @@ function setJaring3DFoldProgress(val) {
       ctrl.group.rotation.x = foldAmount * ctrl.targetAngle;
     } else if (ctrl.axis === 'z') {
       ctrl.group.rotation.z = foldAmount * ctrl.targetAngle;
+    } else if (ctrl.axis === 'y') {
+      ctrl.group.rotation.y = foldAmount * ctrl.targetAngle;
     }
   });
 

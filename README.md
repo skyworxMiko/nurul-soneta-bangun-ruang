@@ -37,11 +37,17 @@ Website interaktif berbasis animasi 3D dan teknologi web modern untuk membantu s
 
 ### 2. 🧩 3D Shape Builder: Petualangan Jaring-Jaring Bangun Ruang (Fase C SD)
 Fitur inovatif pembelajaran matematika interaktif Fase C (Kelas VI SD) berbasis animasi 3D dan Three.js:
-* **4 Model Bangun Ruang Utama & Pembuktian Geometris:**
-  1. **Kubus**: 6 persegi identik kongruen, lipatan sudut siku-siku $90^\circ$ dengan engsel rusuk bertingkat (*nested hinge*) sisi alas, depan, belakang, kiri, kanan, dan tutup atas.
-  2. **Balok**: 6 persegi panjang proporsional ($p \times l \times t$), lipatan sudut $90^\circ$ menutup tepat tanpa celah maupun tumpang tindih.
-  3. **Prisma Segitiga**: 2 segitiga sama sisi kongruen + 3 persegi panjang, rotasi engsel $60^\circ$ dan $90^\circ$, kedua tutup segitiga tegak menutup pas di ujung prisma.
-  4. **Limas Segi Empat**: 1 alas bujur sangkar + 4 segitiga sama kaki, rotasi engsel miring $\alpha = \arctan(H / (s/2)) \approx 61.39^\circ$, keempat ujung puncak (*apex*) bertemu presisi matematis di $(0, H, 0)$ dengan selisih mutlak $0.000000$!
+* **10 Model Bangun Ruang Lengkap & Pembuktian Geometris:**
+  1. 🎲 **Kubus**: 6 bujur sangkar identik kongruen, lipatan sudut siku-siku $90^\circ$ dengan engsel rusuk bertingkat (*nested hinge*) sisi alas, depan, belakang, kiri, kanan, dan tutup atas.
+  2. 📦 **Balok**: 6 persegi panjang proporsional ($p \times l \times t$), lipatan sudut $90^\circ$ menutup tepat tanpa celah maupun tumpang tindih.
+  3. ⛺ **Prisma Segitiga**: 2 segitiga sama sisi kongruen + 3 persegi panjang, rotasi engsel atap $120^\circ$ dan segitiga $90^\circ$, kedua tutup segitiga tegak menutup pas di ujung prisma.
+  4. 🔻 **Limas Segitiga (Tetrahedron)**: 4 segitiga sama sisi kongruen, rotasi lipatan $109.47^\circ$, ketiga segitiga selimut melipat ke atas menyatu tepat pada 1 titik puncak di atas titik berat alas.
+  5. 🔺 **Limas Segi Empat**: 1 alas bujur sangkar + 4 segitiga sama kaki, rotasi engsel miring $118.61^\circ$, keempat ujung puncak (*apex*) bertemu presisi matematis di $(0, H, 0)$ dengan toleransi error $0.000000$!
+  6. 🏛️ **Prisma Segi Lima**: 2 segi lima beraturan (alas dan tutup) + 5 persegi panjang sisi tegak yang melipat $90^\circ$ tegak lurus, menutup presisi tanpa celah.
+  7. 💎 **Limas Segi Lima**: 1 alas segi lima beraturan + 5 segitiga sama kaki, kelima puncak segitiga menyatu presisi di poros pusat puncak.
+  8. 🛑 **Prisma Segi Enam**: 2 segi enam beraturan + 6 persegi panjang sisi tegak, bentuk dasar sarang lebah dan pensil kayu.
+  9. 🎪 **Limas Segi Enam**: 1 segi enam beraturan + 6 segitiga sama kaki, keenam segitiga melipat tepat menyatu di satu puncak poros pusat.
+  10. 🛢️ **Tabung (Silinder)**: 2 lingkaran identik (alas dan tutup) serta 1 persegi panjang selimut tabung. Siswa dapat melihat lembaran persegi panjang melengkung simetris (*symmetric curling*) menjadi silinder bundar sementara kedua lingkaran menutup kedua ujungnya dengan presisi tinggi!
 * **Kontrol Interaktif Lengkap:**
   * **Slider Lipatan 0% – 100%**: 0% adalah bangun ruang 3D tertutup rapat; 100% terbentang rata menjadi jaring-jaring 2D pada bidang $Y=0$.
   * **Tombol "Bentangkan Jaring-Jaring" & "Lipat Jadi Bangun Ruang"**: Animasi halus dengan kurva perlambatan (*cubic easing*) dan efek suara gerakan (*whoosh sound effect*).

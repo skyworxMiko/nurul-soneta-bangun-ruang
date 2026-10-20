@@ -4187,8 +4187,11 @@ body {
 
 .j3d-shapes-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.55rem;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 0.2rem;
 }
 
 .j3d-shape-btn {
